@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_06_133017) do
+ActiveRecord::Schema.define(version: 2022_10_09_105719) do
 
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -22,6 +22,18 @@ ActiveRecord::Schema.define(version: 2022_10_06_133017) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
+  end
+
+  create_table "movies", force: :cascade do |t|
+    t.integer "genre_id", null: false
+    t.integer "tmdb_id", null: false
+    t.string "title", null: false
+    t.text "synopsis", null: false
+    t.string "directer", null: false
+    t.string "screen_writer", null: false
+    t.string "perfomer", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
