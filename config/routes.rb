@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  get 'movies　index/show'
+  get 'movies　index/search'
   devise_for:users, skip: [:passwords], controllers: {
     registrations: "public/registrations",
     sessions: "public/sessions"
