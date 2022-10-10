@@ -11,8 +11,9 @@ class Admin::MoviesController < ApplicationController
   end
 
   def show
-    # @movie = Tmdb::Movie.detail(550)
-    @movie = @movies.find(movie.id)
+    # @movie.tmdb_id = Tmdb::Movie.popular[:results].find(:id)
+    @movie = Tmdb::Movie.detail(550)
+    # @movie = @movies.find(Tmdb::Movie.id)
   end
   
   private

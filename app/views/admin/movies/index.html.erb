@@ -20,7 +20,11 @@
     <tr>
       <td><%=%></td>
       <td><%= movie.id %></td>
-      <td><%= movie.title %></td>
+      <td>
+        <%= link_to admin_movie_path(movie.id) do %>
+          <%= movie.title %>
+        <% end %>
+        </td>
       <td><%= %></td>
       <td><%=%></td>
       <td><%=%></td>
