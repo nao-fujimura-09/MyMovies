@@ -48,6 +48,11 @@ ActiveRecord::Schema.define(version: 2022_10_09_135116) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.string "name", null: false
+    t.string "favorite_movie"
+    t.string "favorite_genre1"
+    t.string "favorite_genre2"
+    t.integer "status", default: 1, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_users_on_email", unique: true

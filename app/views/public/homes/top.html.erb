@@ -1,0 +1,20 @@
+<div class="containeer">
+  <div class="row">
+    <div class="col-2">
+      <table class="table mt-5">
+        <thead>
+          <th>ジャンルで探す</th>
+        </thead>
+        <tbody>
+          <% @genres.each do |genre| %>
+          <tr>
+            <td><%= genre.name %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-6">
+      <h2 class="mt-5">よく見られている作品</h2>
+  </div>
+</div>

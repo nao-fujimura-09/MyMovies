@@ -4,6 +4,17 @@ class Public::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
+before_action :configure_permited_parameters, if: :devise_controller?
+
+  def configure_permited_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :favorite_movie, :favorite_genre1, :favorite_genre2, :status])
+  end
+ 
+  private
+  
+  def customer_params
+    params.require(:customer).permit(:name, :email, :password, :favorite_movie, :favorite_genre1, :favorite_genre2 ,:status)
+  end
   # GET /resource/sign_up
   # def new
   #   super
