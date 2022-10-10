@@ -5,13 +5,14 @@ class Admin::MoviesController < ApplicationController
   Tmdb::Api.language("ja")
   
   def index
-    @movies = Tmdb::Movie.popular
+   @movies = Tmdb::Movie.popular[:results].push(Tmdb::Movie.now_playing[:results]).flatten!
     # @movies.title = Tmdb::Movie.popular.title
     # @movie.tmdb_id = Tmdb::Movie.latest
   end
 
   def show
-    @movie = Tmdb::Movie.detail(550)
+    # @movie = Tmdb::Movie.detail(550)
+    @movie = @movies.find(movie.id)
   end
   
   private
