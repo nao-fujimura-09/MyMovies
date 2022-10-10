@@ -1,5 +1,5 @@
 <div class="container">
-  <h1>Movies</h1>
+  <h1 class="mt-5">Movies</h1>
 
 作品数：<%= @movies.count %> 本
 <div class="row">
@@ -16,16 +16,17 @@
     <th>list in</th>
   </thead>
   <tbody>
+    <% @movies.each do |movie| %>
     <tr>
       <td><%=%></td>
-      <td><%=%></td>
-      <td><%=%></td>
+      <td><%= movie.id %></td>
+      <td><%= movie.title %></td>
       <td><%= %></td>
       <td><%=%></td>
       <td><%=%></td>
       <td><%=%></td>
     </tr>
-    
+    <% end %>
   </tbody>
 </table>
 </div>
