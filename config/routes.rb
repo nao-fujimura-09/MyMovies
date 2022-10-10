@@ -1,11 +1,7 @@
 Rails.application.routes.draw do
   
   
-  namespace :public do
-    get 'user/show'
-    get 'user/edit'
-    get 'user/comfirm'
-  end
+
  root to: "public/homes#top" 
  
   devise_for:users, skip: [:passwords], controllers: {
@@ -19,6 +15,12 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :movies, only: [:index, :show]
     resources :genres, only: [:index]
+    resources :movies, only: [:show, :edit, :comfirm]
+  end
+  
+  namespace :public do
+  # scope module: :public do
+    resources :user, only: [:show, :edit, :comfirm]
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

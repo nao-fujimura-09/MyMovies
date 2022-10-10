@@ -1,2 +1,56 @@
-<h1>Public::User#edit</h1>
-<p>Find me in app/views/public/user/edit.html.erb</p>
+<div class="container">
+  <div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+      <h2 class="mt-5 mb-3 text-center">プロフィール編集</h2>
+        <table class="table table-borderless">
+<i class="far fa-search"></i>
+            <thead>
+              <th width="40%"></th>
+              <th width="60%"></th>
+            </thead>
+            
+            <% if @user.profile_image.attached? %>
+              <%= image_tag @user.profile_image, size: "100x100", class:"user-icon" %>
+            <% else %>
+              <%= image_tag 'no_image', size: "100x100", class:"user-icon" %>
+            <% end %>
+            <tbody>
+          <%= form_with model: @user, url: user_registration_path, method: :POST do |f| %>
+          <tr>
+            <td>プロフィール画像</td>
+            <td><%= f.file_field :profile_image, accept: "image/*" %></td>
+          </tr>  
+            
+            
+          <tr>
+            <td>ユーザーネーム</td>
+            <td><%= f.text_field :name, class: 'form-control' %></td>
+          </tr>
+          
+          <tr>
+            <td>メールアドレス</td>
+            <td><%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control'  %></td>
+          </tr>
+          
+          <tr>
+            <td>好きな映画</td>
+            <td><%= f.text_field :favorite_movie, class: 'form-control', placeholder:"LEON"  %></td>
+          </tr>
+          <%= f.fields_for :favorite_genre do |i| %>
+          <tr>
+            <td>好きな映画のジャンル</td>
+            <td><%= f.text_field :favorite_genre, class: 'form-control' %></td>
+          </tr>
+          <% end %>
+        </table>
+        <div class="bg-#d2b48c" align="center">
+         <%= f.submit "変更する", class:"button px-3 py-2 mt-3" %> 
+        </div>
+        <% end %>
+        </tbody>
+</div>
+</div>
+<div class="col-3"></div>
+
+</div>

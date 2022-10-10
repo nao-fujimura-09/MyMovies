@@ -1,2 +1,5 @@
-<h1>Public::User#show</h1>
-<p>Find me in app/views/public/user/show.html.erb</p>
+
+<%= link_to edit_public_user_path(current_user) do %>
+<h4><%= current_user.name%></h4>
+<% end %>
+<p>フォロワー／フォロー</p>
