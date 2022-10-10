@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   
   
+  namespace :public do
+    get 'user/show'
+    get 'user/edit'
+    get 'user/comfirm'
+  end
  root to: "public/homes#top" 
  
   devise_for:users, skip: [:passwords], controllers: {

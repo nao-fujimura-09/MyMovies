@@ -7,5 +7,8 @@ class Public::HomesController < ApplicationController
   
   def top
     @genres = Tmdb::Genre.movie_list
+    @movies = Tmdb::Movie.popular
+  #   @movies = JSON.parse((Tmdb::Movie.popular).to_json) 
+  #   @movie.title = 
   end
 end

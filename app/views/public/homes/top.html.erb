@@ -16,5 +16,42 @@
     </div>
     <div class="col-6">
       <h2 class="mt-5">よく見られている作品</h2>
+      <table>
+        <tbody>
+          <!--<% @movies.each do |movie| %>-->
+          <!--<tr>-->
+          <!--  <td><%=%></td>-->
+          <!--  <td><%= movie.title %></td>-->
+          <!--  <td><%= %></td>-->
+          <!--  <td><%=%></td>-->
+          <!--  <td><%=%></td>-->
+          <!--  <td><%=%></td>-->
+          <!--</tr>-->
+          <!--<% end %>-->
+      </tbody>
+    </table>
+    <% movieinfo = JSON.parse((Tmdb::Movie.popular).to_json) %>
+        <% i = 0 %>
+    <div class="card-wrapper">
+        <% while i < movieinfo['table']['results'].count %>
+            <div class="card">
+                <div class="card-upperinfo">
+                    <%if movieinfo['table']['results'][i]['table']['title'].present?%>
+                        <h3><%= movieinfo['table']['results'][i]['table']['title'] %></h3>
+                    <%end%>
+
+                    <% if movieinfo['table']['results'][i]['table']['release_date'].present? %>
+                        <p class="release-date"><%= movieinfo['table']['results'][i]['table']['release_date'] %></p>
+                    <%end%>
+                </div>
+
+                <% if movieinfo['table']['results'][i]['table']['poster_path'].present? %>
+                    <p><%= image_tag 'https://image.tmdb.org/t/p/w1280' + movieinfo['table']['results'][i]['table']['poster_path'],class: "card-img" %></p>
+                <%end%>
+            </div>
+
+            <% i += 1%>
+        <%end%>
+    </div>
   </div>
 </div>
