@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  
-  
 
  root to: "public/homes#top" 
  
@@ -20,7 +18,8 @@ Rails.application.routes.draw do
   
   namespace :public do
   # scope module: :public do
-    resources :user, only: [:show, :edit, :comfirm]
+    resources :users, only: [:show, :edit, :update, :comfirm]
+    resources :watch_lists, only: [:create]
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

@@ -1,0 +1,79 @@
+<div class="container">
+  
+  <div class="row">
+    <div class="col-4"></div>
+    <div class="col-4">
+      <h2 class="mt-5 mb-3 text-center">プロフィール編集</h2>
+    </div>
+    <div class="col-4"></div>
+  </div>
+    
+  <div class="row">
+    <div class="col-5"></div>
+    <div class="col-1">
+      <% if @user.profile_image.attached? %>
+        <%= image_tag @user.profile_image, size: "100x100", class:"user-icon" %>
+      <% else %>
+        <%= image_tag 'no_image', size: "100x100", class:"user-icon" %>
+      <% end %>
+    </div>
+    <div class="col-5"></div>
+  </div>
+  
+  <div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+      
+<i class="far fa-search"></i>      
+      
+      <table class="table table-borderless">
+        <thead>
+          <th width="40%"></th>
+          <th width="60%"></th>
+        </thead>
+        
+        <tbody>
+          <%= form_with model: @user, url: public_user_path do |f| %>
+          <tr>
+            <td>プロフィール画像</td>
+            <td><%= f.file_field :profile_image, accept: "image/*" %></td>
+          </tr>  
+            
+          <tr>
+            <td>ユーザーネーム</td>
+            <td><%= f.text_field :name, class: 'form-control' %></td>
+          </tr>
+          
+          <tr>
+            <td>メールアドレス</td>
+            <td><%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control'  %></td>
+          </tr>
+          
+          <tr>
+            <td>好きな映画</td>
+            <td><%= f.text_field :favorite_movie, class: 'form-control', placeholder:"LEON"  %></td>
+          </tr>
+          
+          <tr>
+            <td>好きな映画のジャンル</td>
+              <%= f.fields_for :favorite_genre do |i| %>
+          <!--<%= f.fields_for :foavrite_genres do |favorite_genre| %>-->
+            <!--<td><%= f.text_field :favorite_genre, class: 'form-control' %></td>-->
+            <td>
+              <%= f.collection_check_boxes(:favorite_genres, Tmdb::Genre.movie_list, :id, :name) %>　
+              <% end %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+                </table>
+        <div class="bg-#d2b48c" align="center">
+         <%= f.submit "変更する", class:"button px-3 py-2 mt-3" %> 
+        </div>
+        <% end %>
+
+</div>
+</div>
+<div class="col-3"></div>
+
+</div>
