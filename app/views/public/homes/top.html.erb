@@ -14,44 +14,39 @@
         </tbody>
       </table>
     </div>
-    <div class="col-6">
+    
+    <div class="col-9">
       <h2 class="mt-5">よく見られている作品</h2>
-      <table>
+<div class="table-responsive">
+        <table class="table-boderless mt-5">
         <tbody>
-          <!--<% @movies.each do |movie| %>-->
-          <!--<tr>-->
-          <!--  <td><%=%></td>-->
-          <!--  <td><%= movie.title %></td>-->
-          <!--  <td><%= %></td>-->
-          <!--  <td><%=%></td>-->
-          <!--  <td><%=%></td>-->
-          <!--  <td><%=%></td>-->
-          <!--</tr>-->
-          <!--<% end %>-->
-      </tbody>
-    </table>
-    <% movieinfo = JSON.parse((Tmdb::Movie.popular).to_json) %>
-        <% i = 0 %>
-    <div class="card-wrapper">
-        <% while i < movieinfo['table']['results'].count %>
-            <div class="card">
-                <div class="card-upperinfo">
-                    <%if movieinfo['table']['results'][i]['table']['title'].present?%>
-                        <h3><%= movieinfo['table']['results'][i]['table']['title'] %></h3>
-                    <%end%>
+            <tr>
+              <% @movies.each do |movie| %>
+                <td>
+                  <%= image_tag 'https://image.tmdb.org/t/p/w154/aVLV38txajXhEy2qNEClPIsDbAH.jpg', class:"mx-3" %></br>
+                  <strong class="mt-3 mx-3"><%= movie.title %></strong>
+                </td>
+              <% end %>
+            </tr>
+        </tbody>
+      </table>
+</div>
+      <h2 class="mt-5">ランキング</h2>
+                        <!--<#%= image_tag 'https://image.tmdb.org/t/p/w154' + movie.[poster_path], class:"mx-3" %></br>-->
+    
+    <!--<% movieinfo = JSON.parse((Tmdb::Movie.popular).to_json) %>-->
+    <!--    <% i = 0 %>-->
+    <!--<div class="card-wrapper">-->
+    <!--    <% while i < movieinfo['table']['results'].count %>-->
+    <!--        <div class="card">-->
+    <!--            <% if movieinfo['table']['results'][i]['table']['poster_path'].present? %>-->
+    <!--                <p><%= image_tag 'https://image.tmdb.org/t/p/w154' + movieinfo['table']['results'][i]['table']['poster_path'],class: "card-img" %></p>-->
+    <!--            <%end%>-->
+    <!--        </div>-->
 
-                    <% if movieinfo['table']['results'][i]['table']['release_date'].present? %>
-                        <p class="release-date"><%= movieinfo['table']['results'][i]['table']['release_date'] %></p>
-                    <%end%>
-                </div>
-
-                <% if movieinfo['table']['results'][i]['table']['poster_path'].present? %>
-                    <p><%= image_tag 'https://image.tmdb.org/t/p/w1280' + movieinfo['table']['results'][i]['table']['poster_path'],class: "card-img" %></p>
-                <%end%>
-            </div>
-
-            <% i += 1%>
-        <%end%>
-    </div>
+    <!--        <% i += 1%>-->
+    <!--    <%end%>-->
+    <!--</div>-->
   </div>
+</div>
 </div>

@@ -7,8 +7,16 @@ class Public::HomesController < ApplicationController
   
   def top
     @genres = Tmdb::Genre.movie_list
-    @movies = Tmdb::Movie.popular
-  #   @movies = JSON.parse((Tmdb::Movie.popular).to_json) 
-  #   @movie.title = 
+    # @movies = Tmdb::Movie.popular
+    @movies = Tmdb::Movie.popular[:results]
   end
+  
+  
+  
+  private
+  
+  def movie_params
+    params.require(:movie).permit(:genre_id, :tmdb_id, :title, :synopsis, :directer, :screen_writer, :perfomer)
+  end
+  
 end

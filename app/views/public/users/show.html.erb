@@ -8,8 +8,24 @@
         </div>
       <% end %>
 
-      <p class="mt-3">フォロワー／フォロー</p>
-
+      <p class="mt-3">
+        フォロワー
+          <%= link_to public_followers_path do %>
+            <%= @user.followers.count %>
+          <%end%>／
+        フォロー
+          <%= link_to public_followings_path do %>
+            <%= @user.followings.count %>
+          <% end %>
+      </p>
+      
+      <!--フォローボタン-->
+      <% if current_user.followings?(@user) %>
+        <%= link_to "フォローをやめる", public_follow_path(user.id), method: :delete %>
+      <% else %>
+        <%= link_to "フォローする", public_follows_path, method: :post %>
+      <% end %>
+      
       <table class="table-borderless">
         <tr>
           <td class="font-weight-bold">好きな映画</td>
@@ -36,6 +52,7 @@
         </tr>
       </table>
     </div>
+    <%= link_to"list", public_watch_lists_path %>
 <%#= Tmdb::Genre.movie_list %>
     <div class="col-6">
       <h2>映画閲覧数　本</h2>

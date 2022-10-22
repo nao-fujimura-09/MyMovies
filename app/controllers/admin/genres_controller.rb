@@ -6,6 +6,10 @@ class Admin::GenresController < ApplicationController
   
   def index
     @genres = Tmdb::Genre.movie_list
+      # @genres.each do |genre|
+      #   return if Genre.find_by(name: genre.name)
+      #   Genre.create!(name: genre.name)
+      # end
   end
   
   private

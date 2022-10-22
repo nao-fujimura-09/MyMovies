@@ -7,4 +7,24 @@
   border-radius: 50%;
 }
 
+.user-movie_table {
+  display:table;
+}
 
+ .table-cell {
+  display:table-cell;
+ }
+ 
+//  movies
+.movies ul {
+    list-style:none;
+}
+
+.movies h3 {
+    font-size: 1.3em;
+    font-weight: 700;
+}
+
+.row-gap {
+    row-gap: 20px;
+}

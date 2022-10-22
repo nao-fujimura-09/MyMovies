@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_18_004722) do
+ActiveRecord::Schema.define(version: 2022_10_18_040652) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -59,8 +59,17 @@ ActiveRecord::Schema.define(version: 2022_10_18_004722) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "follows", force: :cascade do |t|
+    t.integer "follower_id"
+    t.integer "followed_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "genres", force: :cascade do |t|
     t.string "name", null: false
+    # genre_id
+    # movie_id
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -96,7 +105,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_004722) do
 
   create_table "watch_lists", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "mivei_id", null: false
+    t.integer "movie_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

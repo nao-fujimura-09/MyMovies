@@ -19,7 +19,17 @@ Rails.application.routes.draw do
   namespace :public do
   # scope module: :public do
     resources :users, only: [:show, :edit, :update, :comfirm]
-    resources :watch_lists, only: [:create]
+    # resources :user do
+    #   resources :follows, only: [:create, :destroy]
+    #   get "followings" => "follows#followings", as:"followings"
+    #   get "followers" => "follows#followers", as:"followers"
+    # end
+    resources :follows, only: [:create, :destroy, :followings, :followers]
+      get "/follows/followings" => "follows#followings", as:"followings"
+      get "/follows/followers" => "follows#followers", as:"followers"
+    resources :watch_lists, only: [:create, :new, :index, :destroy]
+    resources :movies, only: [:index, :show, :create]
+
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

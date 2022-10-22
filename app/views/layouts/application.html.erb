@@ -15,7 +15,9 @@
     <header class="border-bottom">
       <nav class="navbar navbar-expand-xl navbar-light">
         <div class="container">
-          <a class="navbar-brand">My Movies</a>
+          <%= link_to root_path do %>
+            <a class="navbar-brand py-3 px-5 btn btn-light" href="/" >My Movies</a>
+          <% end %>
           <% if user_signed_in? %>
           <%= current_user.name %>さん
           <% end %>
@@ -35,11 +37,13 @@
             <% if user_signed_in? %>
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><%= link_to "MY PAGE", public_user_path(current_user), class: "py-2 px-3" %></li>
+                <li class="nav-item"><%= link_to "MOVIES", public_movies_path, class: "py-2 px-3" %></li>
                 <li class="nav-item"><%= link_to "LOGOUT", destroy_user_session_path, method: :delete, class: "py-2 px-3" %></li>
               </ul>
             <% else %>
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><%= link_to "LOG IN", user_session_path, class: "py-2 px-3" %></li>
+                <li class="nav-item"><%= link_to "SIGN IN", new_user_registration_path, class: "py-2 px-3" %></li>
               </ul>
             <% end %>
           </div>
