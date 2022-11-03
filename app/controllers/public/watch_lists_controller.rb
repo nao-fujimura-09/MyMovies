@@ -15,17 +15,14 @@ class Public::WatchListsController < ApplicationController
   end
   
   def index
-    @watch_lists = current_user.watch_lists.all
-    @movies = []
-    @watch_lists.each do |watch_list|
-      @movies << Tmdb::Movie.detail(watch_list.movie_id)
-    end
-    
+    @watch_lists = current_user.watch_lists.select(:movie_id).distinct
+    @view = View.new
     # render json: @movies
   end
   
   def destroy
-    
+    @watch_list = WatchList.find(params[:id]).destroy
+    redirect_back(fallback_location: root_path)
   end
   
   private

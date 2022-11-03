@@ -1,0 +1,53 @@
+
+      <div class="col-2"></div>
+      <div class="col-10 mb-5">
+        <h2 class="font-weight-bold mt-5 border-bottom">レビュー(
+          <%= link_to public_reviews_path do %>
+            <%= @reviews.count %>
+          <% end %>)
+          </h2>
+          
+<table class="table-borderless">
+  <thead>
+    <th width="15%"></th>
+    <th width="70%"></th>
+    <th width="15%"></th>
+  </thead>
+  
+  <tbody>
+    <% reviews.each do |review| %>
+      <tr>
+        <td>
+          <%= image_tag review.user.get_profile_image(70,70), class:"user-icon" %><br>
+          <p class="pl-3"><%= review.user.name %></p>
+        </td>
+        <td class="d-flex flex-column ml-5">
+          <%= link_to public_review_path(review.id) do %>
+            <h5 class="font-weight-bold"><%= review.title %></h2>
+          <% end %>
+          <%= review.body %>
+        </td>
+        <td>
+          <% unless review.nil? %> <!-- 投稿と被らないように別のIDをつける-->
+          <div id="star_review_<%= review.id %>"></div> 
+            <script>
+              // console.log("review-inde")
+              $('#star_review_<%= review.id %>').empty();
+              $('#star_review_<%= review.id %>').raty({
+                size: 70,
+                starOn : '<%= asset_path('star-on.png') %>',
+                starOff: "<%= asset_path('star-off.png') %>",
+                starHalf: "<%= asset_path('star-half.png') %>",
+                scoreName: "review[star]",
+                half: true, 
+                readOnly: true,
+                score: <%= review.star %>
+              });
+            </script>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+      </div>   

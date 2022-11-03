@@ -1,6 +1,27 @@
+body {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  background: #f5f5f5;
+  color: #422D18;
+}
+// ヘッダーリンク色無効
+.link-header {
+    text-decoration: none;
+    color: #f5f5f5; 
+}
+
+// ボディリンク色無効
+.link-body {
+    text-decoration: none;
+    color: #422D18; 
+}
+header {
+  background-color: #a68b62;
+  color: #f5f5f5;
+}
 .button {
     background-color :#d2b48c;
     color: white;
+    border-radius: 5px;
 }
 
 .user-icon{
@@ -27,4 +48,40 @@
 
 .row-gap {
     row-gap: 20px;
+}
+
+  
+  .list btn {  
+  width: 30px;
+  height: 30px;
+  background-color: #a68b62;
+  border-radius: 5px;
+}
+
+.list {
+  background-color: #a68b62;
+  height: 30px;
+  weight: 25px;
+  position: absolute;
+  border-radius: 5px;
+  padding-left: 15px;
+  margin-top: 30px;
+}
+
+.watch {
+  background-color: #a68b62;
+  height: 30px;
+  weight: 25px;
+  position: absolute;
+  border-radius: 5px;
+  padding-left: 15px;
+  margin-top: 30px;
+  margin-left: 170px;
+}
+
+  .watch btn {  
+  width: 30px;
+  height: 30px;
+  background-color: #a68b62;
+  border-radius: 5px;
 }

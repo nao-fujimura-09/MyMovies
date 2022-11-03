@@ -7,6 +7,8 @@ class User < ApplicationRecord
   has_one_attached :profile_image
   has_many :favorite_genres
   has_many :watch_lists, dependent: :destroy
+  has_many :reviews, dependent: :destroy
+  has_many :views, dependent: :destroy
    
   # フォロー
   has_many :relationships, class_name: "Follow", foreign_key: "follower_id", dependent: :destroy

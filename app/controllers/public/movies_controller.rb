@@ -7,21 +7,31 @@ class Public::MoviesController < ApplicationController
 
   def index
     @movies = Tmdb::Movie.popular[:results].push(Tmdb::Movie.now_playing[:results]).flatten!
-      # p @movies
-    # @movies.each do |movie|
-    #   # p movie.title
-    #   # p movie.genre_id
-    #   return if Movie.find_by(title: movie.title)
-    #   movie.genre_ids.each do |id|
-    #     return if Genre.find_by(genre_id: id)
-    #     Genre.create!(genre_id: id, movie_id: movie.id)
-    #   end
-    #   Movie.create!(title: movie.title, )
-    # end
-   @watch_list = WatchList.new
+    @watch_list = WatchList.new
+    # if review(movie.id).present?
+      # @review = Review.find(params[:review][:id])
+    # else
+      @review = Review.new
+      @view = View.new
+    # end  
   end
   
   def show
+    @movie = Tmdb::Movie.detail(params[:id])
+    
+    id = @movie.id #上のmovie情報からidだけを取得
+    casts= Tmdb::Movie.cast(id) #変数castsに映画 IDに紐づくキャストを代入
+    @persons = [] #空の配列を用意
+    casts.select do |cast| #キャストの中の特定の条件を首藤
+      cast.name #キャストの名前を取得
+      @persons.push(cast.name) #変数personsにcast.nameを代入
+      # byebug
+    end
+     # render json: @movie.perfomer    
+    # byebug
+
+    @review = Review.new
+    @reviews = Review.where("title!='' OR body!=''").where(movie_id: params[:id]) #タイトルと本文がからのものは表示しない。movie_idが当てはまるものを探す
   end
   
   private
