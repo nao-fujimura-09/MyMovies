@@ -35,7 +35,7 @@ class Public::ReviewsController < ApplicationController
   def update
     @review = Review.find(params[:id])
     @review.update(review_params)
-    redirect_back(fallback_location: root_path)
+    redirect_to public_review_path(@review.id)
   end
   
   def destroy

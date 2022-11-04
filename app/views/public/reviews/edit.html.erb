@@ -1,2 +1,43 @@
-<h1>Public::Reviews#edit</h1>
-<p>Find me in app/views/public/reviews/edit.html.erb</p>
+<div class="container">
+   <h2 class="font-weight-bold mt-5">レビューの編集</h2>
+  <div class="row">
+
+      <%= render 'public/users/user_list', user: @review.user %>
+
+    <div class="col-6 mt-5">
+      <%= form_with model: @review, url: public_review_path(@review.id) do |f| %>
+      <%= f.hidden_field :movie_id, :value => @review.movie_id %>
+      
+        <div class="form-inline justify-content-end">
+          <div class="form-group" id="star_<%= @review.movie_id %>">
+            <%= f.label :star,'評価 ', class:'col-form-label' %>
+            <%= f.hidden_field :star, id: :review_star %>
+            <div id="star_<%= @review.movie_id %>"></div>
+            <script>
+              $('#star_<%= @review.movie_id %>').empty();
+              $('#star_<%= @review.movie_id %>').raty({
+                size: 80,
+                starOn : '<%= asset_path('star-on.png') %>',
+                starOff: "<%= asset_path('star-off.png') %>",
+                starHalf: "<%= asset_path('star-half.png') %>",
+                score: <%= @review.star %>, //登録済みの評価を表示
+                scoreName: "review[star]", //評価を更新（作成）
+                half: true,
+              });
+            </script>
+          </div>
+        </div>
+        <%= f.label :"タイトル" %>
+        <%= f.text_field :title, class: 'form-control mb-4' %>
+        <%= f.label :"本文" %>
+        <%= f.text_area :body, class: 'form-control' %>
+        
+        <div class="form-inline justify-content-between">
+            <%= link_to"キャンセル", public_review_path(@review.id), class:"button btn mt-5 px-3 py-2" %>
+            <%= f.submit"レビューを更新する", class:'button btn mt-5 px-3 py-2' %>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-3"></div>
+  </div>
+</div>

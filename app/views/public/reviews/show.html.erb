@@ -9,7 +9,7 @@
             <script>
               $('#star_<%= @review.movie_id %>').empty();
               $('#star_<%= @review.movie_id %>').raty({
-                size: 70,
+                size: 90,
                 starOn : '<%= asset_path('star-on.png') %>',
                 starOff: "<%= asset_path('star-off.png') %>",
                 starHalf: "<%= asset_path('star-half.png') %>",
@@ -67,8 +67,8 @@
         </tbody>
       </table>
       
-      <%= link_to"EDIT", edit_public_review_path(@review.id), class: 'btn btn-tag' %>
-      <%= link_to"DELETE", public_review_path(@review.id), method: :destroy, class: 'btn btn-tag' %>
+      <%= link_to"EDIT", edit_public_review_path(@review.id), class:'button btn' %>
+      <%= link_to"DELETE", public_review_path(@review.id), method: :destroy, class:'button btn' %>
       
     </div>
   </div>
