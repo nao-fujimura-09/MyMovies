@@ -2,11 +2,52 @@
   <h2 class="text-center my-5">作品詳細</h2>
 <h2 class="text-center font-weight-bold mb-3"><%= @movie.title %></h2>
   <div class="row">
-    <%= render 'list', movies: @movies %> <!--ユーザー詳細呼び出し-->
+    <%= render 'public/users/user_list', user: @user %> <!--ユーザー詳細呼び出し-->
     
     <!--映画詳細  -->
     <div class="col-3">
       <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"mx-5 mt-5" %>
+      <div class="form-inline justify-content-center mt-3 mb-5">
+        <% if current_user.watch_lists.exists?(movie_id: @movie.id) %>
+          <!--ウォッチリストからの削除-->
+          <div class="list">LIST
+            <%= link_to public_watch_list_path(current_user.watch_lists.find_by(movie_id: @movie.id)), method: :delete, class: 'btn btn-tag' do %>
+              <i class="fa fa-solid fa-minus fa-xs btn-tg", style="color:#f5f5f5;"></i>
+            <% end %>
+          </div>
+        <% else %>
+          <!--ウォッチリストへ追加-->
+          <%= form_with model: @watch_list, url: public_watch_lists_path, method: :post do |f| %>
+            <%= f.hidden_field :movie_id, :value => @movie.id %>
+            <div class="form-inline justify-content-center mt-3 mb-5">
+              <div class="list">LIST
+                <%= button_tag type: 'submit', class: "btn btn-tag" do %>
+                  <i class="fa fa-solid fa-plus fa-xs", style="color:#f5f5f5;"></i>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+          
+        <% if current_user.views.exists?(movie_id: @movie.id) %>
+          <div class="watch">VIEW
+            <%= link_to public_view_path(current_user.views.find_by(movie_id: @movie.id)), method: :delete, class: 'btn btn-tag' do %>
+              <i class="fa fa-solid fa-eye fa-xs btn-tg", style="color:#black;"></i>
+            <% end %>
+          </div>
+        <% else %>
+          <%= form_with model: @view, url: public_views_path, method: :post do |f| %>
+            <%= f.hidden_field :movie_id, :value => @movie.id %>
+            <div class="form-inline justify-content-center mt-3 mb-5">
+              <div class="watch">VIEW
+                <%= button_tag type: 'submit', class: "btn" do %>
+                  <i class="fa fa-solid fa-eye fa-xs", style="color:#f5f5f5;"></i>
+                <% end %>
+                </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>      
     </div>
        
     <div class="col-6">
@@ -16,8 +57,8 @@
             <td>
               <h4 class="font-weight-bold">あらすじ</h4><br>
               <%= @movie.overview %>
-              <h4 class="font-weight-bold mt-3">出演者</h4><br>
-              <% @persons.each do |person|%>/
+              <h4 class="font-weight-bold mt-4">出演者</h4>
+              <% @persons.first(5).each do |person|%>/
                 <%= person %>
               <% end %>
               
@@ -28,9 +69,9 @@
         
       <div class=" d-flex align-items-end justify-content-between my-5">
         <h3 class="font-weight-bold">閲覧数：</h3>
-          
+        <h3><%= @views.count %>人<h3>
         <h3 class="font-weight-bold">平均評価：</h3>
-        <div><h3><%= Review.where(movie_id: @movie.id).average(:star) %>点</h3></div>
+        <div><h3><%= Review.where(movie_id: @movie.id).average(:star).to_f.round(1) %>点</h3></div>
           
           <div id="star_<%= @review.movie_id.to_s %>"></div>
             <script>
@@ -93,7 +134,14 @@
 
         
     <!--レビュー共通ページの呼び出し-->
-    <%= render 'public/reviews/review_list', reviews: @reviews %>
-
+    <div class="col-2"></div>
+    <div class="col-10 mb-5">
+      <h2 class="font-weight-bold mt-5 border-bottom">レビュー(
+        <%= link_to public_reviews_path do %>
+          <%= @reviews.count %>
+        <% end %>)
+        </h2>
+      <%= render 'public/reviews/review_list', reviews: @reviews %>
+    </div>
   </div>
 </div>

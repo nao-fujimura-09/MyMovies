@@ -1,42 +1,75 @@
 <div class="container">
   <h1 class="mt-5"><%= @movie.title %></h1>
-  <p class="mb-5">ジャンル：</p>
   
+  <div class="form-inline my-4"><h5>
+    ジャンル：
+    <% @movie.genres.each do |genre| %>
+      <%= genre.name %> / 
+    <% end %>
+  </h5></div>
+
   <div class="row">
-    <div class="col-3">
+    <div class="col-3 mt-5">
       <table class="table-boderless">
         <tr>
-          <td>閲覧数 : </td> 
-          <td></td>
+          <td><h4>閲覧数</h4></td>
+          <td><h4>:</h4></td>
+          <td><h4 class="ml-3"><%= @views.count %></h4></td>
         </tr>
         
         <tr>
-          <td>平均評価 : </td> 
-          <td></td>
+          <td><h4>平均評価</h4></td>
+          <td><h4> : </h4></td>
+          <td><h4 class="ml-3"><%= Review.where(movie_id: @movie.id).average(:star).to_f.round(1) %></h4></td>
+          <script>
+            $('#star_<%= @movie.id %>').empty();
+            $('#star_<%= @movie.id %>').raty({
+              size: 70,
+              starOn : '<%= asset_path('star-on.png') %>',
+              starOff: "<%= asset_path('star-off.png') %>",
+              starHalf: "<%= asset_path('star-half.png') %>",
+              scoreName: "review[star]", //reviewモデルのstarカラムに保存
+              half: true, 
+              readOnly: true,
+              });
+          </script>
         </tr>
         
         <tr>
-          <td>レビュー : </td> 
-          <td></td>
+          <td><h4>レビュー</h4></td> 
+          <td><h4> : </h4></td>
+          <td><h4 class="ml-3"><%= @reviews.count %></h4></td>
         </tr>
         
         <tr>
-          <td>リストイン : </td> 
-          <td></td>
+          <td><h4>リストイン</h4></td> 
+          <td><h4> : </h4></td>
+          <td><h4 class="ml-3"><%= @watch_lists.count %></h4></td>
         </tr>
       </table>
     </div>
     
     <div class="col-3">
+      <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"mx-5 mt-5" %>
     </div>
     
     <div class="col-6">
-      <h4>あらすじ</h4>
+      <h4 class="font-weight-bold mt-4 mb-3">あらすじ</h4>
+      <h5><%= @movie.overview %></h5>
+      
+      <h4 class="font-weight-bold mt-5 mb-3">出演者</h4>
+        <h5><% @persons.first(5).each do |person|%>/
+          <%= person %>
+        <% end %></h5>
     </div>
   </div>
-  
-  <div class="row">
-    <h2 class="mt-5">レビュー()</h2>
-  </div>
+
+  <h2 class="mt-5">レビュー</h2>
   <div class="border-bottom"></div>
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-7 mt-5">
+      <%= render 'public/reviews/review_list', reviews: @reviews %>
+    </div>
+  </div>
 </div>

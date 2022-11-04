@@ -37,28 +37,26 @@
                   <i class="fa fa-solid fa-minus fa-xs btn-tg", style="color:#f5f5f5;"></i>
                 <% end %>
               </div>
-
-              <% end %>
             <% end %>
           
-            <% if current_user.views.exists?(movie_id: @view.movie_id) %>
+            <% if current_user.views.exists?(movie_id: movie.id) %>
                 <div class="watch">VIEW
-                  <%= link_to public_views_path(current_user.views.find_by(movie_id: @view.movie_id)), method: :delete, class: 'btn btn-tag' do %>
+                  <%= link_to public_view_path(current_user.views.find_by(movie_id: movie.id)), method: :delete, class: 'btn btn-tag' do %>
                     <i class="fa fa-solid fa-eye fa-xs btn-tg", style="color:#black;"></i>
                   <% end %>
                 </div>
             <% else %>
               <%= form_with model: @view, url: public_views_path, method: :post do |f| %>
-              <%= f.hidden_field :movie_id, :value => @view.movie_id %>
+              <%= f.hidden_field :movie_id, :value => movie.id %>
                 <div class="form-inline justify-content-center mt-3 mb-5">
                   <div class="watch">VIEW
-                    <%= button_tag type: 'submit', class: "btn" do %>
+                    <%= button_tag type: 'submit', class: "btn btn-tag" do %>
                       <i class="fa fa-solid fa-eye fa-xs", style="color:#f5f5f5;"></i>
                     <% end %>
                   </div>
                 </div>
               <% end %>
-
+          <% end %>
           
           </li>
     <% end %>

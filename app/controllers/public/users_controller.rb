@@ -1,10 +1,9 @@
 class Public::UsersController < ApplicationController
 
-  
   require 'themoviedb-api'
   Tmdb::Api.key(ENV['TMDB_API_KEY'])
   Tmdb::Api.language("ja")
-  
+
     def create
         @favorite_genre = current_user.favorite_genre.new(name: favorite_genre_params[:name].compact_blank)
         @favorite_genre.save
@@ -26,11 +25,18 @@ class Public::UsersController < ApplicationController
         redirect_to public_user_path(current_user)        
     end
    
-    def show
+    def mypage
         @user = current_user
         @views = current_user.views.select(:movie_id).distinct
         @review = Review.new
     end
+    
+    def show
+        @user = User.find(params[:id])
+        @views = View.select(:movie_id).distinct
+        @review = Review.new
+    end
+
     
     private
   

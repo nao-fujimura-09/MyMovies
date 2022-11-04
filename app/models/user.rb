@@ -10,7 +10,7 @@ class User < ApplicationRecord
   has_many :reviews, dependent: :destroy
   has_many :views, dependent: :destroy
    
-  # フォロー
+  # フォローした、されたの関係
   has_many :relationships, class_name: "Follow", foreign_key: "follower_id", dependent: :destroy
   has_many :reverse_of_relationships, class_name: "Follow", foreign_key: "followed_id", dependent: :destroy
   

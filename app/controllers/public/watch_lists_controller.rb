@@ -11,11 +11,12 @@ class Public::WatchListsController < ApplicationController
     @watch_list.save
     # byebug
     # binding.pry
-    redirect_to public_movies_path
+    redirect_back(fallback_location: root_path)
   end
   
   def index
-    @watch_lists = current_user.watch_lists.select(:movie_id).distinct
+      @watch_lists = current_user.watch_lists.select(:movie_id).distinct
+      # @watch_lists = User.watch_lists.select(:movie_id).distinct
     @view = View.new
     # render json: @movies
   end

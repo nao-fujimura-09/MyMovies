@@ -1,8 +1,9 @@
 <div class="col-3 mt-5">
-  <%= image_tag user.get_profile_image(70,70), class:"user-icon" %>    
+
+  <%= image_tag current_user.get_profile_image(70,70), class:"user-icon" %>    
   <%= link_to edit_public_user_path(current_user), class:"link-body" do %>
     <div class="d-flex align-items-end">
-      <h3 class ="pl-2 ">@<%= current_user.name%></h3>
+      <h3 class ="pl-2 ">@<%= current_user.name %></h3>
     </div>
   <% end %>
 

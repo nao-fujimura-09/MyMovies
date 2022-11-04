@@ -9,7 +9,8 @@ class Public::ViewsController < ApplicationController
     @view.user_id = current_user.id
     @view.save
     redirect_back(fallback_location: root_path)
-    # @current_customer.watch_lists.destroy(@watch_list.movie_id)  
+    # @current_customer.watch_lists.destroy(@watch_list.movie_id)
+    # @current_customer.watch_listsparams[:id]).destroy
   end
   
   def destroy

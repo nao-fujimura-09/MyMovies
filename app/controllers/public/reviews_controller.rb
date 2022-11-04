@@ -14,10 +14,13 @@ class Public::ReviewsController < ApplicationController
   end
   
   def index
+    @reviews = Review.all
+    # @movie = Tmdb::Movie.detail(@reviews.movie_id)
     # @movies = Tmdb::Movie.popular[:results].push(Tmdb::Movie.now_playing[:results]).flatten!
     # @movie = Tmdb::Movie.detail(movie_id: params[:movie.id])
     # @movie = Tmdb::Movie.detail(@review.movie_id)
-    @reviews = Review.where("title!='' OR body!=''").where(movie_id: params[:movie_id])
+    # @reviews = Review.where("title!='' OR body!=''").where(movie_id: params[:movie_id])
+    
     # @reviews = Review.where(movie_id: params[:id])
     # @reviews = Review.select(:movie_id).distinct
     # @reviews = Review.where(movie_id: @review.movie_id)
@@ -26,15 +29,6 @@ class Public::ReviewsController < ApplicationController
   def show
     @review = Review.find(params[:id])
     @movie = Tmdb::Movie.detail(@review.movie_id)
-    # render json: @movie.genres
-  
-    # id = @movie.id #上のmovie情報からidだけを取得
-    # tmdb_genres= Tmdb::Genre.movie_list(@review.movie_id) #変数castsに映画 IDに紐づくキャストを代入
-    # @genres = [] #空の配列を用意
-    # tmdb_genres.select do |tdb_genre| #キャストの中の特定の条件を首藤
-    #   tedb_genre.name #キャストの名前を取得
-    #   @genres.push(tmdb_genre.name) 
-    # end
   end
 
   def edit
@@ -55,6 +49,6 @@ class Public::ReviewsController < ApplicationController
   private
 
   def review_params
- params.require(:review).permit(:user_id, :movie_id,:title, :body, :star)
+    params.require(:review).permit(:user_id, :movie_id,:title, :body, :star)
   end
 end

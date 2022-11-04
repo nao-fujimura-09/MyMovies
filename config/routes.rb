@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   namespace :public do
   # scope module: :public do
     resources :users, only: [:show, :edit, :update, :comfirm]
+      get "/users/mypage" => "users#mypage", as:"mypage"
     # resources :user do
     #   resources :follows, only: [:create, :destroy]
     #   get "followings" => "follows#followings", as:"followings"

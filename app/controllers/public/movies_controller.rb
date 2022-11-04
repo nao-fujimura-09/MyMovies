@@ -17,21 +17,23 @@ class Public::MoviesController < ApplicationController
   end
   
   def show
+    @user = current_user
     @movie = Tmdb::Movie.detail(params[:id])
-    
     id = @movie.id #上のmovie情報からidだけを取得
     casts= Tmdb::Movie.cast(id) #変数castsに映画 IDに紐づくキャストを代入
     @persons = [] #空の配列を用意
     casts.select do |cast| #キャストの中の特定の条件を首藤
       cast.name #キャストの名前を取得
       @persons.push(cast.name) #変数personsにcast.nameを代入
-      # byebug
     end
      # render json: @movie.perfomer    
     # byebug
 
     @review = Review.new
     @reviews = Review.where("title!='' OR body!=''").where(movie_id: params[:id]) #タイトルと本文がからのものは表示しない。movie_idが当てはまるものを探す
+    @views= View.all
+    @view = View.new
+    @watch_list = WatchList.new
   end
   
   private

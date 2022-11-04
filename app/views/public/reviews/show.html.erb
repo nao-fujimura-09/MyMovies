@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-3">
       <div class="form-inline">
-        <div id="star_<%= @review.movie_id.to_s %>"></div> <!--ユーザーごとの評価が表示されてしまう-->
+        <div id="star_<%= @review.movie_id.to_s %>"></div>
         <div class="ml-3">
           <h3><%= Review.where(movie_id: @movie.id).average(:star).to_f.round(1) %>点</h3>
         </div>
@@ -77,10 +77,12 @@
           </tr>
         </tbody>
       </table>
+      <% if current_user == @review.user %>
       <div class="text-center">
         <%= link_to"EDIT", edit_public_review_path(@review.id), class:'button btn mr-4 py-2 px-3' %>
         <%= link_to"DELETE", public_review_path(@review.id), method: :delete, class:'button btn py-2 px-3' %>
       </div>
+      <% end %>
     </div>
     <div class="col-3"></div>
   </div>

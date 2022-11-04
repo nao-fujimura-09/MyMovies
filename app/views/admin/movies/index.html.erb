@@ -7,16 +7,20 @@
     <div class="col-8">
 <table class="table">
   <thead>
-    <th width="10%">rank</th>
-    <th width="10%">movieID</th>
-    <th width="40%">title</th>
-    <th width="10%">views</th>
-    <th width="10%">score</th>
-    <th width="10%">review</th>
-    <th width="10%">list in</th>
+    <tr>
+      <th width="10%">rank</th>
+      <th width="10%">movieID</th>
+      <th width="40%">title</th>
+      <th width="10%">views</th>
+      <th width="10%">score</th>
+      <th width="10%">review</th>
+      <th width="10%">list in</th>
+    </tr>
   </thead>
   <tbody>
     <% @movies.each do |movie| %>
+    <% @views = View.where(movie_id: movie.id) %>
+    <% @watch_lists = WatchList.where(movie_id: movie.id) %>
     <tr>
       <td><%=%></td>
       <td><%= movie.id %></td>
@@ -25,11 +29,27 @@
           <%= movie.title %>
         <% end %>
         </td>
-      <td><%= %></td>
-      <td><%=%></td>
-      <td><%=%></td>
-      <td><%=%></td>
+      <td><%= @views.count %></td>
+      <td><%= Review.where(movie_id: movie.id).average(:star).to_f.round(1) %>
+        <script>
+          $('#star_<%= movie.id %>').empty();
+          $('#star_<%= movie.id %>').raty({
+            size: 70,
+            starOn : '<%= asset_path('star-on.png') %>',
+            starOff: "<%= asset_path('star-off.png') %>",
+            starHalf: "<%= asset_path('star-half.png') %>",
+            scoreName: "review[star]", //reviewモデルのstarカラムに保存
+            half: true, 
+            readOnly: true,
+            });
+        </script>
+      </td>
+      <td><%= @reviews.count %></td>
+      <td><%= @watch_lists.count %></td>
     </tr>
+
+    
+    
     <% end %>
   </tbody>
 </table>
