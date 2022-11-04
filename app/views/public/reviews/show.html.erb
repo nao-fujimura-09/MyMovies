@@ -1,32 +1,44 @@
 <div class="container">
-  <h2 class="my-5">REVIEW</h2>
+  <h2 class="mt-5 mb-4">REVIEW</h2>
 
   <div class="row">
     <div class="col-3">
-      <div id="star_<%= @review.movie_id.to_s %>"></div> <!--ユーザーごとの評価が表示されてしまう-->
-      <div><h3><%= Review.where(movie_id: @movie.id).average(:star) %>点</h3></div>
-
-            <script>
-              $('#star_<%= @review.movie_id %>').empty();
-              $('#star_<%= @review.movie_id %>').raty({
-                size: 90,
-                starOn : '<%= asset_path('star-on.png') %>',
-                starOff: "<%= asset_path('star-off.png') %>",
-                starHalf: "<%= asset_path('star-half.png') %>",
-                scoreName: "review[star]", //reviewモデルのstarカラムに保存
-                half: true, 
-                readOnly: true,
-                score: <%= @review.star %>
-                });
-            </script>
+      <div class="form-inline">
+        <div id="star_<%= @review.movie_id.to_s %>"></div> <!--ユーザーごとの評価が表示されてしまう-->
+        <div class="ml-3">
+          <h3><%= Review.where(movie_id: @movie.id).average(:star).to_f.round(1) %>点</h3>
+        </div>
+      </div>
+      <script>
+        $('#star_<%= @review.movie_id %>').empty();
+        $('#star_<%= @review.movie_id %>').raty({
+          size: 90,
+          starOn : '<%= asset_path('star-on.png') %>',
+          starOff: "<%= asset_path('star-off.png') %>",
+          starHalf: "<%= asset_path('star-half.png') %>",
+          scoreName: "review[star]", //reviewモデルのstarカラムに保存
+          half: true, 
+          readOnly: true,
+          score: <%= Review.where(movie_id: @movie.id).average(:star) %>, //平均の星を表示
+          });
+      </script>
             
-            <%= link_to public_movie_path(@movie.id) do %>
-              <h5 class="link-body">作品ページへ戻る</h5>
-            <% end %>
-            
+      <h2 class="mt-4"><%= @movie.title %></h2>
+      <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"my-3" %>
+      <h4 class="mt-4">あらすじ</h4>
+      <div><%= @movie.overview %></div>
+      
+      <h4 class="mt-4">ジャンル</h4>
+      <% @movie.genres.each do |genre| %>
+          <%= genre.name %> / 
+      <% end %>
+    
+      <%= link_to public_movie_path(@movie.id) do %>
+        <h5 class="link-body mt-5">作品ページへ戻る</h5>
+      <% end %>
     </div>
     
-    <div class="col-9">
+    <div class="col-7">
       <table class="table-borderless">
         <thead>
           <th width="15%"></th>
@@ -41,14 +53,13 @@
               <h5 class="pl-4"><%= @review.user.name %></h5>
             </td>
             <td class="d-flex flex-column ml-5">
-                <h5 class="font-weight-bold"><%= @review.title %></h2>
-              <%= @review.body %>
+              <h3 class="font-weight-bold mb-3"><%= @review.title %></h3>
+              <h5><%= @review.body %></h5>
             </td>
             <td>
               <% unless @review.nil? %> <!-- 投稿と被らないように別のIDをつける-->
-              <div id="star_review_<%= @review.id %>"></div> 
+                <div id="star_review_<%= @review.id %>"></div> 
                 <script>
-                  // console.log("review-inde")
                   $('#star_review_<%= @review.id %>').empty();
                   $('#star_review_<%= @review.id %>').raty({
                     size: 70,
@@ -66,10 +77,11 @@
           </tr>
         </tbody>
       </table>
-      
-      <%= link_to"EDIT", edit_public_review_path(@review.id), class:'button btn' %>
-      <%= link_to"DELETE", public_review_path(@review.id), method: :destroy, class:'button btn' %>
-      
+      <div class="text-center">
+        <%= link_to"EDIT", edit_public_review_path(@review.id), class:'button btn mr-4 py-2 px-3' %>
+        <%= link_to"DELETE", public_review_path(@review.id), method: :delete, class:'button btn py-2 px-3' %>
+      </div>
     </div>
+    <div class="col-3"></div>
   </div>
 </div>
