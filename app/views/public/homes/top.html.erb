@@ -15,38 +15,71 @@
       </table>
     </div>
     
-    <div class="col-9">
+    <div class="col-10">
       <h2 class="mt-5">よく見られている作品</h2>
-<div class="table-responsive">
-        <table class="table-boderless mt-5">
-        <tbody>
+      <div class="table-responsive mb-5">
+        <table class="table-boderless my-3">
+          <tbody>
             <tr>
-              <% @movies.each do |movie| %>
+              <% @popular_movies.each do |movie| %>
+                <% @review = Review.find_by(movie_id: movie.id) %>
                 <td>
-                  <%= image_tag 'https://image.tmdb.org/t/p/w154/aVLV38txajXhEy2qNEClPIsDbAH.jpg', class:"mx-3" %></br>
-                  <strong class="mt-3 mx-3"><%= movie.title %></strong>
+                  <%= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster_path}", class:"mx-3" %></br>
+                  <%= link_to public_movie_path(movie.id) do %>
+                    <h4 class="mt-3 mx-3"><%= movie.title.truncate(14) %></h4>
+                    <% unless @review.nil? %> 
+                    <div id="star_review_<%= movie.id %>"></div> 
+                    <script>
+                        $('#star_review_<%= movie.id %>').empty();
+                        $('#star_review_<%= movie.id %>').raty({
+                          size: 70,
+                          starOn : '<%= asset_path('star-on.png') %>',
+                          starOff: "<%= asset_path('star-off.png') %>",
+                          starHalf: "<%= asset_path('star-half.png') %>",
+                          scoreName: "review[star]", //reviewモデルのstarカラムに保存
+                          half: true, 
+                          readOnly: true,
+                          // score: "<%#= @review.star %>.average(:star)"
+                          score: function() {
+                            return $(this).attr('star')
+                          }
+                          });
+                      </script>
+                    <% end %>
+                  <% end %>
                 </td>
               <% end %>
             </tr>
         </tbody>
       </table>
-</div>
-      <h2 class="mt-5">ランキング</h2>
-                        <!--<#%= image_tag 'https://image.tmdb.org/t/p/w154' + movie.[poster_path], class:"mx-3" %></br>-->
-    
-    <!--<% movieinfo = JSON.parse((Tmdb::Movie.popular).to_json) %>-->
-    <!--    <% i = 0 %>-->
-    <!--<div class="card-wrapper">-->
-    <!--    <% while i < movieinfo['table']['results'].count %>-->
-    <!--        <div class="card">-->
-    <!--            <% if movieinfo['table']['results'][i]['table']['poster_path'].present? %>-->
-    <!--                <p><%= image_tag 'https://image.tmdb.org/t/p/w154' + movieinfo['table']['results'][i]['table']['poster_path'],class: "card-img" %></p>-->
-    <!--            <%end%>-->
-    <!--        </div>-->
+      </div>
+      <h2 class="my-5 pt-5">評価順</h2>
+      <div class="table-responsive">
+        <table class="table-boderless">
+          <tbody>
+            <tr>
+              <% @movies.each do |movie| %>
+                <td>
+                  <%= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster_path}", class:"mx-3" %></br>
+                  <%= link_to public_movie_path(movie.id) do %>
+                    <h4 class="mt-3 mx-3"><%= movie.title.truncate(14) %></h4>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+        </tbody>
+      </table>
+      </div>
 
-    <!--        <% i += 1%>-->
-    <!--    <%end%>-->
-    <!--</div>-->
+
+    </div>
   </div>
-</div>
+  
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-10">
+
+
+    </div>
+  </div>
 </div>

@@ -1,8 +1,7 @@
 <div class="container">
-  <h2 class="mt-5 mb-4">REVIEW</h2>
 
   <div class="row">
-    <div class="col-3">
+    <div class="col-3 mt-5 pt-5">
       <div class="form-inline">
         <div id="star_<%= @review.movie_id.to_s %>"></div>
         <div class="ml-3">
@@ -38,27 +37,24 @@
       <% end %>
     </div>
     
-    <div class="col-7">
+    <div class="col-9 mt-5 pt-5">
       <table class="table-borderless">
         <thead>
-          <th width="15%"></th>
-          <th width="70%"></th>
-          <th width="15%"></th>
+          <th width="10%"></th>
+          <th width="90%"></th>
         </thead>
         
         <tbody>
           <tr>
             <td>
               <%= image_tag @review.user.get_profile_image(70,70), class:"user-icon" %><br>
-              <h5 class="pl-4"><%= @review.user.name %></h5>
+              <h4 class="pl-2"><%= @review.user.name %></h4>
             </td>
             <td class="d-flex flex-column ml-5">
-              <h3 class="font-weight-bold mb-3"><%= @review.title %></h3>
-              <h5><%= @review.body %></h5>
-            </td>
-            <td>
+              <h3 class="font-weight-bold mb-4"><%= @review.title %></h3>
+              
               <% unless @review.nil? %> <!-- 投稿と被らないように別のIDをつける-->
-                <div id="star_review_<%= @review.id %>"></div> 
+                <div class="mb-3" id="star_review_<%= @review.id %>"></div> 
                 <script>
                   $('#star_review_<%= @review.id %>').empty();
                   $('#star_review_<%= @review.id %>').raty({
@@ -73,12 +69,15 @@
                   });
                 </script>
               <% end %>
+
+              <h5><%= @review.body %></h5>
             </td>
           </tr>
         </tbody>
       </table>
+      
       <% if current_user == @review.user %>
-      <div class="text-center">
+      <div class="text-center mt-5">
         <%= link_to"EDIT", edit_public_review_path(@review.id), class:'button btn mr-4 py-2 px-3' %>
         <%= link_to"DELETE", public_review_path(@review.id), method: :delete, class:'button btn py-2 px-3' %>
       </div>

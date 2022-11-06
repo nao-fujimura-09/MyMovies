@@ -8,12 +8,13 @@ class Public::MoviesController < ApplicationController
   def index
     @movies = Tmdb::Movie.popular[:results].push(Tmdb::Movie.now_playing[:results]).flatten!
     @watch_list = WatchList.new
-    # if review(movie.id).present?
-      # @review = Review.find(params[:review][:id])
-    # else
-      @review = Review.new
-      @view = View.new
-    # end  
+    @review = Review.new
+    @view = View.new
+  end
+
+  def review
+    @reviews = Review.where(movie_id: params[:movie_id]).where("title IS NOT NULL").where("title!=''")
+    # @reviews = Review.where("title!='' OR body!=''").where(movie_id: params[:id]) #タイトルと本文がからのものは表示しない。movie_idが当てはまるものを探す
   end
   
   def show

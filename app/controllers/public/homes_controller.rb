@@ -7,8 +7,9 @@ class Public::HomesController < ApplicationController
   
   def top
     @genres = Tmdb::Genre.movie_list
-    # @movies = Tmdb::Movie.popular
-    @movies = Tmdb::Movie.popular[:results]
+    @movies = Tmdb::Movie.popular[:results].push(Tmdb::Movie.now_playing[:results]).flatten!
+    @popular_movies = Tmdb::Movie.popular[:results]
+    # @review = Review.find(movie_id: @movie.id)
   end
   
   

@@ -1,0 +1,65 @@
+<div class="container">
+  <h1 class="mt-5">Users</h1>
+  
+  <div class="form-inline">
+    <div class="mt-5 mb-4 mr-4"><h4>会員数：<%= @users.count %>人</h4></div>
+    <div class="mt-5 mb-4 mr-4"><h4>有効：<%= @users.count %>人</h4></div>
+    <div class="mt-5 mb-4"><h4>退会済：<%= @users.count %>人</h4></div>
+  </div>
+  
+  <div class="row">
+    <div class="col-12">
+      <table class="table">
+        <thead>
+          <tr>
+            <th width="5%">userID</th>
+            <th width="10%">name</th>
+            <th width="10%">email</th>
+            <th width="5%">status</th>
+            <th width="10%">favorite_movie</th>
+            <th width="10%">favorite_genres</th>
+            <th width="10%">view</th>
+            <th width="10%">review</th>
+            <th width="10%">score</th>
+            <th width="10%">followed</th>
+            <th width="10%">followers</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <% @views = View.where(user_id: user.id) %>
+            <% @watch_lists = WatchList.where(user_id: user.id) %>
+            <tr>
+              <td><%= user.id %></td>
+              <td><%= user.name %></td>
+              <td><%= user.email %></td>
+              <td><%= user.status %></td>
+              <td><%= user.favorite_movie %></td>
+              <td><%=%></td>
+              <td><%= @views.count %></td>
+              <td><%=%></td>
+              <td><%= Review.where(user_id: user.id).average(:star).to_f.round(1) %>
+              <td><%=%></td>
+              <td><%=%></td>
+              <script>
+                  $('#star_<%= user.id %>').empty();
+                  $('#star_<%= user.id %>').raty({
+                    size: 70,
+                    starOn : '<%= asset_path('star-on.png') %>',
+                    starOff: "<%= asset_path('star-off.png') %>",
+                    starHalf: "<%= asset_path('star-half.png') %>",
+                    scoreName: "review[star]", //reviewモデルのstarカラムに保存
+                    half: true, 
+                    readOnly: true,
+                    });
+                </script>
+              </td>
+              <td><%#= @reviews.count %></td>
+              <td><%= @watch_lists.count %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

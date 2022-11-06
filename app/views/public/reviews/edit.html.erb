@@ -30,7 +30,7 @@
         <%= f.label :"タイトル" %>
         <%= f.text_field :title, class: 'form-control mb-4' %>
         <%= f.label :"本文" %>
-        <%= f.text_area :body, class: 'form-control' %>
+        <%= f.text_area :body, class: 'form-control', rows:"10%" %>
         
         <div class="form-inline justify-content-between">
             <%= link_to"キャンセル", public_review_path(@review.id), class:"button btn mt-5 px-3 py-2" %>

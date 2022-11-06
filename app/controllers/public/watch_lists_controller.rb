@@ -15,7 +15,8 @@ class Public::WatchListsController < ApplicationController
   end
   
   def index
-      @watch_lists = current_user.watch_lists.select(:movie_id).distinct
+    exist_view_movies = current_user.views.pluck(:movie_id)
+    @watch_lists = current_user.watch_lists.where.not(movie_id:exist_view_movies).select(:movie_id)
       # @watch_lists = User.watch_lists.select(:movie_id).distinct
     @view = View.new
     # render json: @movies

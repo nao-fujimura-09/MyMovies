@@ -7,7 +7,8 @@ class Public::FollowsController < ApplicationController
     current_user.follow(params[:user_id])
     # follows.user_id = User.find(params[:user_id])
     # redirect_to user.followings
-        redirect_back(fallback_location: root_path)
+    
+    redirect_back(fallback_location: root_path)
   end
   
   def destroy
@@ -21,13 +22,13 @@ class Public::FollowsController < ApplicationController
   end
 
   def followers
-    @user = User.find(params[:id])
+    @user = User.find(params[:user_id])
     @users = @user.followers
   end
   
   private
   
   def follows_params
-    params.require(:follow).permit(:followe_id, :followed_id)
+    params.require(:follow).permit(:follower_id, :followed_id)
   end
 end

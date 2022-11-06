@@ -8,8 +8,9 @@ class Public::ViewsController < ApplicationController
     @view = View.new(view_params)
     @view.user_id = current_user.id
     @view.save
+    #@watch_lists = WatchList.all
+    #@current_customer.watch_list.find_by(movie_id: watch_list.movie_id).destroy
     redirect_back(fallback_location: root_path)
-    # @current_customer.watch_lists.destroy(@watch_list.movie_id)
     # @current_customer.watch_listsparams[:id]).destroy
   end
   

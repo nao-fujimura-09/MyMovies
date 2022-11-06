@@ -1,62 +1,62 @@
 <div class="container">
   <div class="row mt-5">
-<div class="col-3 mt-5">
-  <%= image_tag @user.get_profile_image(70,70), class:"user-icon" %>    
-  <%= link_to edit_public_user_path(@user.id), class:"link-body" do %>
-    <div class="d-flex align-items-end">
-      <h3 class ="pl-2 ">@<%= @user.name%></h3>
-    </div>
-  <% end %>
-
-  <p class="mt-3">
-    フォロワー
-      <%= link_to public_followers_path, class:"link-body" do %>
-        <%= @user.followers.count %>
-      <% end %> | 
-    フォロー中
-      <%= link_to public_followings_path, class:"link-body" do %>
-        <%= @user.followings.count %>
+    <div class="col-3 mt-5">
+      <%= image_tag @user.get_profile_image(70,70), class:"user-icon" %>    
+      <%= link_to edit_public_user_path(@user.id), class:"link-body" do %>
+      <div class="d-flex align-items-end">
+        <h3 class ="pl-2 ">@<%= @user.name%></h3>
+      </div>
       <% end %>
-  </p>
-    
-  <!--フォローボタン-->
-  <% unless @user == current_user %>
-    <% if current_user.followings?(@user) %>
-      <%= link_to "フォローをやめる", public_follow_path(@user.id), class:"link-body", method: :delete %>
-    <% else %>
-      <%= link_to "フォローする", public_follows_path, class:"link-body", method: :post %>
-    <% end %>
-  <% end %>
-  <table class="table-borderless mt-5">
-    <tr>
-      <td class="font-weight-bold"><h4>お気に入りの映画</h4></td>
-      </tr>  
-      <tr>
-      <td><%= @user.favorite_movie %></td>
-    </tr>
-    </table></br>
 
-    <table>
-      <tr>
-        <td class="font-weight-bold mt-3"><h4>好きなジャンル</h4></td>
-      </tr>
-      <tr>
-        <td>
-          <% Tmdb::Genre.movie_list.each do |movie_genre| %>
-            <% @user.favorite_genres.each do |favorite_genre|%>
-              <% if movie_genre.id == favorite_genre.genre_id %>
-                <%= movie_genre.name %> / 
+      <p class="mt-3">
+        フォロワー
+          <%= link_to public_followers_path(user_id: @user.id), class:"link-body" do %>
+            <%= @user.followers.count %>
+          <% end %> | 
+        フォロー中
+          <%= link_to public_followings_path, class:"link-body" do %>
+            <%= @user.followings.count %>
+          <% end %>
+      </p>
+
+      <!--フォローボタン-->
+      <% unless @user == current_user %>
+        <% if current_user.followings?(@user) %>
+          <%= link_to "フォローをやめる", public_follow_path(@user.id), class:"button py-2 px-3", method: :delete %>
+        <% else %>
+          <%= link_to "フォローする", public_follows_path(user_id: @user.id), class:"button py-2 px-3", method: :post %>
+        <% end %>
+      <% end %>
+      
+      <table class="table-borderless mt-5 mb-4">
+        <tr>
+          <td class="font-weight-bold"><h4>お気に入りの映画</h4></td>
+          </tr>  
+          <tr>
+          <td><%= @user.favorite_movie %></td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <td class="font-weight-bold mt-3"><h4>好きなジャンル</h4></td>
+        </tr>
+        <tr>
+          <td>
+            <% Tmdb::Genre.movie_list.each do |movie_genre| %>
+              <% @user.favorite_genres.each do |favorite_genre|%>
+                <% if movie_genre.id == favorite_genre.genre_id %>
+                  <%= movie_genre.name %> / 
+                <% end %>
               <% end %>
             <% end %>
-          <% end %>
-        </td>
-      </tr>
-    </table>
-    
-    <h3 class="mt-5">MENU</h3>
-    <%= link_to"WATCH lIST", public_watch_lists_path, class:"link-body" %>
-</div>
-
+          </td>
+        </tr>
+      </table>
+      
+      <h3 class="mt-5">MENU</h3>
+      <%= link_to"WATCH lIST", public_watch_lists_path, class:"link-body" %>
+    </div>
  
     <div class="col-9">
       <h2>映画閲覧数 <%= @user.views.count %> 本</h2>
@@ -64,38 +64,36 @@
       <ul class=" movies d-flex flex-wrap row-gap">
         <% @user.views.each do |view| %>
           <% movie = Tmdb::Movie.detail(view.movie_id) %>
-          <!--<%# review = current_user.reviews.where(movie_id: review.movie_id) %>-->
           <li class="d-flex flex-column justify-content-between mt-5">
             <div class="mb-3 mx-5"><%= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster_path}" %></div>
             <%= link_to public_movie_path(id: movie.id) do %>
               <h3 class=" movies text-center"><%= movie.title %></h3>
             <% end %>
-            <div class="form-inline">
-              <p>ユーザーの評価を表示したい</p>
-              <div id="star_review_<%= @review.id %>"></div> 
+            <div class="text-center">
+              <% if @user.reviews.find_by(movie_id: view.movie_id).present? %>
+                <div id="star_review_<%= view.movie_id %>"></div> 
+              <% else %>
+                <h5>まだ評価していません。</h5>
+              <% end %>
             </div>
-            
-            <!--<%# unless @review.nil? %> -->
-            <!--<div id="star_review_<%#= @review.id %>"></div> -->
-                <script>
-                  $('#star_review_<%= @review.id %>').empty();
-                  $('#star_review_<%= @review.id %>').raty({
-                    size: 70,
-                    starOn : '<%= asset_path('star-on.png') %>',
-                    starOff: "<%= asset_path('star-off.png') %>",
-                    starHalf: "<%= asset_path('star-half.png') %>",
-                    scoreName: "review[star]",
-                    half: true, 
-                    readOnly: true,
-                    score: <%= @review.star %>,
-                  });
-                </script>
-            <% #end %>
-            
+            <script>
+                $('#star_review_<%= view.movie_id %>').empty();
+                $('#star_review_<%= view.movie_id %>').raty({
+                  size: 70,
+                  starOn : '<%= asset_path('star-on.png') %>',
+                  starOff: "<%= asset_path('star-off.png') %>",
+                  starHalf: "<%= asset_path('star-half.png') %>",
+                  scoreName: "review[star]",
+                  half: true, 
+                  readOnly: true,
+                  <% if @user.reviews.find_by(movie_id: view.movie_id).present? %>
+                  score: <%= @user.reviews.find_by(movie_id: view.movie_id).star %>,
+                  <% end %>
+                });
+            </script>
           </li>
-          <% end %>
-        </ul>
+        <% end %>
+      </ul>
     </div>
-
   </div>
 </div>

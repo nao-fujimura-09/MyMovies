@@ -1,57 +1,55 @@
-<div class="col-3 mt-5">
-
-  <%= image_tag current_user.get_profile_image(70,70), class:"user-icon" %>    
-  <%= link_to edit_public_user_path(current_user), class:"link-body" do %>
-    <div class="d-flex align-items-end">
-      <h3 class ="pl-2 ">@<%= current_user.name %></h3>
-    </div>
-  <% end %>
-
-  <p class="mt-3">
-    フォロワー
-      <%= link_to public_followers_path, class:"link-body" do %>
-        <%= user.followers.count %>
-      <% end %> | 
-    フォロー中
-      <%= link_to public_followings_path, class:"link-body" do %>
-        <%= user.followings.count %>
+    
+      <%= image_tag current_user.get_profile_image(70,70), class:"user-icon" %>    
+      <%= link_to edit_public_user_path(current_user), class:"link-body" do %>
+        <div class="d-flex align-items-end">
+          <h3 class ="pl-2 ">@<%= current_user.name %></h3>
+        </div>
       <% end %>
-  </p>
     
-  <!--フォローボタン-->
-  <% unless user == current_user %>
-    <% if current_user.followings?(user) %>
-      <%= link_to "フォローをやめる", public_follow_path(user.id), class:"link-body", method: :delete %>
-    <% else %>
-      <%= link_to "フォローする", public_follows_path, class:"link-body", method: :post %>
-    <% end %>
-  <% end %>
-  <table class="table-borderless mt-5">
-    <tr>
-      <td class="font-weight-bold"><h4>お気に入りの映画</h4></td>
-      </tr>  
-      <tr>
-      <td><%= current_user.favorite_movie %></td>
-    </tr>
-    </table></br>
-
-    <table>
-      <tr>
-        <td class="font-weight-bold mt-3"><h4>好きなジャンル</h4></td>
-      </tr>
-      <tr>
-        <td>
-          <% Tmdb::Genre.movie_list.each do |movie_genre| %>
-            <% current_user.favorite_genres.each do |favorite_genre|%>
-              <% if movie_genre.id == favorite_genre.genre_id %>
-                <%= movie_genre.name %> / 
+      <p class="mt-3">
+        フォロワー
+          <%#= link_to public_followers_path, class:"link-body" do %>
+            <%#= user.followers.count %>
+          <%# end %> | 
+        フォロー中
+          <%#= link_to public_followings_path, class:"link-body" do %>
+            <%#= user.followings.count %>
+          <%# end %>
+      </p>
+        
+      <!--フォローボタン-->
+      <% unless user == current_user %>
+        <% if current_user.followings?(user) %>
+          <%= link_to "フォローをやめる", public_follow_path(user.id), class:"link-body", method: :delete %>
+        <% else %>
+          <%= link_to "フォローする", public_follows_path, class:"link-body", method: :post %>
+        <% end %>
+      <% end %>
+      <table class="table-borderless mt-5">
+        <tr>
+          <td class="font-weight-bold"><h4>お気に入りの映画</h4></td>
+          </tr>  
+          <tr>
+          <td><%= current_user.favorite_movie %></td>
+        </tr>
+        </table></br>
+    
+        <table>
+          <tr>
+            <td class="font-weight-bold mt-3"><h4>好きなジャンル</h4></td>
+          </tr>
+          <tr>
+            <td>
+              <% Tmdb::Genre.movie_list.each do |movie_genre| %>
+                <% current_user.favorite_genres.each do |favorite_genre|%>
+                  <% if movie_genre.id == favorite_genre.genre_id %>
+                    <%= movie_genre.name %> / 
+                  <% end %>
+                <% end %>
               <% end %>
-            <% end %>
-          <% end %>
-        </td>
-      </tr>
-    </table>
+            </td>
+          </tr>
+        </table>
     
-    <h3 class="mt-5">MENU</h3>
-    <%= link_to"WATCH lIST", public_watch_lists_path, class:"link-body" %>
-</div>
+        <h3 class="mt-5">MENU</h3>
+        <%= link_to"WATCH lIST", public_watch_lists_path, class:"link-body" %>

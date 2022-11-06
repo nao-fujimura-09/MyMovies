@@ -1,30 +1,29 @@
-<table class="table-borderless">
+<table class="table-borderless mt-4">
   <thead>
     <th width="15%"></th>
-    <th width="70%"></th>
-    <th width="15%"></th>
+    <th width="74%"></th>
+    <th width="11%"></th>
   </thead>
   
   <tbody>
     <% reviews.each do |review| %>
       <tr>
         <td>
-          <%= image_tag review.user.get_profile_image(70,70), class:"user-icon" %><br>
+          <%= image_tag review.user.get_profile_image(70,70), class:"user-icon mt-4" %><br>
           <%= link_to public_user_path(review.user_id) do %>
-            <p class="pl-3"><%= review.user.name %></p>
+            <h5 class="pl-3 link-body"><%= review.user.name %></h5>
           <% end %>
         </td>
-        <td class="d-flex flex-column ml-5">
+        <td class="d-flex flex-column mx-5 mt-4">
           <%= link_to public_review_path(review.id) do %>
-            <h5 class="font-weight-bold"><%= review.title %></h2>
+            <h4 class="font-weight-bold link-body"><%= review.title %></h4>
           <% end %>
-          <%= review.body %>
+          <%= review.body.truncate(120) %>
         </td>
         <td>
           <% unless review.nil? %> <!-- 投稿と被らないように別のIDをつける-->
           <div id="star_review_<%= review.id %>"></div> 
             <script>
-              // console.log("review-inde")
               $('#star_review_<%= review.id %>').empty();
               $('#star_review_<%= review.id %>').raty({
                 size: 70,

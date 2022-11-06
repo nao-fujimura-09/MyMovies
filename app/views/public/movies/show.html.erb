@@ -1,13 +1,16 @@
 <div class="container">
-  <h2 class="text-center my-5">作品詳細</h2>
-<h2 class="text-center font-weight-bold mb-3"><%= @movie.title %></h2>
+  <h2 class="mt-5 mb-4">作品詳細</h2>
+  <h2 class="text-center font-weight-bold mb-3"><%= @movie.title %></h2>
   <div class="row">
-    <%= render 'public/users/user_list', user: @user %> <!--ユーザー詳細呼び出し-->
+    <div class="col-2">
+      <%= render 'public/users/user_list', user: @user %> <!--ユーザー詳細呼び出し-->
+    </div>
     
     <!--映画詳細  -->
     <div class="col-3">
       <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"mx-5 mt-5" %>
-      <div class="form-inline justify-content-center mt-3 mb-5">
+      
+      <div class="form-inline justify-content-center mt-3">
         <% if current_user.watch_lists.exists?(movie_id: @movie.id) %>
           <!--ウォッチリストからの削除-->
           <div class="list">LIST
@@ -50,7 +53,7 @@
       </div>      
     </div>
        
-    <div class="col-6">
+    <div class="col-7">
       <table class="table-borderless mt-5">
         <tbody>
           <tr>
@@ -92,55 +95,54 @@
   </div>
     <!--レビュー-->
   <div class="row">
-   <div class="col-2"></div>
+    <div class="col-2"></div>
     <div class="col-10 mt-5">
       <%= form_with model: @review, url: public_reviews_path do |f| %>
-      <%= f.hidden_field :movie_id, :value => @movie.id %>
-      
-      <div class="border-bottom">
+        <%= f.hidden_field :movie_id, :value => @movie.id %>
         <h2 font-weight-bold mt-5>レビューする</h2>
         
-        <div class="form-inline justify-content-center">
+        <div class="form-inline justify-content-center align-items-start">
           <div class="form-group" id="star_<%= @movie.id %>">
             <%= f.label :star,'評価 ', class:'col-form-label' %>
             <%= f.hidden_field :star, id: :review_star %>
           </div>
           <div id="star_<%= @movie.id %>"></div>
-          <!--<div id="star_<%#= current_user.reviews.find_by(@review.id) %>"></div>-->
-            
+          
           <script>
-            console.log("new")
             $('#star_<%= @movie.id %>').empty();
             $('#star_<%= @movie.id %>').raty({
               size: 80,
               starOn : '<%= asset_path('star-on.png') %>',
               starOff: "<%= asset_path('star-off.png') %>",
               starHalf: "<%= asset_path('star-half.png') %>",
-              // score: <%#= @review.star %>,
               scoreName: "review[star]",
-              half: true,
+              half: true
             });
           </script>
-          </div>
         </div>
-        <%= f.label :"タイトル" %>
-        <%= f.text_field :title, class: 'form-control' %>
-        <%= f.label :"本文" %>
-        <%= f.text_field :body, class: 'form-control' %>
-        
-        <%= f.submit"レビューする", class:'button btn mt-4' %>
-      <% end %>
-      </div>
+        <div class="border-bottom"></div>
+          
+        <div class="form-row">
+          <div class="col">
+            <h5 class="mt-3"><%= f.label :"タイトル" %></h5>
+            <%= f.text_field :title, class: 'form-control w-20', size: "40x20" %>
+          </div>
+          <div class="col"></div>
+        </div>
+        <h5 class="mt-4"><%= f.label :"本文" %></h5>
+        <%= f.text_area :body, class: 'form-control', rows:"5%" %>
 
-        
-    <!--レビュー共通ページの呼び出し-->
+        <div class="text-center">
+          <%= f.submit"レビューする", class:'button btn p-3 my-5' %>
+        </div>
+      <% end %>
+    </div>
+    <!--レビュー表示ページの呼び出し-->
     <div class="col-2"></div>
     <div class="col-10 mb-5">
-      <h2 class="font-weight-bold mt-5 border-bottom">レビュー(
-        <%= link_to public_reviews_path do %>
-          <%= @reviews.count %>
-        <% end %>)
-        </h2>
+      <h2 class="font-weight-bold mt-5 border-bottom">
+        レビュー(<%= @reviews.count %>)
+      </h2>
       <%= render 'public/reviews/review_list', reviews: @reviews %>
     </div>
   </div>

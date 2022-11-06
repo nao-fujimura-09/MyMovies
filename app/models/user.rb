@@ -29,7 +29,7 @@ class User < ApplicationRecord
   
   # フォローする
   def follow(user_id)
-    relationships.create(followed_id: user_id)
+    relationships.create!(followed_id: user_id)
   end
   
   # フォローを解除
