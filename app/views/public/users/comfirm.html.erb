@@ -1,2 +1,17 @@
-<h1>Public::User#comfirm</h1>
-<p>Find me in app/views/public/user/comfirm.html.erb</p>
+<div class="container">
+    <p id="alert"><%= alert %></p>
+    <div class="row justify-content-center" >
+        <div class="col-9 my-5 pt-5" style="text-align:center">
+            <h4 class="font-weight-bold mb-3">本当に退会しますか？</h4><br/>
+            <div class="comfirm-text" style="line-height:0" >
+                <h4>退会すると、これまでの全てのデータが削除されます。</h4><br/>
+                <h4>退会する場合は、「退会する」をクリックしてください。</h4>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row justify-content-center mb-5" >
+        <%= link_to "退会しない", edit_public_user_path(current_user), class:"btn-lg btn-primary py-1 px-4 mr-4" %>
+        <%= link_to "退会する", public_withdrawal_path, method: :patch, data: { confirm: '本当に退会してよろしいですか？' }, class:"btn-lg btn-danger py-1 px-4" %>
+    </div>
+</div>

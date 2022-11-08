@@ -24,8 +24,6 @@
     <div class="col-3"></div>
     <div class="col-6">
       
-<i class="far fa-search"></i>      
-      
       <table class="table table-borderless">
         <thead>
           <th width="40%"></th>
@@ -66,9 +64,10 @@
           </tr>
           <% end %>
         </tbody>
-                </table>
-        <div class="bg-#d2b48c" align="center">
-         <%= f.submit "変更する", class:"button px-3 py-2 mt-3" %> 
+        </table>
+        <div align="right">
+         <%= f.submit "変更する", class:"button btn  px-3 py-2 mt-3" %>
+         <%= link_to "退会する", public_comfirm_path, class: "py-2 px-3 button btn px-3 py-2 mt-3 ml-4"  %>
         </div>
         <% end %>
 

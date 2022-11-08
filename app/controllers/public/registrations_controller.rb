@@ -6,14 +6,24 @@ class Public::RegistrationsController < Devise::RegistrationsController
 
 before_action :configure_permited_parameters, if: :devise_controller?
 
+  def after_sign_in_path_for(resource)
+    public_user_mypage_path(current_user)
+  end
+  
+  def after_sign_out_path_for(resource)
+    new_user_session_path
+  end
+
+  protected
+  
   def configure_permited_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :favorite_movie, :favorite_genre1, :favorite_genre2, :status])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :favorite_movie, :favorite_genres, :status])
   end
  
   private
   
-  def customer_params
-    params.require(:customer).permit(:name, :email, :password, :favorite_movie, :favorite_genre1, :favorite_genre2 ,:status)
+  def user_params
+    params.require(:customer).permit(:name, :email, :password, :favorite_movie, :favorite_genres ,:status)
   end
   # GET /resource/sign_up
   # def new

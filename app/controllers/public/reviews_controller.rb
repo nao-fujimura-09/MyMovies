@@ -8,9 +8,7 @@ class Public::ReviewsController < ApplicationController
     @review = Review.new(review_params)
     @review.user_id = current_user.id
     @review.save
-    # byebug
-    # binding.pry
-    redirect_back(fallback_location: root_path)
+    redirect_to public_review_path(@review.id), notice: 'レビューに成功しました'
   end
   
   def index
@@ -38,7 +36,7 @@ class Public::ReviewsController < ApplicationController
   def update
     @review = Review.find(params[:id])
     @review.update(review_params)
-    redirect_to public_review_path(@review.id)
+    redirect_to public_review_path(@review.id), notice: 'レビューの編集に成功しました'
   end
   
   def destroy

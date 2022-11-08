@@ -8,7 +8,11 @@
         <tbody>
           <% @genres.each do |genre| %>
           <tr>
-            <td><%= genre.name %></td>
+            <td>
+              <%= link_to  public_genre_path(genre.id), class:"link-body" do %>
+                <%= genre.name %>
+              <% end %>
+            </td>
           </tr>
           <% end %>
         </tbody>
@@ -22,29 +26,26 @@
           <tbody>
             <tr>
               <% @popular_movies.each do |movie| %>
-                <% @review = Review.find_by(movie_id: movie.id) %>
+                <% @reviews = Review.where(movie_id: movie.id) %>
                 <td>
                   <%= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster_path}", class:"mx-3" %></br>
-                  <%= link_to public_movie_path(movie.id) do %>
+                  <%= link_to public_movie_path(movie.id), class:"link-body" do %>
                     <h4 class="mt-3 mx-3"><%= movie.title.truncate(14) %></h4>
-                    <% unless @review.nil? %> 
-                    <div id="star_review_<%= movie.id %>"></div> 
-                    <script>
-                        $('#star_review_<%= movie.id %>').empty();
-                        $('#star_review_<%= movie.id %>').raty({
-                          size: 70,
-                          starOn : '<%= asset_path('star-on.png') %>',
-                          starOff: "<%= asset_path('star-off.png') %>",
-                          starHalf: "<%= asset_path('star-half.png') %>",
-                          scoreName: "review[star]", //reviewモデルのstarカラムに保存
-                          half: true, 
-                          readOnly: true,
-                          // score: "<%#= @review.star %>.average(:star)"
-                          score: function() {
-                            return $(this).attr('star')
-                          }
-                          });
-                      </script>
+                    <% unless @reviews.empty? %> 
+                      <div class="text-center" id="star_review_<%= movie.id %>"></div> 
+                        <script>
+                          $('#star_review_<%= movie.id %>').empty();
+                          $('#star_review_<%= movie.id %>').raty({
+                            size: 70,
+                            starOn : '<%= asset_path('star-on.png') %>',
+                            starOff: "<%= asset_path('star-off.png') %>",
+                            starHalf: "<%= asset_path('star-half.png') %>",
+                            scoreName: "review[star]", //reviewモデルのstarカラムに保存
+                            half: true, 
+                            readOnly: true,
+                            score: <%= @reviews.average(:star) %>
+                           });
+                        </script>
                     <% end %>
                   <% end %>
                 </td>
@@ -53,16 +54,35 @@
         </tbody>
       </table>
       </div>
+      
       <h2 class="my-5 pt-5">評価順</h2>
       <div class="table-responsive">
-        <table class="table-boderless">
+        <table class="table-boderless mb-5">
           <tbody>
             <tr>
-              <% @movies.each do |movie| %>
+              <% @popular_movies.each do |movie| %>
+                <%# @reviews = Review.where(movie_id: movie.id) %>
                 <td>
                   <%= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster_path}", class:"mx-3" %></br>
-                  <%= link_to public_movie_path(movie.id) do %>
+                  
+                  <%= link_to public_movie_path(movie.id) , class:"link-body" do %>
                     <h4 class="mt-3 mx-3"><%= movie.title.truncate(14) %></h4>
+                    <% unless @reviews.empty? %> 
+                      <div class="text-center" id="star_review2_<%= movie.id %>"></div> 
+                      <script>
+                          $('#star_review2_<%= movie.id %>').empty();
+                          $('#star_review2_<%= movie.id %>').raty({
+                            size: 70,
+                            starOn : '<%= asset_path('star-on.png') %>',
+                            starOff: "<%= asset_path('star-off.png') %>",
+                            starHalf: "<%= asset_path('star-half.png') %>",
+                            scoreName: "review[star]", //reviewモデルのstarカラムに保存
+                            half: true, 
+                            readOnly: true,
+                            score: <%= @reviews.average(:star) %>
+                            });
+                        </script>
+                    <% end %>
                   <% end %>
                 </td>
               <% end %>
@@ -70,16 +90,41 @@
         </tbody>
       </table>
       </div>
-
-
     </div>
   </div>
-  
+
+  <h2 class="my-5 pt-5 populer-user">人気のユーザー</h2>
   <div class="row">
-    <div class="col-2"></div>
-    <div class="col-10">
-
-
-    </div>
+    <div class="col-2 mb-5"></div>
+    <% @users.each do |user| %>
+      <div class="col-2">
+        <div class="form-inline">
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <%= image_tag user.get_profile_image(70,70), class:"user-icon  card-image-top" %>
+              <% if user_signed_in? %>
+                <%= link_to public_user_path(user.id) do %>
+                  <h4 class="card-title link-body"><%= user.name %></h4>
+                <% end %>
+                <p class="card-text">favorite movie 「<%= user.favorite_movie %>」</p>
+                <p class="card-text">フォロワー<%= user.followers.count %>｜フォロー中<%= user.followings.count %></p>
+                <% if user_signed_in? %>
+                  <% unless user == current_user %>
+                    <% if current_user.followings?(user) %>
+                      <%= link_to "フォローをやめる", public_follow_path(user.id), class:"button py-2 px-3", method: :delete %>
+                    <% else %>
+                      <%= link_to "フォローする", public_follows_path(user_id: user.id), class:"button py-2 px-3", method: :post %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% else %>
+                <h4 class="card-title"><%= user.name %></h4>
+              <% end %>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>

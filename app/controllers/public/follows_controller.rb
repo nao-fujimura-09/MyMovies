@@ -1,24 +1,18 @@
 class Public::FollowsController < ApplicationController
   
   def create
-    # @follow = Follow.new(follows_params)
-    # @follow.save
-    # redirect_back(fallback_location: root_path)
     current_user.follow(params[:user_id])
-    # follows.user_id = User.find(params[:user_id])
-    # redirect_to user.followings
-    
     redirect_back(fallback_location: root_path)
   end
   
   def destroy
-    current_user.unfollow(params[:user_id])
-    redirect_to  user.followings
+    current_user.unfollow(params[:id])
+    redirect_back(fallback_location: root_path)
   end
   
   def followings
-    user = User.find(params[:user_id])
-    @followers = user.followers
+    @user = User.find(params[:user_id])
+    @users = @user.followings
   end
 
   def followers

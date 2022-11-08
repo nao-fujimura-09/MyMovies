@@ -18,14 +18,12 @@ Rails.application.routes.draw do
   
   namespace :public do
   # scope module: :public do
-    resources :users, only: [:show, :edit, :update, :comfirm] do
+    resources :users, only: [:show, :edit, :update] do
       get "/mypage" => "users#mypage", as:"mypage" #マイページの表示
     end
-    # resources :user do
-    #   resources :follows, only: [:create, :destroy]
-    #   get "followings" => "follows#followings", as:"followings"
-    #   get "followers" => "follows#followers", as:"followers"
-    # end
+    get "/comfirm" => "users#comfirm", as:"comfirm"
+    patch "/withdrawal" => "users#withdrawal", as:"withdrawal"
+
     resources :follows, only: [:create, :destroy, :followings, :followers]
       get "/follows/followings" => "follows#followings", as:"followings"
       get "/follows/followers" => "follows#followers", as:"followers"
@@ -35,6 +33,7 @@ Rails.application.routes.draw do
     end
     resources :reviews, only: [:index, :show, :create, :edit, :update, :destroy]
     resources :views, only: [:create, :destroy]
+    resources :genres, only: [:show]
 
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

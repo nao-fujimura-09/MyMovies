@@ -7,9 +7,11 @@ class Public::HomesController < ApplicationController
   
   def top
     @genres = Tmdb::Genre.movie_list
+    @users = User.all
+    # @reviews = Review.where(movie_id: movie.id)
     @movies = Tmdb::Movie.popular[:results].push(Tmdb::Movie.now_playing[:results]).flatten!
+    # .sort_by(@review.star)
     @popular_movies = Tmdb::Movie.popular[:results]
-    # @review = Review.find(movie_id: @movie.id)
   end
   
   

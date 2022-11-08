@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
          
   has_one_attached :profile_image
-  has_many :favorite_genres
+  has_many :favorite_genres, dependent: :destroy
   has_many :watch_lists, dependent: :destroy
   has_many :reviews, dependent: :destroy
   has_many :views, dependent: :destroy
@@ -16,6 +16,9 @@ class User < ApplicationRecord
   
   has_many :followings, through: :relationships, source: :followed
   has_many :followers, through: :reverse_of_relationships, source: :follower
+   
+  validates :name, presence:true
+  validates :email, presence:true
    
   # プロフィール画像
   def get_profile_image(width, height)

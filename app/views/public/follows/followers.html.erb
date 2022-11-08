@@ -62,14 +62,23 @@
       <h2 class="my-5"><%= @user.followers.count %>フォロワー</h2>
       <% @users.each do |user| %>
         <table class="table-borderless">
+          <thead>
+            <th width="10%"></th>
+            <th width="20%"></th>
+            <th width="50%"></th>
+            <th width="20%"></th>
+          </thead>
           <tbody>
             <tr>
               <td>
-                <div class="form-inline">
                   <%= image_tag user.get_profile_image(70,70), class:"user-icon" %>    
-                  <h3 class="ml-4"><%= user.name %></h3>
-                </div>
               </td>
+              <td>
+                <%= link_to public_user_path(user.id), class:"link-body" do %>
+                  <h3 class="ml-4"><%= user.name %></h3>
+                <% end %>
+                </td>
+              <td><h4 class="ml-4">お気に入りの映画『<%= user.favorite_movie %>』</h4></td>
               <td>
                 <% unless user == current_user %>
                   <% if current_user.followings?(user) %>

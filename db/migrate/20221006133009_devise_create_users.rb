@@ -34,9 +34,8 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.1]
 
       t.string :name, null:false
       t.string :favorite_movie
-      t.string :favorite_genre1
-      t.string :favorite_genre2
-      t.integer :status, null:false, default: true
+      t.string :favorite_genres
+      t.boolean :status, null:false, default: false
       t.timestamps null: false
     end
 

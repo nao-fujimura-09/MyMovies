@@ -8,23 +8,15 @@
     
       <p class="mt-3">
         フォロワー
-          <%#= link_to public_followers_path, class:"link-body" do %>
-            <%#= user.followers.count %>
-          <%# end %> | 
+          <%= link_to public_followers_path(user_id: user.id), class:"link-body" do %>
+            <%= user.followers.count %>
+          <% end %> |
         フォロー中
-          <%#= link_to public_followings_path, class:"link-body" do %>
-            <%#= user.followings.count %>
-          <%# end %>
+          <%= link_to public_followings_path(user_id: user.id), class:"link-body" do %>
+            <%= user.followings.count %>
+          <% end %>
       </p>
         
-      <!--フォローボタン-->
-      <% unless user == current_user %>
-        <% if current_user.followings?(user) %>
-          <%= link_to "フォローをやめる", public_follow_path(user.id), class:"link-body", method: :delete %>
-        <% else %>
-          <%= link_to "フォローする", public_follows_path, class:"link-body", method: :post %>
-        <% end %>
-      <% end %>
       <table class="table-borderless mt-5">
         <tr>
           <td class="font-weight-bold"><h4>お気に入りの映画</h4></td>

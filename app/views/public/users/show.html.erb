@@ -14,7 +14,7 @@
             <%= @user.followers.count %>
           <% end %> | 
         フォロー中
-          <%= link_to public_followings_path, class:"link-body" do %>
+          <%= link_to public_followings_path(user_id: @user.id), class:"link-body" do %>
             <%= @user.followings.count %>
           <% end %>
       </p>

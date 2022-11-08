@@ -1,5 +1,5 @@
 class FavoriteGenre < ApplicationRecord
   
-belings_to :user
-belings_to :genre
+belongs_to :user
+belongs_to :genre
 end

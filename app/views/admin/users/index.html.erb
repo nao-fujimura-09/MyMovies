@@ -12,17 +12,18 @@
       <table class="table">
         <thead>
           <tr>
-            <th width="5%">userID</th>
-            <th width="10%">name</th>
-            <th width="10%">email</th>
-            <th width="5%">status</th>
-            <th width="10%">favorite_movie</th>
-            <th width="10%">favorite_genres</th>
-            <th width="10%">view</th>
-            <th width="10%">review</th>
-            <th width="10%">score</th>
-            <th width="10%">followed</th>
-            <th width="10%">followers</th>
+            <th width="8%">userID</th>
+            <th width="8%">name</th>
+            <th width="8%">email</th>
+            <th width="8%">status</th>
+            <th width="8%">favorite_movie</th>
+            <th width="8%">favorite_genres</th>
+            <th width="8%">view</th>
+            <th width="8%">review</th>
+            <th width="8%">score</th>
+            <th width="8%">followed</th>
+            <th width="8%">followers</th>
+            <th width="8%">watch_lists</th>
           </tr>
         </thead>
         <tbody>
@@ -33,14 +34,20 @@
               <td><%= user.id %></td>
               <td><%= user.name %></td>
               <td><%= user.email %></td>
-              <td><%= user.status %></td>
+              <td>
+                <% if user.status? %> 
+                <p class="font-weight-bold", style="color:#d3dd3d3">退会</p>
+              <% else %>
+                <p class="font-weight-bold", style="color:#32cd32">有効</p>
+              <% end %>
+              </td>
               <td><%= user.favorite_movie %></td>
               <td><%=%></td>
               <td><%= @views.count %></td>
               <td><%=%></td>
               <td><%= Review.where(user_id: user.id).average(:star).to_f.round(1) %>
-              <td><%=%></td>
-              <td><%=%></td>
+              <td><%= user.followers.count %></td>
+              <td><%= user.followings.count %></td>
               <script>
                   $('#star_<%= user.id %>').empty();
                   $('#star_<%= user.id %>').raty({
