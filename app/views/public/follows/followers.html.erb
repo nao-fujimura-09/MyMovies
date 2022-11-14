@@ -11,11 +11,11 @@
       <p class="my-3">
         フォロワー
           <%= link_to public_followers_path(user_id: @user.id), class:"link-body" do %>
-            <%= @user.followers.count %>
+            <%= @user.followers.where(status: false).count %>
           <% end %> | 
         フォロー中
-          <%= link_to public_followings_path, class:"link-body" do %>
-            <%= @user.followings.count %>
+          <%= link_to public_followings_path(user_id: @user.id), class:"link-body" do %>
+            <%= @user.followings.where(status: false).count %>
           <% end %>
       </p>
 
@@ -59,38 +59,40 @@
     </div>
     
     <div class="col-9 mt-5">
-      <h2 class="my-5"><%= @user.followers.count %>フォロワー</h2>
+      <h2 class="my-5"><%= @user.followers.where(status: false).count %>フォロワー</h2>
       <% @users.each do |user| %>
-        <table class="table-borderless">
-          <thead>
-            <th width="10%"></th>
-            <th width="20%"></th>
-            <th width="50%"></th>
-            <th width="20%"></th>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                  <%= image_tag user.get_profile_image(70,70), class:"user-icon" %>    
-              </td>
-              <td>
-                <%= link_to public_user_path(user.id), class:"link-body" do %>
-                  <h3 class="ml-4"><%= user.name %></h3>
-                <% end %>
+        <% if user.status == false %>
+          <table class="table-borderless">
+            <thead>
+              <th width="10%"></th>
+              <th width="20%"></th>
+              <th width="50%"></th>
+              <th width="20%"></th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <%= image_tag user.get_profile_image(70,70), class:"user-icon" %>    
                 </td>
-              <td><h4 class="ml-4">お気に入りの映画『<%= user.favorite_movie %>』</h4></td>
-              <td>
-                <% unless user == current_user %>
-                  <% if current_user.followings?(user) %>
-                    <%= link_to "フォローをやめる", public_follow_path(user.id), class:"button py-2 px-3 mt-5", method: :delete  %>
-                  <% else %>
-                    <%= link_to "フォローする", public_follows_path(user_id: user.id), class:"button py-2 px-3 mt-5", method: :post %>
+                <td>
+                  <%= link_to public_user_path(user.id), class:"link-body" do %>
+                    <h3 class="ml-4"><%= user.name %></h3>
                   <% end %>
-                <% end %>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  </td>
+                <td><h5 class="ml-4">favorite movie 『<%= user.favorite_movie %>』</h5></td>
+                <td>
+                  <% unless user == current_user %>
+                    <% if current_user.followings?(user) %>
+                      <%= link_to "フォローをやめる", public_follow_path(user.id), class:"button py-2 px-3 mt-5", method: :delete  %>
+                    <% else %>
+                      <%= link_to "フォローバックする", public_follows_path(user_id: user.id), class:"button py-2 px-3 mt-5", method: :post %>
+                    <% end %>
+                  <% end %>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <% end %>
       <% end %>
     </div>
   </div>

@@ -24,7 +24,8 @@ class Public::UsersController < ApplicationController
             end
         # end
         @user.update!(user_params)
-        redirect_to public_user_path(current_user)        
+        
+        redirect_to public_user_mypage_path(current_user)       
     end
    
     def mypage

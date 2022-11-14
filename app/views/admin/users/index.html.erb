@@ -16,8 +16,8 @@
             <th width="8%">name</th>
             <th width="8%">email</th>
             <th width="8%">status</th>
-            <th width="8%">favorite_movie</th>
-            <th width="8%">favorite_genres</th>
+            <th width="8%">favorite<br>movie</th>
+            <th width="8%">favorite<br>genres</th>
             <th width="8%">view</th>
             <th width="8%">review</th>
             <th width="8%">score</th>
@@ -42,7 +42,15 @@
               <% end %>
               </td>
               <td><%= user.favorite_movie %></td>
-              <td><%=%></td>
+              <td>
+                <% Tmdb::Genre.movie_list.each do |movie_genre| %>
+                <% user.favorite_genres.each do |favorite_genre|%>
+                  <% if movie_genre.id == favorite_genre.genre_id %>
+                    <%= movie_genre.name %><br>
+                  <% end %>
+                <% end %>
+                <% end %>
+                </td>
               <td><%= @views.count %></td>
               <td><%=%></td>
               <td><%= Review.where(user_id: user.id).average(:star).to_f.round(1) %>

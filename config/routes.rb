@@ -27,7 +27,13 @@ Rails.application.routes.draw do
     resources :follows, only: [:create, :destroy, :followings, :followers]
       get "/follows/followings" => "follows#followings", as:"followings"
       get "/follows/followers" => "follows#followers", as:"followers"
+      
     resources :watch_lists, only: [:create, :new, :index, :destroy]
+      get "watch_lists/before_watch_select", to: "watch_lists#before_watch_select", as: "before_watch_select"
+      get "/:id/watch_lists", to: "watch_lists#watch_select", as: "watch_select"
+      
+      # get "watch_lists/:id", to: "watch_lists#watch_lists_select", as: "watch_lists_select"
+      
     resources :movies, only: [:index, :show, :create] do 
       get 'reviews' => "movies#review", as: "review" #reviewの映画ごとの一覧ページ（reviewのindexでは映画ごとに絞り込めないため）
     end

@@ -11,7 +11,7 @@
           <% movie = Tmdb::Movie.detail(view.movie_id) %>
           <li class="d-flex flex-column justify-content-between mt-5">
             <div class="mb-3 mx-5"><%= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster_path}" %></div>
-            <%= link_to public_movie_path(id: movie.id) do %>
+            <%= link_to public_movie_path(id: movie.id), class: "link-body" do %>
               <h3 class=" movies text-center"><%= movie.title %></h3>
             <% end %>
             <div class="text-center">

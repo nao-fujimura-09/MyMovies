@@ -1,5 +1,12 @@
-<% @movies.each do |movie| %>
-<%= @genre.id%>
-<%= movie.title %>
-<%= movie.title %>
-<% end %>
+
+<ul class=" movies d-flex flex-wrap row-gap">
+<!--<%# @movies.each do |movie| %>-->
+<!--  <li class="d-flex flex-column justify-content-between">-->
+<!--    <%#= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster_path}", class:"mx-3" %></br>-->
+<!--    <%# movie.title %>-->
+<!--  </li>-->
+<!--<%# end %>-->
+
+@genre_movies
+<!--<%#= Tmdb::Genre.movies(18) %>-->
+</ul>
