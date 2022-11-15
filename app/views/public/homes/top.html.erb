@@ -1,9 +1,10 @@
 <div class="container">
+  <h2 class="mt-5 text-center mb-5">よく見られている作品</h2>
   <div class="row">
     <div class="col-2">
-      <table class="table mt-5">
+      <table class="table">
         <thead>
-          <th>ジャンルで探す</th>
+          <th><h5>ジャンルで探す</h5></th>
         </thead>
         <tbody>
           <% @genres.each do |genre| %>
@@ -20,7 +21,6 @@
     </div>
     
     <div class="col-10">
-      <h2 class="mt-5">よく見られている作品</h2>
       <div class="table-responsive mb-5">
         <table class="table-boderless my-3">
           <tbody>

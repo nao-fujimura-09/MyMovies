@@ -44,7 +44,7 @@
             });
         </script>
       </td>
-      <td><%= @reviews.count %></td>
+      <td><%= @reviews.count(:title) %></td>
       <td><%= @watch_lists.count %></td>
     </tr>
 

@@ -1,12 +1,56 @@
-
-<ul class=" movies d-flex flex-wrap row-gap">
-<!--<%# @movies.each do |movie| %>-->
-<!--  <li class="d-flex flex-column justify-content-between">-->
-<!--    <%#= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster_path}", class:"mx-3" %></br>-->
-<!--    <%# movie.title %>-->
-<!--  </li>-->
-<!--<%# end %>-->
-
-@genre_movies
-<!--<%#= Tmdb::Genre.movies(18) %>-->
-</ul>
+<div class="container">
+  <h2 class="mt-5 text-center mb-5">
+      <%= @genre %>
+           の作品一覧</h2>
+   
+  <div class="row">
+    <div class="col-2">
+      <table class="table">
+        <thead>
+          <th><h5>ジャンルで探す</h5></th>
+        </thead>
+        <tbody>
+          <% @genres.each do |genre| %>
+            <tr>
+              <td>
+                <%= link_to  public_genre_path(genre.id), class:"link-body" do %>
+                  <%= genre.name %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+   
+    <div class="col-10">
+      <ul class=" movies d-flex flex-wrap row-gap">
+        <% @genre_movies.each do |genre_movie| %>
+          <% @reviews = Review.where(movie_id: genre_movie.id) %>
+            <li class="d-flex flex-column justify-content-between mb-5">
+              <div class="mb-3"><%= image_tag "https://image.tmdb.org/t/p/w154/#{genre_movie.poster_path}", class:"mx-4" %></div>
+              <%= link_to public_movie_path(genre_movie.id), class:"link-body" do %>
+                <h3 class="text-center"><%= genre_movie.title.truncate(14) %></h3>
+              <% end %>
+              <% unless @reviews.empty? %> 
+                <div class="text-center" id="star_review_<%= genre_movie.id %>"></div> 
+                <script>
+                  $('#star_review_<%= genre_movie.id %>').empty();
+                  $('#star_review_<%= genre_movie.id %>').raty({
+                    size: 70,
+                    starOn : '<%= asset_path('star-on.png') %>',
+                    starOff: "<%= asset_path('star-off.png') %>",
+                    starHalf: "<%= asset_path('star-half.png') %>",
+                    scoreName: "review[star]", //reviewモデルのstarカラムに保存
+                    half: true, 
+                    readOnly: true,
+                    score: <%= @reviews.average(:star) %>
+                  });
+                </script>
+              <% end %>
+            </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

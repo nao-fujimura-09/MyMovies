@@ -23,7 +23,7 @@ class Public::MoviesController < ApplicationController
     id = @movie.id #上のmovie情報からidだけを取得
     casts= Tmdb::Movie.cast(id) #変数castsに映画 IDに紐づくキャストを代入
     @persons = [] #空の配列を用意
-    casts.select do |cast| #キャストの中の特定の条件を首藤
+    casts.select do |cast| #キャストの中の特定の条件を取得
       cast.name #キャストの名前を取得
       @persons.push(cast.name) #変数personsにcast.nameを代入
     end

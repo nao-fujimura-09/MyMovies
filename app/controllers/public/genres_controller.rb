@@ -4,11 +4,16 @@ class Public::GenresController < ApplicationController
   Tmdb::Api.language("ja")
   
   def show
-    @genre_movies = Tmdb::Genre.movies(params[:id])
-    # @movies = Tmdb::Movie.popular[:results].push(Tmdb::Movie.now_playing[:results]).flatten!
-    # id = @genre.genre_ids
-    # movies = @movies(id)
-    
+    # @genres = Tmdb::Genre.movies(params[:id])[:results]
+    # genre_id = @genres.id
+    # @genre = []
+    # Tmdb::Genre.movie_list.each do |movie_genre|
+    #   movie_genre.name
+    # end
+    # @genre.push(movie_genre.name)
+    @genres = Tmdb::Genre.movie_list
+    @genre_movies = Tmdb::Genre.movies(params[:id])[:results]
+    # render json: @genres
   end
 
 end
