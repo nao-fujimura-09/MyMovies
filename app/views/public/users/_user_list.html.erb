@@ -1,10 +1,9 @@
-    
-      <%= image_tag current_user.get_profile_image(70,70), class:"user-icon" %>    
-      <%= link_to edit_public_user_path(current_user), class:"link-body" do %>
-        <div class="d-flex align-items-end">
-          <h3 class ="pl-2 ">@<%= current_user.name %></h3>
-        </div>
-      <% end %>
+<div class="form-inline">
+  <%= image_tag current_user.get_profile_image(50,50), class:"user-icon mr-2" %>    
+  <%= link_to edit_public_user_path(current_user), class:"link-body" do %>
+    <h5 class ="pl-2 mb-3 font-weight-bold"><%= current_user.name %></h5>
+  <% end %>
+</div>
     
       <p class="mt-3">
         フォロワー
@@ -19,7 +18,7 @@
         
       <table class="table-borderless mt-5">
         <tr>
-          <td class="font-weight-bold"><h4>お気に入りの映画</h4></td>
+          <td class="font-weight-bold"><h5>お気に入りの映画</h5></td>
           </tr>  
           <tr>
           <td><%= current_user.favorite_movie %></td>
@@ -28,7 +27,7 @@
     
         <table>
           <tr>
-            <td class="font-weight-bold mt-3"><h4>好きなジャンル</h4></td>
+            <td class="font-weight-bold mt-3"><h5>好きなジャンル</h5></td>
           </tr>
           <tr>
             <td>
@@ -43,5 +42,5 @@
           </tr>
         </table>
     
-        <h3 class="mt-5"><%= link_to"WATCH lIST", public_watch_lists_path, class:"link-body" %></h3>
+        <h5 class="mt-3"><%= link_to"WATCH lIST", public_watch_lists_path, class:"link-body" %></h5>
         

@@ -6,9 +6,7 @@ class Admin::MoviesController < ApplicationController
   
   def index
    @movies = Tmdb::Movie.popular[:results].push(Tmdb::Movie.now_playing[:results]).flatten!
-   @reviews = Review.where("title!='' OR body!=''").where(movie_id: params[:id])
-    # @movies.title = Tmdb::Movie.popular.title
-    # @movie.tmdb_id = Tmdb::Movie.latest
+   @total = 0
   end
 
   def show

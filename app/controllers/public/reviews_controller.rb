@@ -13,15 +13,6 @@ class Public::ReviewsController < ApplicationController
   
   def index
     @reviews = Review.all
-    # @movie = Tmdb::Movie.detail(@reviews.movie_id)
-    # @movies = Tmdb::Movie.popular[:results].push(Tmdb::Movie.now_playing[:results]).flatten!
-    # @movie = Tmdb::Movie.detail(movie_id: params[:movie.id])
-    # @movie = Tmdb::Movie.detail(@review.movie_id)
-    # @reviews = Review.where("title!='' OR body!=''").where(movie_id: params[:movie_id])
-    
-    # @reviews = Review.where(movie_id: params[:id])
-    # @reviews = Review.select(:movie_id).distinct
-    # @reviews = Review.where(movie_id: @review.movie_id)
   end
 
   def show

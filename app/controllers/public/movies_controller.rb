@@ -26,6 +26,7 @@ class Public::MoviesController < ApplicationController
     casts.select do |cast| #キャストの中の特定の条件を取得
       cast.name #キャストの名前を取得
       @persons.push(cast.name) #変数personsにcast.nameを代入
+          @reviews = Review.where(movie_id: params[:movie_id]).where("title IS NOT NULL").where("title!=''")
     end
      # render json: @movie.perfomer    
     # byebug

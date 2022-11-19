@@ -16,18 +16,18 @@ class Public::WatchListsController < ApplicationController
   def index
     @view = View.new
     exist_view_movies = current_user.views.pluck(:movie_id)
-    @watch_lists = current_user.watch_lists.where.not(movie_id:exist_view_movies).select(:movie_id)
+    # @watch_lists = current_user.watch_lists.where.not(movie_id:exist_view_movies).select(:movie_id)
     
-    # if params[:id] == "1"
-    #   exist_view_movies = current_user.views.pluck(:movie_id)
-    #   @watch_lists = current_user.watch_lists.where.(movie_id:exist_view_movies).select(:movie_id)
-    #   # @watch_lists = current_user.watch_lists, lambda {where(movie_id:exist_view_movies).select(:movie_id)}
-    # elsif params[:id] == "2"
-    #   exist_view_movies = current_user.views.pluck(:movie_id)
-    #   @watch_lists = current_user.watch_lists.where.not(movie_id:exist_view_movies).select(:movie_id)
-    # else
-    #   @watch_lists = current_user.watch_lists.all
-    # end
+    if params[:id] == "1"
+      exist_view_movies = current_user.views.pluck(:movie_id)
+      @watch_lists = current_user.watch_lists.where(movie_id:exist_view_movies)
+      # @watch_lists = current_user.watch_lists, lambda {where(movie_id:exist_view_movies).select(:movie_id)}
+    elsif params[:id] == "2"
+      exist_view_movies = current_user.views.pluck(:movie_id)
+      @watch_lists = current_user.watch_lists.where.not(movie_id:exist_view_movies).select(:movie_id)
+    else
+      @watch_lists = current_user.watch_lists.all
+    end
     # render json: @movies
   end
   

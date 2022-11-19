@@ -7,7 +7,7 @@
       <li class="d-flex flex-column justify-content-between">
         <div class="mb-3"><%= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster_path}", class:"mx-5 mb-2" %></div>
         <div>
-          <%= link_to public_movie_path(id: movie.id) do %>
+          <%= link_to public_movie_path(id: movie.id), class:"link-body" do %>
             <h3 class="movies text-center"><%= movie.title.truncate(14) %></h3>
           <% end %>
         </div>
@@ -64,7 +64,7 @@
           
             <% if current_user.views.exists?(movie_id: movie.id) %>
                 <div class="watch">VIEW
-                  <%= link_to public_views_path(current_user.views.find_by(movie_id: movie.id)), method: :delete, class: 'btn btn-tag' do %>
+                  <%= link_to public_view_path(current_user.views.find_by(movie_id: movie.id)), method: :delete, class: 'btn btn-tag' do %>
                     <i class="fa fa-solid fa-eye fa-xs btn-tg", style="color:#black;"></i>
                   <% end %>
                 </div>

@@ -21,16 +21,23 @@
     <% @movies.each do |movie| %>
     <% @views = View.where(movie_id: movie.id) %>
     <% @watch_lists = WatchList.where(movie_id: movie.id) %>
+    <% @reviews = Review.where("title!='' OR body!=''").where(movie_id: movie.id) %>
     <tr>
-      <td><%=%></td>
+      <td>
+        <%= @total = @views.count.to_i + @score.to_i + @reviews.count.to_i + @watch_lists.count.to_i %>
+        <%# byebug %>
+        <%=%>
+        
+        </td>
       <td><%= movie.id %></td>
       <td>
-        <%= link_to admin_movie_path(movie.id) do %>
+        <%= link_to admin_movie_path(movie.id), class:"link-body" do %>
           <%= movie.title %>
         <% end %>
         </td>
       <td><%= @views.count %></td>
-      <td><%= Review.where(movie_id: movie.id).average(:star).to_f.round(1) %>
+      <td><% @score = Review.where(movie_id: movie.id).average(:star).to_f.round(1) %>
+          <%= @score %>
         <script>
           $('#star_<%= movie.id %>').empty();
           $('#star_<%= movie.id %>').raty({
@@ -44,7 +51,7 @@
             });
         </script>
       </td>
-      <td><%= @reviews.count(:title) %></td>
+      <td><%= @reviews.count %></td>
       <td><%= @watch_lists.count %></td>
     </tr>
 

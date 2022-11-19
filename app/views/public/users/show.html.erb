@@ -53,27 +53,24 @@
           </td>
         </tr>
       </table>
-      
-      <h3 class="mt-5">MENU</h3>
-      <%= link_to"WATCH lIST", public_watch_lists_path, class:"link-body" %>
     </div>
  
     <div class="col-9">
-      <h2>映画閲覧数 <%= @user.views.count %> 本</h2>
+      <h2><%= @user.name %>さんの閲覧映画（<%= @user.views.count %> 本）</h2>
       
       <ul class=" movies d-flex flex-wrap row-gap">
         <% @user.views.each do |view| %>
           <% movie = Tmdb::Movie.detail(view.movie_id) %>
           <li class="d-flex flex-column justify-content-between mt-5">
             <div class="mb-3 mx-5"><%= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster_path}" %></div>
-            <%= link_to public_movie_path(id: movie.id) do %>
+            <%= link_to public_movie_path(id: movie.id), class:"link-body" do %>
               <h3 class=" movies text-center"><%= movie.title %></h3>
             <% end %>
             <div class="text-center">
               <% if @user.reviews.find_by(movie_id: view.movie_id).present? %>
                 <div id="star_review_<%= view.movie_id %>"></div> 
               <% else %>
-                <h5>まだ評価していません。</h5>
+                <h5>まだ評価されていません。</h5>
               <% end %>
             </div>
             <script>

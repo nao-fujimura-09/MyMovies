@@ -1,14 +1,12 @@
 <div class="container">
   <h2 class="my-5"><%= current_user.name %>さんのWatchList</h2>
   
-  <div class="text-right mb-5">
-    <div class="form-inline">
+    <div class="form-inline justify-content-end mb-5">
       <%= form_with url: public_before_watch_select_path, method: :get, local: true do |f| %>
-        <%= f.select :watch_select, {'全て': 0, '閲覧済': 1, '未閲覧': 2}, { include_blank: '選択してください'}, { class: 'form-control', width: '20%'} %>
-        <%= f.submit "選択" %>
+        <%= f.select :watch_select, {'全て': 0, '閲覧済': 1, '未閲覧': 2}, { include_blank: '閲覧状況で選択'}, { class: 'form-control mr-3', width: '20%'} %>
+        <%= f.submit "選択", class: "button btn" %>
       <% end %>
     </div>
-  </div>
   
 <!--<%#= render 'movies/list', users: @users %>-->
     <ul class=" movies d-flex flex-wrap row-gap">

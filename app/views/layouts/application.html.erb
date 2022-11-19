@@ -14,14 +14,23 @@
 
   <body>
     <header class="border-bottom">
-      <nav class="navbar navbar-expand-xl navbar-light">
-        <div class="container">
-          <%= link_to root_path, class:"link" do %>
-            <a class="navbar-brand py-3 px-5 btn btn-light" href="/" >My Movies</a>
-          <% end %>
-          <% if user_signed_in? %>
-          <%= current_user.name %>さん
-          <% end %>
+      <div class="container">
+        <nav class="navbar navbar-expand-xl navbar-light">
+          <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">         
+              <%= link_to root_path, class:"link" do %>
+                <a class="navbar-brand py-3 px-5 btn btn-light" href="/" >My Movies</a>
+              <% end %>
+            </div>
+            <div class="col-4"></div>
+          </div>
+          
+          <div class="row">
+              <% if user_signed_in? %>
+                <%= current_user.name %>さん
+              <% end %>
+              
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>  
           </button>
@@ -48,10 +57,9 @@
               </ul>
             <% end %>
           </div>
-          
-        </div>
+        </div>  
       </nav>
-      
+        </div>
     </header>
     <%= yield %>
     
