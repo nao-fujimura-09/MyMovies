@@ -1,14 +1,36 @@
 <div class="container">
-  <h2 class="mt-5 text-center mb-5">作品一覧</h2>
-  
+
+  <div class="row">
+    <div class="col-2 mt-5">
+      <table class="table mt-5">
+        <thead>
+          <th><h5>ジャンルで探す</h5></th>
+        </thead>
+        <tbody>
+          <% @genres.each do |genre| %>
+          <tr>
+            <td>
+              <%= link_to  public_genre_path(genre.id), class:"link-body" do %>
+                <%= genre.name %>
+              <% end %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
   <!--映画一覧-->
-  <ul class="d-flex flex-wrap row-gap">
-    <% @movies.each do |movie| %>
-      <li class="d-flex flex-column justify-content-between">
-        <div class="mb-3"><%= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster_path}", class:"mx-5 mb-2" %></div>
+    <div class="col-10">
+      <h2 class="my-5 ml-5">作品一覧</h2>
+      <ul class="d-flex flex-wrap row-gap">
+        <% @movies.each do |movie| %>
+        <li class="d-flex flex-column justify-content-between">
+          <div class="mb-3"><%= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster_path}", class:"mx-4 mb-2" %></div>
+        
         <div>
           <%= link_to public_movie_path(id: movie.id), class:"link-body" do %>
-            <h3 class="movies text-center"><%= movie.title.truncate(14) %></h3>
+            <h5 class="movies text-center"><%= movie.title.truncate(14) %></h5>
           <% end %>
         </div>
         
@@ -43,7 +65,7 @@
           <div class="form-inline justify-content-center mt-3 mb-5">
             <% if current_user.watch_lists.exists?(movie_id: movie.id) %>
               <!--ウォッチリストからの削除-->
-              <div class="list">LIST
+              <div class="list" style="margin-bottom: 23px;">LIST
                 <%= link_to public_watch_list_path(current_user.watch_lists.find_by(movie_id: movie.id)), method: :delete, class: 'btn btn-tag' do %>
                   <i class="fa fa-solid fa-minus fa-xs btn-tg", style="color:#f5f5f5;"></i>
                 <% end %>
@@ -63,7 +85,7 @@
             <% end %>
           
             <% if current_user.views.exists?(movie_id: movie.id) %>
-                <div class="watch">VIEW
+                <div class="watch" style="margin-bottom: 23px;">VIEW
                   <%= link_to public_view_path(current_user.views.find_by(movie_id: movie.id)), method: :delete, class: 'btn btn-tag' do %>
                     <i class="fa fa-solid fa-eye fa-xs btn-tg", style="color:#black;"></i>
                   <% end %>
@@ -85,6 +107,8 @@
       </li>
     <% end %>
   </ul>
+  </div>
+  </div>
 </div>
 
 

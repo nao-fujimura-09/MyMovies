@@ -1,26 +1,61 @@
 <div class="container">
   <h1 class="mt-5"><%= @movie.title %></h1>
   
-  <div class="form-inline my-4"><h5>
-    ジャンル：
-    <% @movie.genres.each do |genre| %>
-      <%= genre.name %> / 
-    <% end %>
-  </h5></div>
+  <div class="form-inline my-2">
+    <p>
+      ジャンル：
+      <% @movie.genres.each do |genre| %>
+        <%= genre.name %> / 
+      <% end %>
+    </p>
+  </div>
 
   <div class="row">
+    <div class="col-2">
+      <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"mr-4 mt-5" %><br>
+      <%= link_to admin_movies_path, class:"link-body" do %>
+        <h4 class="mt-5">作品一覧へ戻る</h4>
+      <% end %>
+    </div>
+    
+    <div class="col-6">
+      <h5 class="font-weight-bold mt-5 mb-3">あらすじ</h5>
+      <p>
+        <% if @movie.overview.present? %>
+          <%= @movie.overview %>
+        <% else%>
+          情報がありません
+        <% end %>
+      </p>
+      
+      <h5 class="font-weight-bold mt-5 mb-3">監督</h5>
+      <p>
+      <% @directors.each do |director| %>
+        <%= director.name %>
+      <% end %>
+      </p>
+      
+      <h5 class="font-weight-bold mt-5 mb-3">出演者</h5>
+      <div class="form-inline">
+        <% @persons.first(5).each do |person|%>
+          <p class="mr-2"><%= person %></p><p class="mr-2">/</p>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-1"></div>
+    
     <div class="col-3 mt-5">
       <table class="table-boderless">
         <tr>
           <td><h4>閲覧数</h4></td>
           <td><h4>:</h4></td>
-          <td><h4 class="ml-3"><%= @views.count %></h4></td>
+          <td><h4 class="ml-3 text-right"><%= @views.count %></h4></td>
         </tr>
         
         <tr>
           <td><h4>平均評価</h4></td>
           <td><h4> : </h4></td>
-          <td><h4 class="ml-3"><%= Review.where(movie_id: @movie.id).average(:star).to_f.round(1) %></h4></td>
+          <td><h4 class="ml-3 text-right"><%= Review.where(movie_id: @movie.id).average(:star).to_f.round(1) %></h4></td>
           <script>
             $('#star_<%= @movie.id %>').empty();
             $('#star_<%= @movie.id %>').raty({
@@ -38,38 +73,24 @@
         <tr>
           <td><h4>レビュー</h4></td> 
           <td><h4> : </h4></td>
-          <td><h4 class="ml-3"><%= @reviews.count %></h4></td>
+          <td><h4 class="ml-3 text-right"><%= @reviews.count %></h4></td>
         </tr>
         
         <tr>
           <td><h4>リストイン</h4></td> 
           <td><h4> : </h4></td>
-          <td><h4 class="ml-3"><%= @watch_lists.count %></h4></td>
+          <td><h4 class="ml-3 text-right"><%= @watch_lists.count %></h4></td>
         </tr>
       </table>
     </div>
-    
-    <div class="col-3">
-      <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"mx-5 mt-5" %>
-    </div>
-    
-    <div class="col-6">
-      <h4 class="font-weight-bold mt-4 mb-3">あらすじ</h4>
-      <h5><%= @movie.overview %></h5>
-      
-      <h4 class="font-weight-bold mt-5 mb-3">出演者</h4>
-        <h5><% @persons.first(5).each do |person|%>/
-          <%= person %>
-        <% end %></h5>
-    </div>
   </div>
 
-  <h2 class="mt-5">レビュー</h2>
-  <div class="border-bottom"></div>
   <div class="row">
     <div class="col-2"></div>
-    <div class="col-7 mt-5">
-      <%= render 'public/reviews/review_list', reviews: @reviews %>
-    </div>
+    <div class="col-10 mt-5">
+      <h3 class="mt-5">レビュー(<%= @reviews.count %>)</h3>
+      <div class="border-bottom"></div>
+        <%= render 'public/reviews/review_list', reviews: @reviews %>
+      </div>
   </div>
 </div>

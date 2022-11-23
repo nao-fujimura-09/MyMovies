@@ -1,66 +1,65 @@
 <div class="container">
-  <h1 class="mt-5">Movies</h1>
-
-作品数：<%= @movies.count %> 本
-<div class="row">
-  <div class="col-2"></div>
+  <h1 class="mt-5">作品一覧</h1>
+  <p>〈作品数：<%= @movies.count %> 本〉</p>
+  
+  <div class="row">
+    <div class="col-2"></div>
     <div class="col-8">
-<table class="table">
-  <thead>
-    <tr>
-      <th width="10%">rank</th>
-      <th width="10%">movieID</th>
-      <th width="40%">title</th>
-      <th width="10%">views</th>
-      <th width="10%">score</th>
-      <th width="10%">review</th>
-      <th width="10%">list in</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @movies.each do |movie| %>
-    <% @views = View.where(movie_id: movie.id) %>
-    <% @watch_lists = WatchList.where(movie_id: movie.id) %>
-    <% @reviews = Review.where("title!='' OR body!=''").where(movie_id: movie.id) %>
-    <tr>
-      <td>
-        <%= @total = @views.count.to_i + @score.to_i + @reviews.count.to_i + @watch_lists.count.to_i %>
-        <%# byebug %>
-        <%=%>
-        
-        </td>
-      <td><%= movie.id %></td>
-      <td>
-        <%= link_to admin_movie_path(movie.id), class:"link-body" do %>
-          <%= movie.title %>
+      <div class="form-inline justify-content-end mb-5">
+        <h5>並び順：</h5>
+        <%= form_with url: admin_before_movie_select_path, method: :get, local: true do |f| %>
+          <%= f.select :movie_select, {'五十音順': 0, '閲覧順': 1, '評価順': 2, 'レビューの多い順': 3, 'ウォッチリスト追加数順': 4}, { include_blank: '選択'}, { class: 'form-control mr-3', width: '20%'} %>
+          <%= f.submit "選択", class: "button btn" %>
         <% end %>
-        </td>
-      <td><%= @views.count %></td>
-      <td><% @score = Review.where(movie_id: movie.id).average(:star).to_f.round(1) %>
-          <%= @score %>
-        <script>
-          $('#star_<%= movie.id %>').empty();
-          $('#star_<%= movie.id %>').raty({
-            size: 70,
-            starOn : '<%= asset_path('star-on.png') %>',
-            starOff: "<%= asset_path('star-off.png') %>",
-            starHalf: "<%= asset_path('star-half.png') %>",
-            scoreName: "review[star]", //reviewモデルのstarカラムに保存
-            half: true, 
-            readOnly: true,
-            });
-        </script>
-      </td>
-      <td><%= @reviews.count %></td>
-      <td><%= @watch_lists.count %></td>
-    </tr>
-
-    
-    
-    <% end %>
-  </tbody>
-</table>
-</div>
-  <div class="col-2"></div>
+      </div>
+      
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="font-weight-bold" width="10%">ID</th>
+            <th width="40%">タイトル</th>
+            <th width="10%">閲覧数</th>
+            <th width="10%">平均評価</th>
+            <th width="10%">レビュー数</th>
+            <th width="10%">リストイン</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @movies.each do |movie| %>
+          <% @views = View.where(movie_id: movie.id) %>
+          <% @watch_lists = WatchList.where(movie_id: movie.id) %>
+          <% @reviews = Review.where("title!='' OR body!=''").where(movie_id: movie.id) %>
+          
+          <tr>
+            <td><%= movie.id %></td>
+            <td>
+              <%= link_to admin_movie_path(movie.id), class:"link-body" do %>
+                <%= movie.title %>
+              <% end %>
+              </td>
+            <td class="text-right"><%= @views.count %></td>
+            <td class="text-right"><% @score = Review.where(movie_id: movie.id).average(:star).to_f.round(1) %>
+                <%= @score %>
+              <script>
+                $('#star_<%= movie.id %>').empty();
+                $('#star_<%= movie.id %>').raty({
+                  size: 70,
+                  starOn : '<%= asset_path('star-on.png') %>',
+                  starOff: "<%= asset_path('star-off.png') %>",
+                  starHalf: "<%= asset_path('star-half.png') %>",
+                  scoreName: "review[star]", //reviewモデルのstarカラムに保存
+                  half: true, 
+                  readOnly: true,
+                  });
+              </script>
+            </td>
+            <td class="text-right"><%= @reviews.count %></td>
+            <td class="text-right"><%= @watch_lists.count %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-2"></div>
   </div>
 </div>

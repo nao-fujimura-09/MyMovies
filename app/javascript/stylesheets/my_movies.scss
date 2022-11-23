@@ -1,28 +1,52 @@
-body {
-  font-family: 'M PLUS Rounded 1c', sans-serif;
+header {
+  height: 60px;
+  background-color: #4f3318;
+  color: #f5f5f5;
+  text-align: center;
+  margin: 0 auto;
+}
+
+// ヘッダーリンク色無効
+.link-header {
+    height: 70px;
+    text-decoration: none;
+    color: #f5f5f5; 
+    text-align: center;
+    display: block;
+    align-items: center;
+}
+
+.link-header:hover {
+  text-decoration: none;
   background: #f5f5f5;
   color: #422D18;
 }
-// ヘッダーリンク色無効
-.link-header {
-    text-decoration: none;
-    color: #f5f5f5; 
-}
 
+body {
+  // font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  // background: #f5f5f5;
+  background: #f2f0e7;
+  // color: #422D18;
+  color: #4f3318;
+}
 // ボディリンク色無効
 .link-body {
     text-decoration: none;
     color: #422D18; 
-}
-header {
-  background-color: #a68b62;
-  color: #f5f5f5;
 }
 
 // トップページユーザーお気に入り映画
 .top-user {
   line-height: 0.5rem;
   font-weight: bold;
+}
+
+.user-genre li {
+  display :inline-block;
+  border: solid 1px;
+  padding: 2px;
+  margin: 0px 3px;
 }
 
 .button {
@@ -79,6 +103,7 @@ header {
   border-radius: 5px;
   padding-left: 15px;
   margin-top: 6px;
+  margin-right: 100px;
 }
 
 .watch {
@@ -89,9 +114,23 @@ header {
   border-radius: 5px;
   padding-left: 15px;
   margin-top: 6px;
-  margin-left: 170px;
+  margin-left: 100px;
 }
 
 .populer-user {
   margin-left: 250px;
+}
+
+// admin_user_index
+.table_frame {
+width: 1110px;
+// height: 1500px;
+overflow: auto;
+}
+
+footer {
+  height: 30px;
+  background-color: #4f3318;
+  color: #f5f5f5;
+  text-align: center;
 }

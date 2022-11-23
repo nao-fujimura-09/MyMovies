@@ -13,28 +13,20 @@
   </head>
 
   <body>
-    <header class="border-bottom">
+    <header>
       <div class="container">
-        <nav class="navbar navbar-expand-xl navbar-light">
-          <div class="row">
-            <div class="col-4"></div>
-            <div class="col-4">         
-              <%= link_to root_path, class:"link" do %>
-                <a class="navbar-brand py-3 px-5 btn btn-light" href="/" >My Movies</a>
-              <% end %>
-            </div>
-            <div class="col-4"></div>
-          </div>
-          
-          <div class="row">
-              <% if user_signed_in? %>
-                <%= current_user.name %>さん
-              <% end %>
+      <nav class="navbar navbar-expand-xl navbar-light">
+        <%= link_to root_path, class:"link-header" do %>
+          My Movies
+        <% end %>
               
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>  
-          </button>
-          <div class="collapse navbar-collapse my-5" id="navbarNavDropdown">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>  
+        </button>
+        
+        <div class="navbar-collapse collapse show" id="navbarNavDropdown" style="">
+          <div class="collapse navbar-collapse">
+        <!--<div class="collapse navbar-collapse my-5" id="navbarNavDropdown">-->
 
             <% if admin_signed_in? %>
               <ul class="navbar-nav ml-auto">
@@ -45,25 +37,52 @@
               </ul>
             <% end %>
             <% if user_signed_in? %>
-              <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><%= link_to "MY PAGE", public_user_mypage_path(current_user), class: "py-2 px-3 link-header" %></li>
-                <li class="nav-item"><%= link_to "MOVIES", public_movies_path, class: "py-2 px-3 link-header" %></li>
-                <li class="nav-item"><%= link_to "LOGOUT", destroy_user_session_path, method: :delete, class: "py-2 px-3 link-header" %></li>
+              <ul class="navbar-nav ml-auto align-items-center">
+                <li class="nav-item">
+                  <% if user_signed_in? %>
+                    <p class="mr-3"><%= current_user.name %>さん</p>
+                  <% end %>
+                </li>
+                <li class="nav-item align-items-center">
+                  <%= link_to public_user_mypage_path(current_user), class:"link-header px-3 mx-2" do %>
+                    <p class="align-items-center">MY PAGE</p>
+                  <% end %>
+                </li>
+                <li class="nav-item">
+                  <%= link_to public_movies_path, class:"link-header px-3 mx-2" do %>
+                    MOVIES
+                  <% end %>
+                </li>
+                <li class="nav-item">
+                  <%= link_to destroy_user_session_path, method: :delete, class:"link-header px-3 mx-2" do %>
+                    LOG OUT
+                  <% end %>
+                </li>
               </ul>
+            
             <% else %>
               <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><%= link_to "LOG IN", user_session_path, class: "py-2 px-3 link-header" %></li>
-                <li class="nav-item"><%= link_to "SIGN IN", new_user_registration_path, class: "py-2 px-3 link-header" %></li>
+                <li class="nav-item">
+                  <%= link_to user_session_path, class:" link-header px-3 mx-2" do %>
+                    <p>LOG IN</p>
+                  <% end %>
+                </li>
+                <li class="nav-item">
+                  <%= link_to new_user_registration_path, class:" link-header px-3 mx-2" do %>
+                    SIGN IN
+                  <% end %>
+                </li>
               </ul>
             <% end %>
           </div>
-        </div>  
+          </div>
       </nav>
-        </div>
+      </div>
     </header>
+    
     <%= yield %>
     
-    <footer>
+    <footer class="my-5 py-5">
       <p>＠my movies</p>
     </footer>
   </body>

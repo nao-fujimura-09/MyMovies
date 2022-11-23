@@ -1,9 +1,8 @@
-<div class="form-inline">
-  <%= image_tag current_user.get_profile_image(50,50), class:"user-icon mr-2" %>    
+  <%= image_tag current_user.get_profile_image(100,100), class:"user-icon" %>    
   <%= link_to edit_public_user_path(current_user), class:"link-body" do %>
-    <h5 class ="pl-2 mb-3 font-weight-bold"><%= current_user.name %></h5>
+    <h1 class ="pl-2 mb-3 font-weight-bold"><%= current_user.name %></h1>
   <% end %>
-</div>
+<!--</div>-->
     
       <p class="mt-3">
         フォロワー

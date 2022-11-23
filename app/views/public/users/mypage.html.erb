@@ -1,10 +1,48 @@
 <div class="container">
-  <div class="row mt-5">
-    <div class="col-2">
-      <%= render 'user_list', user: @user %>
+  <div class="row">
+    
+    <div class="col-2 mt-5"></div>
+    <div class="col-2 mt-5">
+      <%= image_tag current_user.get_profile_image(150,150), class:"user-icon" %>    
     </div>
     
-    <div class="col-10">
+    <div class="col-8 mt-5">
+      <%= link_to edit_public_user_path(current_user), class:"link-body" do %>
+        <h1 class ="mb-3 font-weight-bold"><%= current_user.name %></h1>
+      <% end %>
+
+      <p class="mt-3">
+        フォロワー
+          <%= link_to public_followers_path(user_id: @user.id), class:"link-body" do %>
+            <%= @user.followers.where(status: false).count %>
+          <% end %> |
+        フォロー中
+          <%= link_to public_followings_path(user_id: @user.id), class:"link-body" do %>
+            <%= @user.followings.where(status: false).count %>
+          <% end %>
+      </p>
+        
+      <div class="form-inline user-genre">
+        <p>【お気に入り映画】</p>
+        <p class="mr-4 font-weight-bold"><%= current_user.favorite_movie %></p>
+        
+        <ul>
+          好きなジャンル
+              <% Tmdb::Genre.movie_list.each do |movie_genre| %>
+                <% current_user.favorite_genres.each do |favorite_genre|%>
+                  <% if movie_genre.id == favorite_genre.genre_id %>
+                    <li><%= movie_genre.name %></li>
+                  <% end %>
+                <% end %>
+              <% end %></li>
+              </ul>
+      </div>
+
+    
+        <h5 class="mt-3"><%= link_to"WATCH lIST", public_watch_lists_path, class:"link-body" %></h5>
+</div></div> 
+  <div class="row mt-5">  
+    <!--<div class="col-10">-->
       <h2>映画閲覧数 <%= @user.views.count %> 本</h2>
       <ul class=" movies d-flex flex-wrap row-gap">
         <% @views.each do |view| %>
@@ -39,7 +77,7 @@
           </li>
           <% end %>
       </ul>
-    </div>
+    <!--</div>-->
     
   </div>
 </div>

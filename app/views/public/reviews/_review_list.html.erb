@@ -6,39 +6,43 @@
   </thead>
   
   <tbody>
-    <% reviews.each do |review| %>
-      <tr>
-        <td>
-          <%= image_tag review.user.get_profile_image(70,70), class:"user-icon mt-4" %><br>
-          <%= link_to public_user_path(review.user_id) do %>
-            <h5 class="pl-3 link-body"><%= review.user.name %></h5>
-          <% end %>
-        </td>
-        <td class="d-flex flex-column mx-5 mt-4">
-          <%= link_to public_review_path(review.id) do %>
-            <h4 class="font-weight-bold link-body"><%= review.title %></h4>
-          <% end %>
-          <%= review.body.truncate(120) %>
-        </td>
-        <td>
-          <% unless review.nil? %> <!-- 投稿と被らないように別のIDをつける-->
-          <div id="star_review_<%= review.id %>"></div> 
-            <script>
-              $('#star_review_<%= review.id %>').empty();
-              $('#star_review_<%= review.id %>').raty({
-                size: 70,
-                starOn : '<%= asset_path('star-on.png') %>',
-                starOff: "<%= asset_path('star-off.png') %>",
-                starHalf: "<%= asset_path('star-half.png') %>",
-                scoreName: "review[star]",
-                half: true, 
-                readOnly: true,
-                score: <%= review.star %>
-              });
-            </script>
-          <% end %>
-        </td>
-      </tr>
+    <% if @review.present? %>
+      <% reviews.each do |review| %>
+        <tr>
+          <td>
+            <%= image_tag review.user.get_profile_image(70,70), class:"user-icon mt-4" %><br>
+            <%= link_to public_user_path(review.user_id) do %>
+              <h5 class="pl-3 link-body"><%= review.user.name %></h5>
+            <% end %>
+          </td>
+          <td class="d-flex flex-column mx-5 mt-4">
+            <%= link_to public_review_path(review.id) do %>
+              <h4 class="font-weight-bold link-body"><%= review.title %></h4>
+            <% end %>
+            <%= review.body.truncate(120) %>
+          </td>
+          <td>
+            <% unless review.nil? %> <!-- 投稿と被らないように別のIDをつける-->
+            <div id="star_review_<%= review.id %>"></div> 
+              <script>
+                $('#star_review_<%= review.id %>').empty();
+                $('#star_review_<%= review.id %>').raty({
+                  size: 70,
+                  starOn : '<%= asset_path('star-on.png') %>',
+                  starOff: "<%= asset_path('star-off.png') %>",
+                  starHalf: "<%= asset_path('star-half.png') %>",
+                  scoreName: "review[star]",
+                  half: true, 
+                  readOnly: true,
+                  score: <%= review.star %>
+                });
+              </script>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <p class="mt-4">レビューはまだありません</p>
     <% end %>
   </tbody>
 </table>

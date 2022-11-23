@@ -12,7 +12,9 @@ Rails.application.routes.draw do
   }
   namespace :admin do
     resources :users, only: [:index, :show, :edit]
-    resources :movies, only: [:index,:show, :edit, :comfirm]
+    resources :movies, only: [:index,:show, :edit, :comfirm] 
+    get "/before_movie_select", to: "movies#before_movie_select", as: "before_movie_select"
+    get "/:id/movies", to: "movies#movie_select", as: "movie_select"
     resources :genres, only: [:index]
   end
   

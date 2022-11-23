@@ -6,7 +6,8 @@ class Public::MoviesController < ApplicationController
   
 
   def index
-    @movies = Tmdb::Movie.popular[:results].push(Tmdb::Movie.now_playing[:results]).flatten!
+    @genres = Tmdb::Genre.movie_list
+    @movies = Tmdb::Movie.popular[:results].push(Tmdb::Movie.now_playing[:results]).push(Tmdb::Movie.top_rated[:results]).flatten!.uniq
     @watch_list = WatchList.new
     @review = Review.new
     @view = View.new
@@ -14,7 +15,6 @@ class Public::MoviesController < ApplicationController
 
   def review
     @reviews = Review.where(movie_id: params[:movie_id]).where("title IS NOT NULL").where("title!=''")
-    # @reviews = Review.where("title!='' OR body!=''").where(movie_id: params[:id]) #タイトルと本文がからのものは表示しない。movie_idが当てはまるものを探す
   end
   
   def show
@@ -26,11 +26,9 @@ class Public::MoviesController < ApplicationController
     casts.select do |cast| #キャストの中の特定の条件を取得
       cast.name #キャストの名前を取得
       @persons.push(cast.name) #変数personsにcast.nameを代入
-          @reviews = Review.where(movie_id: params[:movie_id]).where("title IS NOT NULL").where("title!=''")
     end
-     # render json: @movie.perfomer    
-    # byebug
-
+  
+    @reviews = Review.where(movie_id: params[:movie_id]).where("title IS NOT NULL").where("title!=''")
     @review = Review.new
     @reviews = Review.where("title!='' OR body!=''").where(movie_id: params[:id]) #タイトルと本文がからのものは表示しない。movie_idが当てはまるものを探す
     @views= View.all
