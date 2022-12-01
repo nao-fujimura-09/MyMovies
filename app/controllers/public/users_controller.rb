@@ -17,15 +17,12 @@ class Public::UsersController < ApplicationController
     
     def update 
         @user = current_user
-        # if @user.favorite_genres(@user.id).present?
             FavoriteGenre.where(user_id: @user.id).destroy_all
-            params[:user][:favorite_genres].compact_blank.each do |genre_id|
-                FavoriteGenre.create(user_id: @user.id, genre_id: genre_id)
+            params[:user][:favorite_genres].compact_blank.each do |genre_id| #comapct_blankで空白の配列を排除
+                FavoriteGenre.create(user_id: @user.id, genre_id: genre_id.to_i)
             end
-        # end
-        @user.update!(user_params)
-        
-        redirect_to public_user_mypage_path(current_user)       
+        @user.update!(user_params.except(:favorite_genres)) #exceptでfavorite_genres以外をupdate(上で保存しているため)
+        # redirect_to public_user_mypage_path(current_user), notice: 'プロフィールを変更しました'
     end
    
     def mypage
@@ -50,13 +47,12 @@ class Public::UsersController < ApplicationController
             flash[:alert] = "本当に退会してもよろしいですか？"
         end
         reset_session
-        redirect_to root_path
+        redirect_to root_path, alert: '退会しました'
     end
     
     private
   
-  def user_params
-    params.require(:user).permit(:name, :email, :password, :favorite_movie, :favorite_genres, :profile_image)
-    # , favorite_genres_attributes: [:_destroy, :id]
-  end
+    def user_params
+        params.require(:user).permit(:name, :email, :password, :favorite_movie, :profile_image, favorite_genres:[])
+    end
 end

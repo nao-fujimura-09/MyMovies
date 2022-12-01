@@ -47,13 +47,13 @@
     <div class="col-3 mt-5">
       <table class="table-boderless">
         <tr>
-          <td><h4>閲覧数</h4></td>
+          <td><h4 class="title">閲覧数</h4></td>
           <td><h4>:</h4></td>
           <td><h4 class="ml-3 text-right"><%= @views.count %></h4></td>
         </tr>
         
         <tr>
-          <td><h4>平均評価</h4></td>
+          <td><h4 class="title">平均評価</h4></td>
           <td><h4> : </h4></td>
           <td><h4 class="ml-3 text-right"><%= Review.where(movie_id: @movie.id).average(:star).to_f.round(1) %></h4></td>
           <script>

@@ -11,8 +11,12 @@
         <tr>
           <td>
             <%= image_tag review.user.get_profile_image(70,70), class:"user-icon mt-4" %><br>
-            <%= link_to public_user_path(review.user_id) do %>
-              <h5 class="pl-3 link-body"><%= review.user.name %></h5>
+            <% if user_signed_in? %>
+              <%= link_to public_user_path(review.user_id) do %>
+                <h5 class="pl-3 mt-2 link-body"><%= review.user.name %></h5>
+              <% end %>
+            <% else %>
+              <h5 class="pl-3 mt-2 title"><%= review.user.name %></h5>
             <% end %>
           </td>
           <td class="d-flex flex-column mx-5 mt-4">

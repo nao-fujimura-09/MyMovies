@@ -27,6 +27,7 @@ class Public::MoviesController < ApplicationController
       cast.name #キャストの名前を取得
       @persons.push(cast.name) #変数personsにcast.nameを代入
     end
+    @directors = Tmdb::Movie.director(id)
   
     @reviews = Review.where(movie_id: params[:movie_id]).where("title IS NOT NULL").where("title!=''")
     @review = Review.new

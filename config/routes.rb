@@ -11,10 +11,13 @@ Rails.application.routes.draw do
     sessions: "admin/sessions"
   }
   namespace :admin do
-    resources :users, only: [:index, :show, :edit]
+    resources :users, only: [:index, :show, :edit, :update]
+      get "/before_user_select", to: "users#before_user_select", as: "before_user_select"
+      get "/:id/users", to: "users#user_select", as: "user_select"
+      patch "/withdrawal" => "users#withdrawal", as:"withdrawal"
     resources :movies, only: [:index,:show, :edit, :comfirm] 
-    get "/before_movie_select", to: "movies#before_movie_select", as: "before_movie_select"
-    get "/:id/movies", to: "movies#movie_select", as: "movie_select"
+      get "/before_movie_select", to: "movies#before_movie_select", as: "before_movie_select"
+      get "/:id/movies", to: "movies#movie_select", as: "movie_select"
     resources :genres, only: [:index]
   end
   

@@ -4,8 +4,12 @@ class Public::GenresController < ApplicationController
   Tmdb::Api.language("ja")
   
   def show
+    # @genres = Tmdb::Genre.movie_list
     @genres = Tmdb::Genre.movie_list
     @genre_movies = Tmdb::Genre.movies(params[:id])[:results]
+    @watch_list = WatchList.new
+    @review = Review.new
+    @view = View.new
   end
 
 end

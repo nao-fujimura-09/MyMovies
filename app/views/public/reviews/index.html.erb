@@ -1,14 +1,39 @@
 <div class="container">
-  <h2 class="my-5">レビュー</h2>
   <div class="row">
-    <div class="col-3">
-    </div>
-
-    <div class="col-8">
-        <h2 class="font-weight-bold my-5 border-bottom">
-          レビュー <%= @reviews.count %>件
+    <div class="col-12">
+      <h2 class="my-5 title"><%= @user.name %>さんのレビュー
+          (<%= @reviews.count %>件)
         </h2>
-       <%= render 'review_list', reviews: @reviews %>
+        
+        <% @reviews.each do |review|%>
+          <% @movie = Tmdb::Movie.detail(review.movie_id) %>
+          <table class="table">
+            <thead class="title">
+              <th width="10%"></th>
+              <th width="30%">作品</th>
+              <th width="20%">タイトル</th>
+              <th width="40%">レビュー</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="mb-3 mx-5"><%= image_tag "https://image.tmdb.org/t/p/w45/#{@movie.poster_path}" %></div></td>
+                <td>
+                  <%= link_to public_movie_path(@movie.id) do %>
+                   <h5 class="title"><%= @movie.title %></h5>
+                  <% end %>
+                </td>
+                <td>
+                  <%= link_to public_review_path(review.id) do %>
+                    <h5 class="title"><%= review.title %></h5>
+                  <% end %>
+                    </td>
+                <td><h5 class="title"><%= review.body %></h5></td>
+             </tr>
+         </tbody>
+       </table>
+         
+         
+       <% end %>
     </div>
     </div>
   </div>

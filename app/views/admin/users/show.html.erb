@@ -1,0 +1,97 @@
+<div class="container">
+  <h1 class="mt-5 title"><%= @user.name %>さん</h1>
+  <% if @user.status? %> 
+    <div class="form-inline font-weight-bold">          
+      <p>会員ステータス：</p>
+      <p style="color:#4f3318">退会</p>
+    </div>
+  <% else %>
+    <div class="form-inline font-weight-bold">          
+      <p>会員ステータス：</p>
+      <p style="color:#32cd32">有効</p>
+    </div>
+  <% end %>  
+
+  <div class="row">
+    <div class="col-5 mt-5">
+      <div class="form-inline font-weight-bold">
+        <h5 class="title">基本情報</h5>
+        <h5>(
+        <%= link_to edit_admin_user_path(@user.id), class:"link-body" do %>
+          編集する
+        <% end %>
+        )</h5>
+      </div>
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td width="20%">ユーザーID</td>
+            <td width="50%"><%= @user.id %></td>
+          </tr>
+          <tr>
+            <td>ユーザーネーム</td>
+            <td><%= @user.name %></td>
+          </tr>
+          <tr>
+            <td>メールアドレス</td>
+            <td><%= @user.email %></td>
+          </tr>
+          <tr>
+            <td>お気に入り映画</td>
+            <td><%= @user.favorite_movie %></td>
+          </tr>
+          <tr>
+            <td>好きなジャンル</td>
+            <td>
+              <div class="form-inline">
+                <% @user.favorite_genres.each do |favorite_genre|%>
+                  <p><%= favorite_genre.genre.name %>/</p>
+                <% end %>
+              </div>
+            </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="col-3 mt-5">
+      <h5 class="title">フォロー状況</h5>
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td width="80%">フォロワー数</td>
+            <td width="20%"><%= @user.followers.where(status: false).count %></td>
+          </tr>
+          <tr>
+            <td>フォロー数</h5></td>
+            <td><%= @user.followings.where(status: false).count %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="col-3 mt-5">
+      <h5 class="title">分析データ</h5>
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td>映画閲覧数</td>
+            <td><%= @user.views.count %></td>
+          </tr>
+          <tr>
+            <td>レビュー数</td>
+            <td><%= @reviews.count %></td>
+          </tr>
+          <tr>
+            <td>リストイン数</td>
+            <td><%= @user.watch_lists.count %></td>
+          </tr>
+          <tr>
+            <td>平均評価</td>
+            <td><%= Review.where(user_id: @user.id).average(:star).to_f.round(1) %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

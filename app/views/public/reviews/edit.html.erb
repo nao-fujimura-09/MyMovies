@@ -1,10 +1,11 @@
 <div class="container">
-   <h2 class="font-weight-bold mt-5">レビューの編集</h2>
   <div class="row">
-    <div class="col-3 mt-5">
-      <%= render 'public/users/user_list', user: @review.user %>
+    <div class="col-3 mt-5 pt-5">
+      <%= render 'public/users/user_list', user: @user %> <!--ユーザー詳細呼び出し-->
     </div>
     <div class="col-6 mt-5">
+         <h2 class="font-weight-bold mt-5 title">レビューの編集</h2>
+      
       <%= form_with model: @review, url: public_review_path(@review.id) do |f| %>
       <%= f.hidden_field :movie_id, :value => @review.movie_id %>
       

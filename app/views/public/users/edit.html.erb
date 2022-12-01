@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-4"></div>
     <div class="col-4">
-      <h2 class="mt-5 mb-3 text-center">プロフィール編集</h2>
+      <h2 class="mt-5 mb-3 text-center title">プロフィール編集</h2>
     </div>
     <div class="col-4"></div>
   </div>
@@ -55,17 +55,15 @@
           <tr>
             <td>好きな映画のジャンル</td>
               <%= f.fields_for :favorite_genre do |i| %>
-          <!--<%= f.fields_for :foavrite_genres do |favorite_genre| %>-->
-            <!--<td><%= f.text_field :favorite_genre, class: 'form-control' %></td>-->
             <td>
-              <%= f.collection_check_boxes(:favorite_genres, Tmdb::Genre.movie_list, :id, :name) %>　
-              <% end %>
+              <%= f.collection_check_boxes(:favorite_genres, Genre.all, :id, :name, include_hidden: false, class:"mr-2") %>　
             </td>
           </tr>
+          
           <% end %>
         </tbody>
         </table>
-        <div align="right">
+        <div align="center">
          <%= f.submit "変更する", class:"button btn  px-3 py-2 mt-3" %>
          <%= link_to "退会する", public_comfirm_path, class: "py-2 px-3 button btn px-3 py-2 mt-3 ml-4"  %>
         </div>

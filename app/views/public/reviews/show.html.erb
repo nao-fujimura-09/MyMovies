@@ -1,7 +1,10 @@
 <div class="container">
-  <p class="text-center"><%= flash[:notice] %></p>
+  
   <div class="row">
     <div class="col-3 mt-5 pt-5">
+      <h2 class="title"><%= @movie.title %></h2>
+      <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"my-3" %>
+
       <div class="form-inline">
         <div id="star_<%= @review.movie_id.to_s %>"></div>
         <div class="ml-3">
@@ -21,9 +24,9 @@
           score: <%= Review.where(movie_id: @movie.id).average(:star) %>, //平均の星を表示
           });
       </script>
-            
-      <h2 class="mt-4"><%= @movie.title %></h2>
-      <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"my-3" %>
+
+
+
       <h4 class="mt-4">あらすじ</h4>
       <div><%= @movie.overview %></div>
       

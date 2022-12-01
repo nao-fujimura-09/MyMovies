@@ -5,7 +5,7 @@ class Public::WatchListsController < ApplicationController
   Tmdb::Api.language("ja")
   
   def create
-    @watch_list = WatchList.new(watch_list_params)
+    @watch_list = WatchList.new(movie_id: params[:movie_id])
     @watch_list.user_id = current_user.id
     @watch_list.save
     # byebug
@@ -15,18 +15,19 @@ class Public::WatchListsController < ApplicationController
   
   def index
     @view = View.new
+    @review = Review.new
+    @user =current_user
+    @genres = Genre.all
     exist_view_movies = current_user.views.pluck(:movie_id)
-    # @watch_lists = current_user.watch_lists.where.not(movie_id:exist_view_movies).select(:movie_id)
     
     if params[:id] == "1"
       exist_view_movies = current_user.views.pluck(:movie_id)
       @watch_lists = current_user.watch_lists.where(movie_id:exist_view_movies)
-      # @watch_lists = current_user.watch_lists, lambda {where(movie_id:exist_view_movies).select(:movie_id)}
     elsif params[:id] == "2"
       exist_view_movies = current_user.views.pluck(:movie_id)
-      @watch_lists = current_user.watch_lists.where.not(movie_id:exist_view_movies).select(:movie_id)
+      @watch_lists = current_user.watch_lists.where.not(movie_id:exist_view_movies).select(:movie_id).distinct
     else
-      @watch_lists = current_user.watch_lists.all
+      @watch_lists = current_user.watch_lists.select(:movie_id).distinct
     end
     # render json: @movies
   end

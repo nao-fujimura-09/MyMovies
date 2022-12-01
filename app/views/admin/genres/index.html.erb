@@ -1,22 +1,23 @@
 <div class="container">
-  <h1 class="mt-5">Genres</h1>
-  <div class="col-4"></div>
-  <div class="col-4">
-  <table class="table mt-3">
-    <thead>
-      <th>genreID</th>
-      <th>genre name</th>
-    </thead>
-    <tbody>
-      <% @genres.each do |genre| %>
-      <tr>
-        <td><%= genre.id %></td>
-        <td><%= genre.name %></td>
-        <!--<td ~~~ style="word-wrap:break-word;"></td>-->
-      </tr>
-  <% end %>
-    </tbody>
-  </table>
+  <h1 class="mt-5 title">ジャンル一覧</h1>
+  <div class="row">
+    <div class="col-4"></div>
+    <div class="col-4">
+      <table class="table mt-3">
+        <thead>
+          <th>genreID</th>
+          <th>genre name</th>
+        </thead>
+        <tbody>
+          <% @genres.each do |genre| %>
+            <tr>
+              <td><%= genre.id %></td>
+              <td><%= genre.name %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-2"></div>
   </div>
-  <div class="col-2"></div>
 </div>

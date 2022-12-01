@@ -7,7 +7,7 @@ class Public::SessionsController < Devise::SessionsController
     # before_action :customer_state, only: [:create]
 
   def after_sign_in_path_for(resource)
-    root_path
+    public_user_mypage_path(current_user)
   end
 
   def after_sign_out_path_for(resource)
@@ -25,7 +25,7 @@ class Public::SessionsController < Devise::SessionsController
     @user= User.find_by(email: params[:user][:email]) 
     return if !@user
     if @user.valid_password?(params[:user][:password]) && @user.status
-      # flash[:notice] = "退会済みです。再度ご登録をしてご利用ください。"
+       flash[:alert] = "退会済みです。再度ご登録をしてご利用ください。"
       redirect_to new_user_registration_path
     end
   end

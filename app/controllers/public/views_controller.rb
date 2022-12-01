@@ -5,7 +5,7 @@ class Public::ViewsController < ApplicationController
   Tmdb::Api.language("ja")
   
   def create
-    @view = View.new(view_params)
+    @view = View.new(movie_id: params[:movie_id])
     @view.user_id = current_user.id
     @view.save
     #@watch_lists = WatchList.all

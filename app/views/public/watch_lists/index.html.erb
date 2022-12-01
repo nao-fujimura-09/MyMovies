@@ -1,28 +1,102 @@
 <div class="container">
-  <h2 class="my-5"><%= current_user.name %>さんのWatchList</h2>
-  
-    <div class="form-inline justify-content-end mb-5">
-      <%= form_with url: public_before_watch_select_path, method: :get, local: true do |f| %>
-        <%= f.select :watch_select, {'全て': 0, '閲覧済': 1, '未閲覧': 2}, { include_blank: '閲覧状況で選択'}, { class: 'form-control mr-3', width: '20%'} %>
-        <%= f.submit "選択", class: "button btn" %>
+  <div class="row mt-5">
+    <div class="col-3 mt-5">
+      <%= image_tag current_user.get_profile_image(100,100), class:"user-icon" %>    
+      <h3 class ="pl-2 mt-2 mb-3 font-weight-bold title"><%= current_user.name %></h3>
+    
+      <p class="mt-3 title">
+        フォロワー
+          <%= link_to public_followers_path(user_id: current_user), class:"link-body" do %>
+            <%= @user.followers.where(status: false).count %>
+          <% end %> |
+        フォロー中
+          <%= link_to public_followings_path(user_id: current_user), class:"link-body" do %>
+            <%= @user.followings.where(status: false).count %>
+          <% end %>
+      </p>
+        
+      <table class="table-borderless mt-5 title">
+        <tr>
+          <td class="font-weight-bold"><p>お気に入りの映画</p></td>
+        </tr>  
+        <tr>
+          <td>
+            <% if current_user.favorite_movie.present? %>
+              <p class="user-mypage"><%= current_user.favorite_movie %></p>
+            <% else %>
+              <p>まだ設定されていません</p>
+            <% end %>
+          </td>
+        </tr>
+      </table>
+    
+      <table>
+        <tr>
+          <td class="font-weight-bold title"><p>好きなジャンル</p></td>
+        </tr>
+        <tr>
+          <td>
+            <% if current_user.favorite_genres.present? %>
+              <% current_user.favorite_genres.each do |favorite_genre|%>
+                <p class="user-mypage title"><%= favorite_genre.genre.name %></p>
+              <% end %>
+            <% else %>
+              <p class="title">まだ設定されていません</p>
+            <% end %>
+          </td>
+        </tr>
+      </table>
+
+      <h4 class="mt-5 mb-3 title">MENU</h4>
+      <%= link_to edit_public_user_path(current_user), class:"link-body" do %>
+        <h5>プロフィール編集</h5>
+      <% end %>
+      <%= link_to public_user_mypage_path(current_user), class:"link-body" do %>
+          <h5>プロフィールへ戻る</h5>
       <% end %>
     </div>
-  
-<!--<%#= render 'movies/list', users: @users %>-->
-    <ul class=" movies d-flex flex-wrap row-gap">
-      <% @watch_lists.each do |watch_list| %>
-       <% movie = Tmdb::Movie.detail(watch_list.movie_id) %>
-       <% review = Review.find_by(movie_id: watch_list.movie_id) %>
-       
-        <li class="d-flex flex-column justify-content-between">
-          <div class="mb-3 mx-5"><%= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster_path}" %></div>
-            <h3 class=" movies text-center"><%= movie.title.truncate(14) %></h3>
-            
-            <% unless review.nil? %> 
-              <div id="star_<%= review.movie_id.to_s %>"></div>
+
+    <div class="col-9 mt-5">
+      <h2 class="my-5 title"><%= @user.name %>さんのWatchList</h2>
+      
+      <div class"form-inline justify-content-between mb-3">
+        <% if params[:id] == "0" %>
+          <h5 class="font-weight-bold title">全て</h5>
+        <% elsif params[:id] == "1" %>
+          <h5 class="font-weight-bold title">閲覧済</h5>
+        <% elsif params[:id] == "2" %>
+          <h5 class="font-weight-bold title">未閲覧</h5>
+        <% else %>
+          <h5 class="font-weight-bold title">並び替えなし</h5>
+        <% end %>
+      
+        <div class="form-inline justify-content-end mb-3">
+          <%= form_with url: public_before_watch_select_path, method: :get, local: true do |f| %>
+            <%= f.select :watch_select, {'全て': 0, '閲覧済': 1, '未閲覧': 2}, { include_blank: '閲覧状況で選択'}, { class: 'form-control mr-3', width: '20%'} %>
+            <%= f.submit "選択", class: "button btn" %>
+          <% end %>
+        </div>
+      </div>
+          
+      <ul class=" movies d-flex flex-wrap row-gap">
+        <% @watch_lists.each do |watch_list| %>
+          <% movie = Tmdb::Movie.detail(watch_list.movie_id) %>
+          <% review = Review.find_by(movie_id: watch_list.movie_id) %>
+
+          <li class="d-flex flex-column justify-content-between">
+            <div class="mb-3 mx-5"><%= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster_path}" %></div>
+            <h3 class="text-center title"><%= movie.title.truncate(14) %></h3>
+
+            <!--評価済みの場合-->
+            <% if current_user.reviews.find_by(movie_id: watch_list.movie_id).present? %>
+              <div class="text-center">
+                <p class="mt-1 title">
+                  評価済：<%= current_user.reviews.where(movie_id: watch_list.movie_id).last.star.to_f.round(1) %>点
+                </p>
+
                 <script>
-                  $('#star_<%= review.movie_id %>').empty();
-                  $('#star_<%= review.movie_id %>').raty({
+                  $('#star_myreview_<#%= current_user.reviews.find_by(movie_id: watch_list.movie_id) %>').empty();
+                  $('#star_myreview_<%= current_user.reviews.find_by(movie_id: watch_list.movie_id) %>').raty({
                     size: 70,
                     starOn : '<%= asset_path('star-on.png') %>',
                     starOff: "<%= asset_path('star-off.png') %>",
@@ -30,41 +104,98 @@
                     scoreName: "review[star]",
                     half: true, 
                     readOnly: true,
-                    score: <%= review.star %>
+                    <% if current_user.reviews.find_by(movie_id: watch_list.movie_id).present? %>
+                      score: <%= current_user.reviews.find_by(movie_id: watch_list.movie_id).star %>,
+                    <% end %>
                   });
                 </script>
-              <% end %>
-            
-              <div class="form-inline justify-content-center mt-3 mb-5">
-                <% if current_user.watch_lists.exists?(movie_id: movie.id) %>
-                  <!--ウォッチリストからの削除-->
-                  <div class="list">LIST
-                    <%= link_to public_watch_list_path(current_user.watch_lists.find_by(movie_id: movie.id)), method: :delete, class: 'btn btn-tag' do %>
-                      <i class="fa fa-solid fa-minus fa-xs btn-tg", style="color:#f5f5f5;"></i>
-                    <% end %>
-                  </div>
+              </div>
+
+              <div class="form-inline justify-content-center">
+                <div class="button-delete p-2 mr-3">
+                  <i class="fa fa-solid fa-star fa-lg"></i>
+                </div>
+                <!--ウォッチリストからの削除-->
+                <%= link_to public_watch_list_path(current_user.watch_lists.find_by(movie_id: movie.id)), class:"button-delete p-2 mr-3", method: :delete do %>
+                  <i class="fa fa-regular fa-heart fa-lg"></i>
                 <% end %>
-            
+
                 <% if current_user.views.exists?(movie_id: movie.id) %>
-                  <div class="watch">VIEW
-                    <%= link_to public_view_path(current_user.views.find_by(movie_id: movie.id)), method: :delete, class: 'btn btn-tag' do %>
-                      <i class="fa fa-solid fa-eye fa-xs btn-tg", style="color:#black;"></i>
-                    <% end %>
-                  </div>
+                <!--未閲覧-->
+                  <%= link_to public_view_path(current_user.views.find_by(movie_id: movie.id)), method: :delete, class: 'button-delete p-2' do %>
+                    <i class="fa fa-solid fa-eye fa-lg"></i>
+                  <% end %>
+                    
                 <% else %>
-                  <%= form_with model: @view, url: public_views_path, method: :post do |f| %>
-                  <%= f.hidden_field :movie_id, :value => movie.id %>
-                    <div class="form-inline justify-content-center mt-3 mb-5">
-                      <div class="watch">VIEW
-                        <%= button_tag type: 'submit', class: "btn btn-tag" do %>
-                          <i class="fa fa-solid fa-eye fa-xs", style="color:#f5f5f5;"></i>
-                        <% end %>
-                      </div>
-                    </div>
+                <!--閲覧済み-->
+                  <%= link_to public_views_path(movie_id: movie.id, user_id: current_user), class:"button p-2", width:"50px", method: :post do %>
+                    <i class="fa fa-solid fa-eye fa-lg"></i>
                   <% end %>
                 <% end %>
               </div>
-        </li>
-      <% end %>
-    </ul>
+
+              <div class="form-inline justify-content-center mt-3 mb-0">
+                <p class="mr-3"> STAR</p><p class="mr-3"> LIST</p><p> VIEW</p>
+              </div>
+
+            <% else %> <!--未評価の場合-->
+              <!--星評価-->
+              <%= form_with model: @review, url: public_reviews_path, local: true do |f| %>
+                <%= f.hidden_field :movie_id, :value => watch_list.movie_id %>
+
+                <div class="text-center">
+                  <div class="form-inline justify-content-center">
+                    <div class="form-group" id="star_<%= watch_list.movie_id %>">
+                      <%= f.label :star,'評価 ', class:'col-form-label' %>
+                      <%= f.hidden_field :star, id: :review_star %>
+                    </div>
+                    <div id="star_<%= current_user.reviews.find_by(watch_list.movie_id.to_s) %>"></div>
+                  </div>
+
+                  <script>
+                    $('#star_<%= watch_list.movie_id %>').empty();
+                    $('#star_<%= watch_list.movie_id %>').raty({
+                      size: 70,
+                      starOn : '<%= asset_path('star-on.png') %>',
+                      starOff: "<%= asset_path('star-off.png') %>",
+                      starHalf: "<%= asset_path('star-half.png') %>",
+                      scoreName: "review[star]",
+                      half: true,
+                    });
+                  </script>
+                </div>
+
+                <div class="form-inline justify-content-center mt-3">
+                  <%= f.button :type => "submit", class:"button p-2 mr-3", style: "border-style: none;" do %>
+                    <i class="fa fa-solid fa-star fa-lg"></i>
+                  <% end %>
+              <% end %><!--星評価フォーム-->
+
+                  <!--ウォッチリストからの削除-->
+                  <%= link_to public_watch_list_path(current_user.watch_lists.find_by(movie_id: movie.id)), class:"button-delete p-2 mr-3", method: :delete do %>
+                    <i class="fa fa-regular fa-heart fa-lg"></i>
+                  <% end %>
+        
+                  <% if current_user.views.exists?(movie_id: movie.id) %>
+                    <!--未閲覧-->
+                    <%= link_to public_view_path(current_user.views.find_by(movie_id: movie.id)), method: :delete, class: 'button-delete p-2' do %>
+                      <i class="fa fa-solid fa-eye fa-lg"></i>
+                    <% end %>
+                  <% else %>
+                    <!--閲覧済み-->
+                    <%= link_to public_views_path(movie_id: movie.id, user_id: current_user), class:"button p-2", width:"50px", method: :post do %>
+                      <i class="fa fa-solid fa-eye fa-lg"></i>
+                    <% end %>
+                  <% end %>
+                </div>
+
+                <div class="form-inline justify-content-center mt-3 mb-0">
+                  <p class="mr-3"> STAR</p><p class="mr-3"> LIST</p><p> VIEW</p>
+                </div>
+            <% end %><!--評価-->
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
 </div>
