@@ -64,10 +64,20 @@
                     <p class="font-weight-bold", style="color:#32cd32">有効</p>
                   <% end %>
                 </td>
-                <td><%= user.favorite_movie %></td>
                 <td>
-                  <% user.favorite_genres.each do |favorite_genre| %>
-                    <p><%= favorite_genre.genre.name %></p>
+                  <% if user.favorite_movie.present? %>
+                    <%= user.favorite_movie %>
+                  <% else %>
+                    <p>未設定</p>
+                  <% end %>
+                </td>
+                <td>
+                  <% if user.favorite_genres.present? %>
+                    <% user.favorite_genres.each do |favorite_genre| %>
+                      <p><%= favorite_genre.genre.name %></p>
+                    <% end %>
+                  <% else %>
+                    <p>未設定</p>
                   <% end %>
                 </td>
                 <td><%= @views.count %></td>

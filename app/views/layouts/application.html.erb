@@ -10,48 +10,50 @@
     <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%#= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application' %>
+    
+    <!--<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
+    <!--<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>-->
+    <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>-->
   </head>
 
   <body>
-    <header>
-      <div class="container">
+    <header >
+      <%= link_to root_path, class:"link-logo" do %>
+        <%= image_tag "logo.png", size: "170x60", alt: "My Movies" %>
+      <% end %>
       <nav class="navbar navbar-expand-xl navbar-light">
-        <%= link_to root_path, class:"link-logo" do %>
-          <%= image_tag "logo.png", size: "170x60", alt: "My Movies" %>
+        <% if user_signed_in? %>
+          <h5 class="ml-5 navvar-brand"><%= current_user.name %>さん</h5>
         <% end %>
         
-        <% if user_signed_in? %>
-          <h5 class="ml-5"><%= current_user.name %>さん</h5>
-        <% end %>
-
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>  
+          <span class="navbar-toggler-icon text-center"></span>  
         </button>
         
-        <div class="navbar-collapse collapse show" id="navbarNavDropdown" style="">
-          <div class="collapse navbar-collapse">
-        <!--<div class="collapse navbar-collapse my-5" id="navbarNavDropdown">-->
+          <!--<div class="navbar-collapse collapse show" id="navbarNavDropdown">-->
+          <!--<div class="collapse navbar-collapse">-->
+          <div class="collapse navbar-collapse my-5" id="navbarNavDropdown">
 
             <% if admin_signed_in? %>
-              <ul class="navbar-nav ml-auto d-flex align-items-center">
+              <ul class="navbar-nav ml-auto d-flexr">
                 <li class="nav-item"><%= link_to "MOVIES", admin_movies_path, class: "py-2 px-3 link-header" %></li>
                 <li class="nav-item"><%= link_to "GENRES", admin_genres_path, class: "py-2 px-3 link-header" %></li>
                 <li class="nav-item"><%= link_to "USERS",  admin_users_path, class: "py-2 px-3 link-header" %></li>
                 <li class="nav-item"><%= link_to "LOGOUT", destroy_admin_session_path, method: :delete, class: "py-2 px-3 link-header" %></li>
               </ul>
             <% elsif user_signed_in? %>
-              <ul class="navbar-nav ml-auto align-items-center">
+              <ul class="navbar-nav ml-auto">
                 <li class="nav-item align-items-center">
                   <%= link_to public_user_mypage_path(current_user), class:"link-header px-3 mx-2" do %>
-                    <p class="align-items-center">MY PAGE</p>
+                    MY PAGE
                   <% end %>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item  align-items-center">
                   <%= link_to public_movies_path, class:"link-header px-3 mx-2" do %>
                     MOVIES
                   <% end %>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item align-items-center">
                   <%= link_to destroy_user_session_path, method: :delete, class:"link-header px-3 mx-2" do %>
                     LOG OUT
                   <% end %>
@@ -73,15 +75,15 @@
               </ul>
             <% end %>
           </div>
-          </div>
       </nav>
-      </div>
     </header>
-    <div class="mt-4 text-center">
+    
+    <div class="mt-5 text-center">
       <% flash.each do |message_type, message| %>
         <%= content_tag :div, message, class: message_type %>
       <% end %>
     </div>
+    
     <%= yield %>
     
     <footer class="my-5 py-5">

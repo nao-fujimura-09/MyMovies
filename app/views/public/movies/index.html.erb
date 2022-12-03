@@ -1,4 +1,18 @@
 <div class="container">
+  
+    <% if user_signed_in? %>
+    <div class="form-inline justify-content-center">
+      <div class="search_form mt-3">
+        <%= form_with url: public_search_path, local: true, method: :get do |f| %>
+          <%= f.text_field :word, class:"form-control mr-2",size:"30X30", placeholder:"タイトルで検索" %>
+          <%= f.button :type => "submit", class:"button py-2 px-3", style: "border-style: none;" do %>
+            <i class="fas fa-search fa-lg"></i>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  
   <div class="row mt-5">
     <div class="col-3 mt-5">
       <table class="table mt-5">

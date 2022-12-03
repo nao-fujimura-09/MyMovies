@@ -1,0 +1,38 @@
+<div class="container">
+  <h2 class="my-5 text-center title">検索結果</h2>
+  
+  <div class="table-responsive">
+    <table class="table-boderless mb-5">
+      <tbody>
+        <tr>
+          <% @movies.each do |movie| %>
+            <% @reviews = Review.where(movie_id: movie.id) %>
+            <td>
+              <%= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster_path}", class:"mx-3" %></br>
+              <%= link_to public_movie_path(movie.id) , class:"link-body" do %>
+                <h5 class="mt-3 mx-3 text-center title"><%= movie.title.truncate(14) %></h5>
+              <% end %>
+              
+              <% unless @reviews.empty? %> 
+                <div class="text-center" id="star_review2_<%= movie.id %>"></div> 
+                <script>
+                  $('#star_review2_<%= movie.id %>').empty();
+                  $('#star_review2_<%= movie.id %>').raty({
+                    size: 70,
+                    starOn : '<%= asset_path('star-on.png') %>',
+                    starOff: "<%= asset_path('star-off.png') %>",
+                    starHalf: "<%= asset_path('star-half.png') %>",
+                    scoreName: "review[star]", //reviewモデルのstarカラムに保存
+                    half: true, 
+                    readOnly: true,
+                    score: <%= @reviews.average(:star) %>
+                    });
+                </script>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -38,16 +38,26 @@
           </tr>
           <tr>
             <td>お気に入り映画</td>
-            <td><%= @user.favorite_movie %></td>
+            <td>
+              <% if @user.favorite_movie.present? %>
+                <%= @user.favorite_movie %>
+              <% else %>
+                <p>未設定</p>
+              <% end %>
+              </td>
           </tr>
           <tr>
             <td>好きなジャンル</td>
             <td>
-              <div class="form-inline">
-                <% @user.favorite_genres.each do |favorite_genre|%>
-                  <p><%= favorite_genre.genre.name %>/</p>
+              <% if @user.favorite_genres.present? %>
+                <div class="form-inline">
+                  <% @user.favorite_genres.each do |favorite_genre|%>
+                    <p class="mr-3"><%= favorite_genre.genre.name %></p>
                 <% end %>
-              </div>
+                </div>
+              <% else %>
+                <p>未設定</p>
+              <% end %>
             </td>
         </tr>
         </tbody>
