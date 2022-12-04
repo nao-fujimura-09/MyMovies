@@ -1,27 +1,73 @@
 <div class="container">
 
-  <div class="d-block d-lg-none mt-4">
-    <div class="row mt-5">
-      <div class="col-4"></div>
-        <div class="col-4">
-          <%= image_tag @user.get_profile_image(90,90), class:"user-icon" %>
-        </div>
-      <div class="col-4"></div>
-    </div>
+  <!--レスポンシブ-->
+  <div class="d-block d-sm-none mt-4 d-flex justify-content-center">
+    <%= image_tag @user.get_profile_image(90,90), class:"user-icon" %>
+    <h1 class ="mb-3 ml-3 font-weight-bold d-flex align-items-end title"><%= @user.name %></h1>
+  </div>   
+    
+  <div class="d-block d-sm-none mt-4 d-flex justify-content-center">
+    <p class="title">
+      フォロワー
+        <%= link_to public_followers_path(user_id: @user.id), class:"link-body" do %>
+          <%= @user.followers.where(status: false).count %>
+        <% end %> |
+      フォロー中
+        <%= link_to public_followings_path(user_id: @user.id), class:"link-body" do %>
+          <%= @user.followings.where(status: false).count %>
+        <% end %>
+    </p>
+  </div>
+    
+  <div class="d-block d-sm-none mt-4 d-flex justify-content-center">
+    <!--フォローボタン-->
+    <% unless @user == current_user %>
+      <% if current_user.followings?(@user) %>
+        <%= link_to "フォローをやめる", public_follow_path(@user.id), class:"button py-2 px-3 ml-5", method: :delete %>
+      <% else %>
+        <%= link_to "フォローする", public_follows_path(user_id: @user.id), class:"button py-2 px-3 ml-5", method: :post %>
+      <% end %>
+    <% end %>
   </div>
   
-  <div class="row mt-5">
-    <div class="col-1 mt-5"></div>
+  <div class="d-block d-sm-none mt-5 d-flex justify-content-center">
+    <div class="form-inline title">
+      <p class="mr-5 ">お気に入り映画</p>
+      <% if @user.favorite_movie.present? %>
+        <p class="user-mypage"><%= @user.favorite_movie %></p>
+      <% else %>
+        <p>まだ設定されていません</p>
+      <% end %>
+    </div>
+  </div>
     
-    <div class="col-2 d-none d-lg-block mt-5">
-      <%= image_tag @user.get_profile_image(150,150), class:"user-icon" %>    
+  <div class="d-block d-sm-none mt-3 d-flex justify-content-center border-bottom">
+    <div class="form-inline title">
+      <p class="mr-5 ">好きなジャンル</p>
+        <% if @user.favorite_genres.present? %>
+          <% @user.favorite_genres.each do |favorite_genre|%>
+            <p class="user-mypage"><%= favorite_genre.genre.name %></p>
+          <% end %>
+        <% else %>
+          <p>まだ設定されていません</p>
+        <% end %>
+    </div>
+  </div>
+  <!--レスポンシブ-->
+
+  <div class="row mt-5">
+    <div class="d-none d-sm-block">
+      <div class="col-1 mt-5"></div>
+      <div class="col-2 mt-5">
+        <%= image_tag @user.get_profile_image(150,150), class:"user-icon" %>    
+      </div>
     </div>
     
-    <div class="col-md-9 col-sm-9 mt-5">
+    <div class="d-none d-sm-block col-9 mt-5">
       <div class="form-inline mb-4 border-bottom">
         <h1 class ="mb-3 mr-5 font-weight-bold title"><%= @user.name %></h1>
 
-        <p class="mt-3 mr-5">
+        <p class="mt-3 mr-5 title">
           フォロワー
             <%= link_to public_followers_path(user_id: @user.id), class:"link-body" do %>
               <%= @user.followers.where(status: false).count %>
@@ -32,7 +78,7 @@
             <% end %>
         </p>
 
-      <!--フォローボタン-->
+        <!--フォローボタン-->
         <% unless @user == current_user %>
           <% if current_user.followings?(@user) %>
             <%= link_to "フォローをやめる", public_follow_path(@user.id), class:"button py-2 px-3 ml-5", method: :delete %>
@@ -41,15 +87,15 @@
           <% end %>
         <% end %>
       </div>
-      
+  
       <div class="form-inline">
-        <p class="mr-5">お気に入り映画</p>
-        <p class="user-mypage"><%= @user.favorite_movie %></p>
+        <p class="mr-5 title">お気に入り映画</p>
+        <p class="user-mypage title"><%= @user.favorite_movie %></p>
       </div>
       <div class="form-inline">
-        <p class="mr-5">好きなジャンル</p>
+        <p class="mr-5 title">好きなジャンル</p>
           <% @user.favorite_genres.each do |favorite_genre|%>
-            <p class="user-mypage"><%= favorite_genre.genre.name %></p>
+            <p class="user-mypage title"><%= favorite_genre.genre.name %></p>
           <% end %>
       </div>
     </div>
@@ -57,10 +103,10 @@
  
   <div class="row mt-5">  
     <div class="col-1"></div>
-    <div class="col-11 mt-5">
+    <div class="col-md-11 col-sm-12 mt-5">
       <h4 class="title p-2 text-center border-bottom"><%= @user.name %>さんの閲覧映画数 <%= @user.views.count %> 本</h4>
       
-      <ul class="d-flex flex-wrap row-gap">
+      <ul class=" movies d-flex flex-wrap row-gap justify-content-center">
         <% @user.views.each do |view| %>
           <% movie = Tmdb::Movie.detail(view.movie_id) %>
           <li class="d-flex flex-column justify-content-between mt-5">
@@ -72,7 +118,7 @@
               <% if @user.reviews.find_by(movie_id: view.movie_id).present? %>
                 <div id="star_review_<%= view.movie_id %>"></div> 
               <% else %>
-                <p>まだ評価されていません。</p>
+                <p class="title">まだ評価されていません。</p>
               <% end %>
             </div>
             <script>
@@ -95,4 +141,5 @@
       </ul>
       </div>
   </div>
+  
 </div>

@@ -15,7 +15,7 @@
   
     <!--並び替えフォーム-->
     <div class="form-inline justify-content-end mb-2">
-      <%= form_with url: admin_before_user_select_path, method: :get, local: true, class: "search_form_group"  do |f| %>
+      <%= form_with url: admin_before_user_select_path, method: :get, local: true, class: "search_form_group d-flex"  do |f| %>
         <%= f.select :user_select, {'有効': 0, '退会': 1, '全て': 2}, { include_blank: 'ステータスを選択'}, { class: 'form-control mr-3', width: '20%', style: "max-width:250px;display:inline-block;"} %>
         <%= f.submit "選択", class: "button btn", style: "border-style:none;display:inline-block;" %>
       <% end %>

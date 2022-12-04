@@ -1,12 +1,13 @@
 <div class="container">
+  <h2 class="title my-5"><%= @movie.title %>のレビュー</h2>
   
   <div class="row">
     <div class="col-md-3 col-sm-12 mt-5">
+      <div class="d-flex justify-content-center">
+        <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"my-3" %>
+      </div>
       
-      <h2 class="title"><%= @movie.title %>のレビュー</h2>
-      <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"my-3" %>
-
-      <div class="form-inline">
+      <div class="form-inline d-flex justify-content-center">
         <div id="star_<%= @review.movie_id.to_s %>"></div>
         <div class="ml-3">
           <h3><%= Review.where(movie_id: @movie.id).average(:star).to_f.round(1) %>点</h3>
@@ -25,8 +26,6 @@
           score: <%= Review.where(movie_id: @movie.id).average(:star) %>, //平均の星を表示
           });
       </script>
-
-
 
       <h4 class="mt-4 title">あらすじ</h4>
       <div class="title"><%= @movie.overview %></div>

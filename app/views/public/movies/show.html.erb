@@ -1,11 +1,11 @@
 <div class="container">
+  
   <div class="row">
-    
-    <% if user_signed_in? %>
+    <%if user_signed_in? %>
       <div class="col-md-3"></div>
     <% end %>
       
-    <div class="col-md-9 col-sm-12 justify-content-sm-center mt-5 mb-3">
+    <div class="col-md-9 col-sm-12 mt-5 mb-3">
       <h2 class="font-weight-bold mt-5 title"><%= @movie.title %></h2>
         
       <div class="form-inline">
@@ -18,48 +18,43 @@
   </div>
   
   <div class="row">
-    <div class="col-3 mt-5">
-    
-      <div class="d-none d-sm-block">
-        <% if user_signed_in? %>
-          
-          <%= render 'public/users/user_list', user: @user %> <!--ユーザー詳細呼び出し-->
+    <div class="d-none d-sm-block col-3 mt-5">
+      <% if user_signed_in? %>
+        <%= render 'public/users/user_list', user: @user %> <!--ユーザー詳細呼び出し-->
         
-          <div class="form-inline border-bottom">
-            <h4 class="mt-5 title"><%= current_user.name %>さんの評価</h4>
-    
-            <div class="text-center ml-5">
-              <% if current_user.reviews.find_by(movie_id: @movie.id).present? %>
-                <h5 class="mt-5"><%= current_user.reviews.where(movie_id: @movie.id).last.star.to_f.round(1) %>点</h5>
-              <% else %>
-                <h5 class="mt-5">未評価</h5>
-              <% end %>
-            </div>
+        <div class="form-inline border-bottom">
+          <h4 class="mt-5 title"><%= current_user.name %>さんの評価</h4>
             
-            <script>
-              $('#star_myreview_<#%= current_user.reviews.find_by(movie_id: @movie.id) %>').empty();
-              $('#star_myreview_<%= current_user.reviews.find_by(movie_id: @movie.id) %>').raty({
-                size: 70,
-                starOn : '<%= asset_path('star-on.png') %>',
-                starOff: "<%= asset_path('star-off.png') %>",
-                starHalf: "<%= asset_path('star-half.png') %>",
-                scoreName: "review[star]",
-                half: true, 
-                readOnly: true,
-                <% if current_user.reviews.find_by(movie_id: @movie.id).present? %>
-                  score: <%= current_user.reviews.find_by(movie_id: @movie.id).star %>,
-                <% end %>
-              });
-            </script>
+          <div class="text-center ml-5">
+            <% if current_user.reviews.find_by(movie_id: @movie.id).present? %>
+              <h5 class="mt-5"><%= current_user.reviews.where(movie_id: @movie.id).last.star.to_f.round(1) %>点</h5>
+            <% else %>
+              <h5 class="mt-5">未評価</h5>
+            <% end %>
           </div>
-        <% end %>
-      </div>
+            
+          <script>
+            $('#star_myreview_<#%= current_user.reviews.find_by(movie_id: @movie.id) %>').empty();
+            $('#star_myreview_<%= current_user.reviews.find_by(movie_id: @movie.id) %>').raty({
+              size: 70,
+              starOn : '<%= asset_path('star-on.png') %>',
+              starOff: "<%= asset_path('star-off.png') %>",
+              starHalf: "<%= asset_path('star-half.png') %>",
+              scoreName: "review[star]",
+              half: true, 
+              readOnly: true,
+              <% if current_user.reviews.find_by(movie_id: @movie.id).present? %>
+                score: <%= current_user.reviews.find_by(movie_id: @movie.id).star %>,
+              <% end %>
+            });
+          </script>
+        </div>
+      <% end %>
     </div>
-
     
     <!--映画詳細  -->
-    <div class="col-lg-3 col-sm-12 justify-content-sm-center">
-      <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"mt-5" %>
+    <div class="col-md-3 col-sm-12">
+      <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"my-5" %>
       
       <% if user_signed_in? %>
         <div class="form-inline mr-5 mt-4">
@@ -104,7 +99,7 @@
         <tbody>
           <tr>
             <td>
-              <h5 class="font-weight-bold title">あらすじ</h5>
+              <h5 class="font-weight-bold title mt-3">あらすじ</h5>
               <p class="title">
                 <% if @movie.overview.present? %>
                   <%= @movie.overview %>
@@ -155,12 +150,13 @@
       </div>
     </div>
   </div>
-</div>
 
   <div class="row">
+    
+    </div>
     <!--レビュー-->
     <% if user_signed_in? %>
-      <div class="col-md-3 col-sm-12 mt-5">
+      <div class="col-md-3 col-sm-9 mt-5">
         <%= form_with model: @review, url: public_reviews_path do |f| %>
           <%= f.hidden_field :movie_id, :value => @movie.id %>
           
@@ -204,6 +200,8 @@
     </div>
     
     <div class="col-1"></div>
+    <% else %>
+      <div class="col-3"></div>
     <% end %>
     
     <!--レビュー表示ページの呼び出し-->
@@ -214,4 +212,5 @@
       <%= render 'public/reviews/review_list', reviews: @reviews %>
     </div>
   </div>
+</div>
 </div>
