@@ -1,32 +1,30 @@
 <div class="container">
-  <h1 class="my-5 title">ユーザー一覧</h1>
+  <h1 class="my-5 title">ユーザー 一覧</h1>
   
-    <div class="form-inline justify-content-between">
-      <!--並び替え名-->
-      <% if params[:id] == "0" %>
-        <h5 class="font-weight-bold">有効：<%= @users.where(status: false).count %>人</h5>
-      <% elsif params[:id] == "1" %>
-        <h5 class="font-weight-bold">退会済：<%= @users.where(status: true).count %>人</h5>
-      <% elsif %>
-        <h5 class="font-weight-bold">全て：<%= @users.count %>人</h5>
-      <% else %>
-        <h5 class="font-weight-bold">会員数：<%= @users.count %>人</h5>
+  <div class="form-inline justify-content-between">
+    <!--並び替え名-->
+    <% if params[:id] == "0" %>
+      <h5 class="font-weight-bold title">有効：<%= @users.where(status: false).count %>人</h5>
+    <% elsif params[:id] == "1" %>
+      <h5 class="font-weight-bold title">退会済：<%= @users.where(status: true).count %>人</h5>
+    <% elsif %>
+      <h5 class="font-weight-bold title">全て：<%= @users.count %>人</h5>
+    <% else %>
+      <h5 class="font-weight-bold title">会員数：<%= @users.count %>人</h5>
+    <% end %>
+  
+    <!--並び替えフォーム-->
+    <div class="form-inline justify-content-end mb-2">
+      <%= form_with url: admin_before_user_select_path, method: :get, local: true, class: "search_form_group"  do |f| %>
+        <%= f.select :user_select, {'有効': 0, '退会': 1, '全て': 2}, { include_blank: 'ステータスを選択'}, { class: 'form-control mr-3', width: '20%', style: "max-width:250px;display:inline-block;"} %>
+        <%= f.submit "選択", class: "button btn", style: "border-style:none;display:inline-block;" %>
       <% end %>
-  
-        <!--並び替えフォーム-->
-      <div class="form-inline justify-content-end mb-2">
-        <h5>会員ステータス：</h5>
-        <%= form_with url: admin_before_user_select_path, method: :get, local: true do |f| %>
-          <%= f.select :user_select, {'有効': 0, '退会': 1, '全て': 2}, { include_blank: '選択'}, { class: 'form-control mr-3', width: '20%'} %>
-          <%= f.submit "選択", class: "button btn" %>
-        <% end %>
-      </div>
     </div>
+  </div>
   
   <div class="row">
     <div class="col-12">
-      <!--<div style="height:800px; width:1000px; overflow-y:scroll;">-->
-      <div class="table_frame">
+      <div class="table-responsive">
         <table class="table">
           <thead>
             <tr>
@@ -103,7 +101,7 @@
             <% end %>
           </tbody>
         </table>
-      </div>
+      </div>  
     </div>
   </div>
 </div>

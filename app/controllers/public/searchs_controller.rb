@@ -1,5 +1,6 @@
 class Public::SearchsController < ApplicationController
-  before_action :to_genre_show, only: [:search]
+  
+  before_action :to_genre_show, only: [:search] 
   
   def search
     @movies = Tmdb::Movie.popular[:results].push(Tmdb::Movie.now_playing[:results]).push(Tmdb::Movie.top_rated[:results]).flatten!.uniq
@@ -13,7 +14,7 @@ class Public::SearchsController < ApplicationController
   
   def to_genre_show
     if params[:genre_id].present?
-      redirect_to public_movie_path(params[:genre_id])
+      redirect_to public_genre_path(params[:genre_id])
     end
   end
 end

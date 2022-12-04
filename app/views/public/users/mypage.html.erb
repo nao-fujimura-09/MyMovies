@@ -1,10 +1,26 @@
 <div class="container">
+  
+  <div class="d-block d-sm-none mt-4">
+    <div class="row mt-5">
+      <div class="col-4"></div>
+        <div class="col-4">
+          <%= image_tag @user.get_profile_image(90,90), class:"user-icon" %>
+        </div>
+      <div class="col-4"></div>
+    </div>
+  </div>
+  
+  
   <div class="row mt-5">
     <div class="col-1 mt-5"></div>
-    <div class="col-2 mt-5">
-      <%= image_tag current_user.get_profile_image(150,150), class:"user-icon" %>    
+    
+    <div class="d-none d-sm-block">
+      <div class="col-2 mt-5">
+        <%= image_tag current_user.get_profile_image(150,150), class:"user-icon" %>    
+      </div>
     </div>
-    <div class="col-6 mt-5">
+    
+    <div class="col-md-6 col-sm-11 mt-5">
       <div class="form-inline mb-4">
         <h1 class ="mb-3 mr-5 font-weight-bold title"><%= current_user.name %></h1>
 
@@ -40,18 +56,21 @@
             <% end %>
       </div>
     </div>
-    <div class="col-3 mt-5">
-      <h1 class="mb-4 title">MENU</h1>
+    
+    <!--<div class="col-sm-4 mt-5"></div>-->
+    <div class="col-md-3 col-sm-8 mt-5">
+        <h1 class="mb-4 title">MENU</h1>
         <%= link_to edit_public_user_path(current_user), class:"link-body" do %>
           <h5>プロフィール編集</h5>
         <% end %>
         <h5 class="mt-3"><%= link_to"ウォッチリストを見る", public_watch_lists_path(user_id: @user.id), class:"link-body" %></h5>
-    </div>
+      </div>
+    
   </div>
 
   <div class="row mt-5">  
     <div class="col-1"></div>
-    <div class="col-11 mt-5">
+    <div class="col-md-11 col-md-12 mt-5">
       <h4 class="title p-2 text-center border-bottom"><%= @user.name %>さんの閲覧映画数 <%= @user.views.count %> 本</h4>
       
       <ul class=" movies d-flex flex-wrap row-gap">

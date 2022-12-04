@@ -23,7 +23,7 @@
       <% end %>
       <nav class="navbar navbar-expand-xl navbar-light">
         <% if user_signed_in? %>
-          <h5 class="ml-5 navvar-brand"><%= current_user.name %>さん</h5>
+          <h5 class="navvar-brand"><%= current_user.name %>さん</h5>
         <% end %>
         
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,7 +32,7 @@
         
           <!--<div class="navbar-collapse collapse show" id="navbarNavDropdown">-->
           <!--<div class="collapse navbar-collapse">-->
-          <div class="collapse navbar-collapse my-5" id="navbarNavDropdown">
+          <div class="collapse navbar-collapse mt-5" id="navbarNavDropdown">
 
             <% if admin_signed_in? %>
               <ul class="navbar-nav ml-auto d-flexr">
@@ -62,12 +62,12 @@
             
             <% else %>
               <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
+                <li class="nav-item  align-items-center">
                   <%= link_to user_session_path, class:" link-header px-3 mx-2" do %>
-                    <p>LOG IN</p>
+                    LOG IN
                   <% end %>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item  align-items-center">
                   <%= link_to new_user_registration_path, class:" link-header px-3 mx-2" do %>
                     SIGN IN
                   <% end %>
@@ -86,7 +86,7 @@
     
     <%= yield %>
     
-    <footer class="my-5 py-5">
+    <footer class="footer my-5 py-5">
       <p align="center">＠my movies</p>
     </footer>
   </body>

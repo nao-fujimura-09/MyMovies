@@ -2,7 +2,6 @@
   
   <% if user_signed_in? %>
     <div class="search_form mt-3">
-      <!--<div class="search_form mt-3">-->
         <%= form_with url: public_search_path, local: true, method: :get, class: "search_form_group" do |f| %>
           <%= f.text_field :word, class:"form-control mr-2", placeholder:"タイトルで検索", style: "max-width:250px;display:inline-block;" %>
           <%= f.button :type => "submit", class:"button py-2 px-3", style: "border-style:none;display:inline-block;" do %>
@@ -18,7 +17,6 @@
             <% end %>
           <% end %>
         </div>
-      <!--</div>-->
     </div>
   <% end %>
   
@@ -117,7 +115,7 @@
       </table>
       </div>
       
-      <h2 class="mb-5 text-center title">人気のユーザー</h2>
+      <h2 class="my-5 text-center title">人気のユーザー</h2>
       <% @all_users.each.with_index(1) do |user, i| %>
         <% if user.status == false %> <!-- 退会してないユーザーのみ表示ー -->
           <div class="card mb-4">

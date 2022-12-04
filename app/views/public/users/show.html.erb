@@ -1,10 +1,23 @@
 <div class="container">
+
+  <div class="d-block d-lg-none mt-4">
+    <div class="row mt-5">
+      <div class="col-4"></div>
+        <div class="col-4">
+          <%= image_tag @user.get_profile_image(90,90), class:"user-icon" %>
+        </div>
+      <div class="col-4"></div>
+    </div>
+  </div>
+  
   <div class="row mt-5">
     <div class="col-1 mt-5"></div>
-    <div class="col-2 mt-5">
+    
+    <div class="col-2 d-none d-lg-block mt-5">
       <%= image_tag @user.get_profile_image(150,150), class:"user-icon" %>    
     </div>
-    <div class="col-9 mt-5">
+    
+    <div class="col-md-9 col-sm-9 mt-5">
       <div class="form-inline mb-4 border-bottom">
         <h1 class ="mb-3 mr-5 font-weight-bold title"><%= @user.name %></h1>
 
