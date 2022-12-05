@@ -124,7 +124,9 @@
             <% end %>
             <div class="text-center">
               <% if @user.reviews.find_by(movie_id: view.movie_id).present? %>
-                <div id="star_review_<%= view.movie_id %>"></div> 
+                <p class="mt-1 title">
+                  評価済：<%= current_user.reviews.where(movie_id: view.movie_id).last.star.to_f.round(1) %>点
+                </p>
               <% else %>
                 <p class="title mt-2">まだ評価していません。</p>
               <% end %>
