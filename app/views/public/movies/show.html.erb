@@ -2,10 +2,11 @@
   
   <div class="row">
     <%if user_signed_in? %>
-      <div class="col-md-3"></div>
-    <% end %>
-      
-    <div class="col-md-9 col-sm-12 mt-5 mb-3">
+    <div class="col-md-3"></div>
+      <div class="col-md-9 col-sm-12 mb-3">
+    <% else %>
+      <div class="col-12 mb-3">
+    <% end %>  
       <h2 class="font-weight-bold mt-5 title"><%= @movie.title %></h2>
         
       <div class="form-inline">
@@ -15,11 +16,12 @@
         <% end %>
       </div>
     </div>
+
   </div>
   
   <div class="row">
-    <div class="d-none d-sm-block col-3 mt-5">
-      <% if user_signed_in? %>
+    <% if user_signed_in? %>
+      <div class="d-none d-sm-block col-3 mt-5">
         <%= render 'public/users/user_list', user: @user %> <!--ユーザー詳細呼び出し-->
         
         <div class="form-inline border-bottom">
@@ -49,11 +51,13 @@
             });
           </script>
         </div>
-      <% end %>
-    </div>
+      </div>
+    <% else %>
+      <div class="d-none d-sm-block col-2"></div>
+    <% end %>
     
     <!--映画詳細  -->
-    <div class="col-md-3 col-sm-12">
+      <div class="col-md-3 col-sm-12">
       <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"my-5" %>
       
       <% if user_signed_in? %>
@@ -71,7 +75,6 @@
             <% end %>
           <% end %>
 
-  
           <% if current_user.views.exists?(movie_id: @movie.id) %>
             <!--未閲覧-->
             <%= link_to public_view_path(current_user.views.find_by(movie_id: @movie.id)), method: :delete, class: 'button-delete p-4 ml-3' do %>
@@ -152,8 +155,6 @@
   </div>
 
   <div class="row">
-    
-    </div>
     <!--レビュー-->
     <% if user_signed_in? %>
       <div class="col-md-3 col-sm-9 mt-5">
@@ -197,20 +198,21 @@
             <%= f.submit"レビューする", class:'button btn p-3 my-5' %>
           </div>
         <% end %>
-    </div>
+      </div>
     
-    <div class="col-1"></div>
-    <% else %>
-      <div class="col-3"></div>
+      <div class="col-1"></div>
     <% end %>
     
     <!--レビュー表示ページの呼び出し-->
-    <div class="col-md-8 col-sm-12 mb-5 mt-5">
-      <h2 class="font-weight-bold mt-5 border-bottom title">
-        レビュー(<%= @reviews.count %>)
-      </h2>
-      <%= render 'public/reviews/review_list', reviews: @reviews %>
-    </div>
+    <% if user_signed_in? %>
+      <div class="col-md-9 col-sm-12 mb-5 mt-5">
+    <% else %>
+      <div class="col-12 mt-5">
+    <% end %>
+        <h2 class="font-weight-bold mt-5 border-bottom title">
+          レビュー(<%= @reviews.count %>)
+        </h2>
+        <%= render 'public/reviews/review_list', reviews: @reviews %>
+      </div>
   </div>
-</div>
 </div>
