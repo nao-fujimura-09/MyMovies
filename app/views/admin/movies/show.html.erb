@@ -1,0 +1,104 @@
+<div class="container">
+  <h1 class="mt-5 title"><%= @movie.title %></h1>
+  
+  <div class="form-inline my-2">
+    <p class="title">
+      ジャンル：
+      <% @movie.genres.each do |genre| %>
+        <%= genre.name %> / 
+      <% end %>
+    </p>
+  </div>
+
+  <div class="row">
+    <div class="d-none d-md-block col-2">
+        <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"mr-4 mt-5" %><br>
+      <%= link_to admin_movies_path, class:"link-body" do %>
+        <h4 class="mt-5">作品一覧へ戻る</h4>
+      <% end %>
+    </div>
+    
+    <!--レスポンシブ-->
+    <div class="d-block d-md-none col-12">
+      <div class="d-flex justify-content-center">
+         <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"mr-4 mt-5" %><br>
+      </div>
+    </div>
+    <!--レスポンシブ-->
+    
+    <div class="col-md-6 col-sm-12">
+      <h5 class="font-weight-bold mt-5 mb-3 title">あらすじ</h5>
+      <p class="title">
+        <% if @movie.overview.present? %>
+          <%= @movie.overview %>
+        <% else%>
+          情報がありません
+        <% end %>
+      </p>
+      
+      <h5 class="font-weight-bold mt-5 mb-3 title">監督</h5>
+      <p class="title">
+      <% @directors.each do |director| %>
+        <%= director.name %>
+      <% end %>
+      </p>
+      
+      <h5 class="font-weight-bold mt-5 mb-3 title">出演者</h5>
+      <div class="form-inline">
+        <% @persons.first(5).each do |person|%>
+          <p class="mr-2 pr-3 title"><%= person %></p>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-1"></div>
+    
+    <div class="col-md-3 col-sm-12 mt-5">
+      <table class="table-boderless">
+        <tr>
+          <td><h4 class="title">閲覧数</h4></td>
+          <td><h4>:</h4></td>
+          <td><h4 class="ml-3 text-right title"><%= @views.count %></h4></td>
+        </tr>
+        
+        <tr>
+          <td><h4 class="title">平均評価</h4></td>
+          <td><h4> : </h4></td>
+          <td><h4 class="ml-3 text-right title"><%= Review.where(movie_id: @movie.id).average(:star).to_f.round(1) %></h4></td>
+          <script>
+            $('#star_<%= @movie.id %>').empty();
+            $('#star_<%= @movie.id %>').raty({
+              size: 70,
+              starOn : '<%= asset_path('star-on.png') %>',
+              starOff: "<%= asset_path('star-off.png') %>",
+              starHalf: "<%= asset_path('star-half.png') %>",
+              scoreName: "review[star]", //reviewモデルのstarカラムに保存
+              half: true, 
+              readOnly: true,
+              });
+          </script>
+        </tr>
+        
+        <tr>
+          <td><h4 class="title">レビュー</h4></td> 
+          <td><h4> : </h4></td>
+          <td><h4 class="ml-3 title text-right"><%= @reviews.count %></h4></td>
+        </tr>
+        
+        <tr>
+          <td><h4 class="title">リストイン</h4></td> 
+          <td><h4> : </h4></td>
+          <td><h4 class="ml-3 title text-right"><%= @watch_lists.count %></h4></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-md-10 col-sm-12 mt-5">
+      <h3 class="mt-5 title">レビュー(<%= @reviews.count %>)</h3>
+      <div class="border-bottom"></div>
+        <%= render 'public/reviews/review_list', reviews: @reviews %>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,173 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+  // min-height: 60px;
+  background-color: #BC8F8F;
+  color: #f5f5f5;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.navbar {
+  // height: 30px;
+  width: 100%;
+  background-color: #BC8F8F;
+  color: #f5f5f5;
+  text-align: center;
+  // vertical-align: middle;
+}
+// ヘッダーリンク色無効
+.link-header {
+    height: 70px;
+    text-decoration: none;
+    color: #f5f5f5; 
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.link-header:hover {
+  text-decoration: none;
+  background: #f5f5f5;
+  color: #BC8F8F;
+}
+
+.link-logo:hover {
+  opacity: 0.5;
+}
+
+body {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  background: #f5f5f5;
+  color: #BC8F8F;
+}
+
+.search_form_group {
+   max-width: 300px;
+   margin: auto;
+};
+
+//ページタイトル
+.title {
+  color: #4f3318;
+}
+// ボディリンク色無効
+.link-body {
+  text-decoration: none;
+  color: #4f3318;;
+}
+
+.link-body:hover {
+  color: #4f3318;;
+  
+}
+ .movie-genre {
+  background-color: #f5f5f5;
+  text-decoration: none;
+  color: #B8860B;
+ }
+
+ .movie-genre:hover {
+  background-color: #BC8F8F;
+ }
+ 
+ //ジャンルから探す
+.link-genres {
+  text-decoration: none;
+  color: #BC8F8F;
+}
+
+.link-genres:hover {
+  text-decoration: none;
+  color:  #f5f5f5;
+}
+  
+.movie-lists {
+  background: #BC8F8F;
+}
+// トップページユーザーお気に入り映画
+.top-user {
+  line-height: 0.5rem;
+  font-weight: bold;
+}
+ 
+.user-mypage {
+  display :inline-block;
+  border: solid 1px;
+  margin-right: 5px;
+  padding: 2px 3px;
+  // margin: 0px 3px;
+}
+// ボタン
+.button {
+    background-color :#BC8F8F;
+    color: white;
+    border-radius: 5px;
+}
+
+// 削除ボタン
+.button-delete {
+  background-color :#BC8F8F;
+  color: #4f3318;
+  border-radius: 5px;
+}
+
+.button:hover {
+    background-color :#996666;
+    text-decoration: none;
+    color: white;
+}
+
+.user-icon{
+  border-radius: 50%;
+}
+
+.user-movie_table {
+  display:table;
+}
+
+ .table-cell {
+  display:table-cell;
+ }
+ 
+//  movies
+.movies ul {
+    list-style:none;
+}
+
+.movies h3 {
+    font-size: 1.3em;
+    font-weight: 700;
+}
+
+.row-gap {
+    row-gap: 20px;
+}
+
+.populer-user {
+  margin-left: 250px;
+}
+
+// admin_user_index
+.table_frame {
+width: 1110px;
+// height: 1500px;
+overflow: auto;
+}
+
+footer {
+  height: 30px;
+  background-color: #BC8F8F;
+  color: #f5f5f5;
+  text-align: center;
+}
+
+// @media screen and (max-width: 600px) {
+//   header {
+//     height: 110px;
+//   }
+// }

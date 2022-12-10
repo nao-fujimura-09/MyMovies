@@ -1,0 +1,84 @@
+<div class="container">
+  <h1 class="mt-5 title">作品一覧</h1>
+  <p>〈作品数：<%= @movies.count %> 本〉</p>
+  
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-md-8 col-sm-12">
+      <div class="form-inline justify-content-between">
+      <!--並び替え名-->
+      <% if params[:id] == "0" %>
+        <h5 class="font-weight-bold title">ID順</h5>
+      <% elsif params[:id] == "1" %>
+        <h5 class="font-weight-bold title">閲覧順</h5>
+      <% elsif params[:id] == "2" %>
+        <h5 class="font-weight-bold title">評価順</h5>
+      <% elsif params[:id] == "3" %>
+        <h5 class="font-weight-bold title">レビューの多い順</h5>
+      <% elsif params[:id] == "4" %>
+        <h5 class="font-weight-bold title">ウォッチリスト追加数順</h5>
+      <% else %>
+        <h5 class="font-weight-bold title">並び替えなし</h5>
+      <% end %>
+  
+        <!--並び替えフォーム-->
+        <div class="form-inline justify-content-end mb-2">
+          <%= form_with url: admin_before_movie_select_path, method: :get, local: true, class: "search_form_group d-flex" do |f| %>
+            <%= f.select :movie_select, {'ID順': 0, '閲覧順': 1, '評価順': 2, 'レビューの多い順': 3, 'ウォッチリスト追加数順': 4}, { include_blank: '並び順を変える'}, { class: 'form-control mr-3', width: '20%', style: "max-width:250px;display:inline-block;"} %>
+            <%= f.submit "選択", class: "button btn", style: "border-style:none;display:inline-block;" %>
+          <% end %>
+        </div>
+      </div>
+      
+      <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th width="10%">ID</th>
+            <th width="40%">タイトル</th>
+            <th width="10%">閲覧数</th>
+            <th width="10%">平均評価</th>
+            <th width="10%">レビュー数</th>
+            <th width="10%">リストイン</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @movies.each do |movie| %>
+          <% @views = View.where(movie_id: movie.id) %>
+          <% @watch_lists = WatchList.where(movie_id: movie.id) %>
+          <% @reviews = Review.where("title!='' OR body!=''").where(movie_id: movie.id) %>
+          
+          <tr>
+            <td><%= movie.id %></td>
+            <td>
+              <%= link_to admin_movie_path(movie.id), class:"link-body" do %>
+                <%= movie.title %>
+              <% end %>
+              </td>
+            <td class="text-right"><%= @views.count %></td>
+            <td class="text-right"><% @score = Review.where(movie_id: movie.id).average(:star).to_f.round(1) %>
+                <%= @score %>
+              <script>
+                $('#star_<%= movie.id %>').empty();
+                $('#star_<%= movie.id %>').raty({
+                  size: 70,
+                  starOn : '<%= asset_path('star-on.png') %>',
+                  starOff: "<%= asset_path('star-off.png') %>",
+                  starHalf: "<%= asset_path('star-half.png') %>",
+                  scoreName: "review[star]", //reviewモデルのstarカラムに保存
+                  half: true, 
+                  readOnly: true,
+                  });
+              </script>
+            </td>
+            <td class="text-right"><%= @reviews.count %></td>
+            <td class="text-right"><%= @watch_lists.count %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <div class="d-none d-md-block col-2"></div>
+  </div>
+</div>

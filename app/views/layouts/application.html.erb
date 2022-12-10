@@ -5,12 +5,89 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%#= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application' %>
+    
+    <!--<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
+    <!--<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>-->
+    <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>-->
   </head>
 
   <body>
+    <header >
+      <%= link_to root_path, class:"link-logo" do %>
+        <%= image_tag "logo.png", size: "170x60", alt: "My Movies" %>
+      <% end %>
+      <nav class="navbar navbar-expand-xl navbar-light">
+        <% if user_signed_in? %>
+          <h5 class="navvar-brand"><%= current_user.name %>さん</h5>
+        <% end %>
+        
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon text-center"></span>  
+        </button>
+        
+          <!--<div class="navbar-collapse collapse show" id="navbarNavDropdown">-->
+          <!--<div class="collapse navbar-collapse">-->
+          <div class="collapse navbar-collapse mt-5" id="navbarNavDropdown">
+
+            <% if admin_signed_in? %>
+              <ul class="navbar-nav ml-auto d-flexr">
+                <li class="nav-item"><%= link_to "MOVIES", admin_movies_path, class: "py-2 px-3 link-header" %></li>
+                <li class="nav-item"><%= link_to "GENRES", admin_genres_path, class: "py-2 px-3 link-header" %></li>
+                <li class="nav-item"><%= link_to "USERS",  admin_users_path, class: "py-2 px-3 link-header" %></li>
+                <li class="nav-item"><%= link_to "LOGOUT", destroy_admin_session_path, method: :delete, class: "py-2 px-3 link-header" %></li>
+              </ul>
+            <% elsif user_signed_in? %>
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item align-items-center">
+                  <%= link_to public_user_mypage_path(current_user), class:"link-header px-3 mx-2" do %>
+                    MY PAGE
+                  <% end %>
+                </li>
+                <li class="nav-item  align-items-center">
+                  <%= link_to public_movies_path, class:"link-header px-3 mx-2" do %>
+                    MOVIES
+                  <% end %>
+                </li>
+                <li class="nav-item align-items-center">
+                  <%= link_to destroy_user_session_path, method: :delete, class:"link-header px-3 mx-2" do %>
+                    LOG OUT
+                  <% end %>
+                </li>
+              </ul>
+            
+            <% else %>
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item  align-items-center">
+                  <%= link_to user_session_path, class:" link-header px-3 mx-2" do %>
+                    LOG IN
+                  <% end %>
+                </li>
+                <li class="nav-item  align-items-center">
+                  <%= link_to new_user_registration_path, class:" link-header px-3 mx-2" do %>
+                    SIGN IN
+                  <% end %>
+                </li>
+              </ul>
+            <% end %>
+          </div>
+      </nav>
+    </header>
+    
+    <div class="mt-5 text-center">
+      <% flash.each do |message_type, message| %>
+        <%= content_tag :div, message, class: message_type %>
+      <% end %>
+    </div>
+    
     <%= yield %>
+    
+    <footer class="footer my-5 py-5">
+      <p align="center">＠my movies</p>
+    </footer>
   </body>
 </html>

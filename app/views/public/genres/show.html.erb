@@ -1,0 +1,198 @@
+<div class="container">
+   
+  <div class="row mt-5">
+    <div class="d-none d-md-block col-3 mt-5">
+      <table class="table mt-5">
+        <thead>
+          <th><h5 class="title">ジャンルで探す</h5></th>
+        </thead>
+        <tbody>
+          <% @genres.each do |genre| %>
+            <tr>
+              <td class="movie-genre">
+                <%= link_to public_genre_path(genre.id), class:"link-genres" do %>
+                  <div class="form-inline justify-content-between">
+                    <p><%= genre.name %></p>
+                    <h5>></h5>
+                  </div>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+   
+    <div class="col-9">
+      <h2 class="my-5 text-center title">
+        <%= @genres[@genres.find_index {|n| n.id == params[:id].to_i}].name %>の作品一覧
+      </h2>
+      
+      <ul class=" movies d-flex flex-wrap row-gap">
+        <% @genre_movies.each do |genre_movie| %>
+          <% @reviews = Review.where(movie_id: genre_movie.id) %>
+          
+          <li class="d-flex flex-column justify-content-between mb-5">
+            <div class="mb-3">
+              <%= image_tag "https://image.tmdb.org/t/p/w154/#{genre_movie.poster_path}", class:"mx-4" %>
+            </div>
+            
+            <%= link_to public_movie_path(genre_movie.id), class:"link-body" do %>
+              <h5 class="text-center title"><%= genre_movie.title.truncate(14) %></h5>
+            <% end %>
+            
+             <!--ログインユーザーメニュー-->
+            <% if user_signed_in? %>
+              
+              <!--評価済みの場合-->
+              <% if current_user.reviews.find_by(movie_id: genre_movie.id).present? %>
+              
+                <div class="text-center">
+                  <p class="mt-2 title">
+                    評価済：<%= current_user.reviews.where(movie_id: genre_movie.id).last.star.to_f.round(1) %>点
+                  </p>
+                
+                  <script>
+                    $('#star_myreview_<#%= current_user.reviews.find_by(movie_id: genre_movie.id) %>').empty();
+                    $('#star_myreview_<%= current_user.reviews.find_by(movie_id: genre_movie.id) %>').raty({
+                      size: 70,
+                      starOn : '<%= asset_path('star-on.png') %>',
+                      starOff: "<%= asset_path('star-off.png') %>",
+                      starHalf: "<%= asset_path('star-half.png') %>",
+                      scoreName: "review[star]",
+                      half: true, 
+                      readOnly: true,
+                      <% if current_user.reviews.find_by(movie_id: genre_movie.id).present? %>
+                        score: <%= current_user.reviews.find_by(movie_id: genre_movie.id).star %>,
+                      <% end %>
+                    });
+                  </script>
+                </div> 
+
+                <div class="form-inline justify-content-center">
+                  <div class="button-delete p-2 mr-3">
+                    <i class="fa fa-solid fa-star fa-lg"></i>
+                  </div>
+                
+                  <% if current_user.watch_lists.exists?(movie_id: genre_movie.id) %>
+                    <!--ウォッチリストからの削除-->
+                      <%= link_to public_watch_list_path(current_user.watch_lists.find_by(movie_id: genre_movie.id)), class:"button-delete p-2 mr-3", method: :delete do %>
+                        <i class="fa fa-regular fa-heart fa-lg"></i>
+                      <% end %>
+                  
+                  <% else %>
+                    <!--ウォッチリストへ追加-->
+                      <%= link_to public_watch_lists_path(movie_id: genre_movie.id), class:"button p-2 mr-3", width:"50px", method: :post do %>
+                        <i class="fa fa-regular fa-heart fa-lg"></i>
+                      <% end %>
+                  <% end %>
+                  
+                  <% if current_user.views.exists?(movie_id: genre_movie.id) %>
+                    <!--未閲覧-->
+                    <%= link_to public_view_path(current_user.views.find_by(movie_id: genre_movie.id)), method: :delete, class: 'button-delete p-2' do %>
+                      <i class="fa fa-solid fa-eye fa-lg"></i>
+                    <% end %>
+                  
+                  <% else %>
+                    <!--閲覧済み-->
+                    <%= link_to public_views_path(movie_id: genre_movie.id, user_id: current_user), class:"button p-2", width:"50px", method: :post do %>
+                      <i class="fa fa-solid fa-eye fa-lg"></i>
+                    <% end %>
+                  <% end %>
+              </div>
+              
+              <div class="form-inline justify-content-center mt-3 mb-0">
+                <p class="mr-3"> STAR</p><p class="mr-3"> LIST</p><p> VIEW</p>
+              </div>
+              
+            <% else %> <!--未評価の場合-->
+              <!--星評価-->
+              <%= form_with model: @review, url: public_reviews_path, local: true do |f| %>
+                <%= f.hidden_field :movie_id, :value => genre_movie.id %>
+                    
+                  <div class="text-center">
+                    <div class="form-inline justify-content-center">
+                      <div class="form-group" id="star_<%= genre_movie.id %>">
+                        <%= f.label :star,'評価 ', class:'col-form-label' %>
+                        <%= f.hidden_field :star, id: :review_star %>
+                      </div>
+                      <div id="star_<%= current_user.reviews.find_by(genre_movie.id.to_s) %>"></div>
+                    </div>
+                                  
+                    <script>
+                      $('#star_<%= genre_movie.id %>').empty();
+                      $('#star_<%= genre_movie.id %>').raty({
+                        size: 70,
+                        starOn : '<%= asset_path('star-on.png') %>',
+                        starOff: "<%= asset_path('star-off.png') %>",
+                        starHalf: "<%= asset_path('star-half.png') %>",
+                        scoreName: "review[star]",
+                        half: true,
+                      });
+                    </script>
+                  </div>
+                  
+                  <div class="form-inline justify-content-center mt-3">
+                    <%= f.button :type => "submit", class:"button p-2 mr-3", style: "border-style: none;" do %>
+                      <i class="fa fa-solid fa-star fa-lg"></i>
+                    <% end %>
+              <% end %><!--星評価フォーム-->
+                
+              <% if current_user.watch_lists.exists?(movie_id: genre_movie.id) %>
+                <!--ウォッチリストからの削除-->
+                <%= link_to public_watch_list_path(current_user.watch_lists.find_by(movie_id: genre_movie.id)), class:"button-delete p-2 mr-3", method: :delete do %>
+                  <i class="fa fa-regular fa-heart fa-lg"></i>
+                <% end %>
+                
+              <% else %>
+                <!--ウォッチリストへ追加-->
+                <%= link_to public_watch_lists_path(movie_id: genre_movie.id, user_id: current_user), class:"button p-2 mr-3", width:"50px", method: :post do %>
+                  <i class="fa fa-regular fa-heart fa-lg"></i>
+                <% end %>
+              <% end %>
+                  
+              <% if current_user.views.exists?(movie_id: genre_movie.id) %>
+                <!--未閲覧-->
+                <%= link_to public_view_path(current_user.views.find_by(movie_id: genre_movie.id)), method: :delete, class: 'button-delete p-2' do %>
+                  <i class="fa fa-solid fa-eye fa-lg"></i>
+                <% end %>
+                
+              <% else %>
+                <!--閲覧済み-->
+                <%= link_to public_views_path(movie_id: genre_movie.id, user_id: current_user), class:"button p-2", width:"50px", method: :post do %>
+                  <i class="fa fa-solid fa-eye fa-lg"></i>
+                <% end %>
+              <% end %>
+            </div>
+                
+            <div class="form-inline justify-content-center mt-3 mb-0">
+              <p class="mr-3"> STAR</p><p class="mr-3"> LIST</p><p> VIEW</p>
+            </div>
+          <% end %><!--評価-->
+          
+          <!--非ユーザー-->
+            <% else %>
+              <% unless @reviews.empty? %> 
+                <div class="text-center" id="star_review_<%= genre_movie.id %>"></div> 
+                <script>
+                  $('#star_review_<%= genre_movie.id %>').empty();
+                  $('#star_review_<%= genre_movie.id %>').raty({
+                    size: 70,
+                    starOn : '<%= asset_path('star-on.png') %>',
+                    starOff: "<%= asset_path('star-off.png') %>",
+                    starHalf: "<%= asset_path('star-half.png') %>",
+                    scoreName: "review[star]", //reviewモデルのstarカラムに保存
+                    half: true, 
+                    readOnly: true,
+                    score: <%= @reviews.average(:star) %>
+                  });
+                </script>
+              <% end %>
+            <% end %><!--ユーザー-->
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    
+  </div>
+</div>

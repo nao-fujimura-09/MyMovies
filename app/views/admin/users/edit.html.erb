@@ -1,0 +1,76 @@
+<div class="container">
+  <h1 class="mt-5 mb-3 text-center title"><%= @user.name %>さんの基本情報編集</h1>
+    
+  <div class="row">
+    <div class="col-5"></div>
+    <div class="col-1 mt-5">
+      <% if @user.profile_image.attached? %>
+        <%= image_tag @user.profile_image, size: "100x100", class:"user-icon" %>
+      <% else %>
+        <%= image_tag 'no_image', size: "100x100", class:"user-icon" %>
+      <% end %>
+    </div>
+    <div class="col-5"></div>
+  </div>
+  
+  <div class="row">
+    <div class="col-3"></div>
+    <div class="col-md-6 col-sm-12">
+      <table class="table table-borderless">
+        <thead>
+          <th width="40%"></th>
+          <th width="60%"></th>
+        </thead>
+        
+        <tbody>
+          <%= form_with model: [:admin, @user] do |f| %>
+            <tr>
+              <td>プロフィール画像</td>
+              <td><%= f.file_field :profile_image, accept: "image/*" %></td>
+            </tr>  
+              
+            <tr>
+              <td>ユーザーネーム</td>
+              <td><%= f.text_field :name, class: 'form-control' %></td>
+            </tr>
+            
+            <tr>
+              <td>メールアドレス</td>
+              <td><%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control'  %></td>
+            </tr>
+            
+            <tr>
+              <td>好きな映画</td>
+              <td><%= f.text_field :favorite_movie, class: 'form-control', placeholder:"LEON" %></td>
+            </tr>
+            
+            <tr>
+              <td>好きな映画のジャンル</td>
+              <td>
+                <%= f.fields_for :favorite_genre do |i| %>
+                  <%= f.collection_check_boxes(:favorite_genres, Genre.all, :id, :name, include_hidden: false, class:"mr-2") %>　
+                <% end %>
+              </td>
+            </tr>
+          
+            <tr>
+              <td>ユーザーステータス</td>
+              <td>
+                <%= f.radio_button :status, false %>
+                <%= f.label :status, "有効" %>　　
+                <%= f.radio_button :status, true %>
+                <%= f.label :status, "退会" %>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <%= f.submit "変更する", class: 'button btn py-3 px-5' %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

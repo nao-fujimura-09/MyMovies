@@ -1,0 +1,151 @@
+<div class="container">
+  <h2 class="title my-5"><%= @movie.title %>のレビュー</h2>
+  
+  <div class="row">
+    <div class="col-md-3 col-sm-12 mt-5">
+      <div class="d-flex justify-content-center">
+        <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"my-3" %>
+      </div>
+      
+      <div class="form-inline d-flex justify-content-center">
+        <div id="star_<%= @review.movie_id.to_s %>"></div>
+        <div class="ml-3">
+          <h3><%= Review.where(movie_id: @movie.id).average(:star).to_f.round(1) %>点</h3>
+        </div>
+      </div>
+      <script>
+        $('#star_<%= @review.movie_id %>').empty();
+        $('#star_<%= @review.movie_id %>').raty({
+          size: 90,
+          starOn : '<%= asset_path('star-on.png') %>',
+          starOff: "<%= asset_path('star-off.png') %>",
+          starHalf: "<%= asset_path('star-half.png') %>",
+          scoreName: "review[star]", //reviewモデルのstarカラムに保存
+          half: true, 
+          readOnly: true,
+          score: <%= Review.where(movie_id: @movie.id).average(:star) %>, //平均の星を表示
+          });
+      </script>
+
+      <h4 class="mt-4 title">あらすじ</h4>
+      <div class="title"><%= @movie.overview %></div>
+      
+      <h4 class="mt-4 title">ジャンル</h4>
+      <p class="title">
+        <% @movie.genres.each do |genre| %>
+            <%= genre.name %> / 
+        <% end %>
+      </p>
+      
+      <div class="border-bottom"></div>
+      
+      <div class="d-block d-md-none my-5">
+        <table>
+          <thead>
+            <th width="30%"></th>
+            <th width="70%"></th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <%= image_tag @review.user.get_profile_image(70,70), class:"user-icon" %></br>
+                <h4 class="pl-2 title"><%= @review.user.name %></h4>
+              </td>
+              <td>
+                <div class="form-inline">
+                  <h5 class="title mr-5"><%= @review.title %></h5>
+                  
+                  <% unless @review.nil? %> <!-- 投稿と被らないように別のIDをつける-->
+                    <div class="mb-3" id="star_my_review_<%= @review.id %>"></div>
+                    <script>
+                      $('#star_my_review_<%= @review.id %>').empty();
+                      $('#star_my_review_<%= @review.id %>').raty({
+                        size: 70,
+                        starOn : '<%= asset_path('star-on.png') %>',
+                        starOff: "<%= asset_path('star-off.png') %>",
+                        starHalf: "<%= asset_path('star-half.png') %>",
+                        scoreName: "review[star]",
+                        half: true, 
+                        readOnly: true,
+                        score: <%= @review.star %>
+                      });
+                    </script>
+                  <% end %>
+                </div>
+                
+                <h5 class="title"><%= @review.body %></h5>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <div class="form-inline justify-content-end">
+                <% if current_user == @review.user %>
+                    <%= link_to"EDIT", edit_public_review_path(@review.id), class:'button btn mr-4 py-2 px-3' %>
+                    <%= link_to"DELETE", public_review_path(@review.id), method: :delete, class:'button btn py-2 px-3' %>
+                <% end %>
+                </div>
+              </td>
+            </tr>
+          </tbody>  
+        </table>
+        
+      </div>
+    
+    
+      <%= link_to public_movie_path(@movie.id) do %>
+        <h5 class="link-body mt-5 ">作品ページへ戻る</h5>
+      <% end %>
+    </div>
+    
+    <div class="d-none d-md-block col-9 pt-5">
+      
+    <!--<div class="col-9 mt-5 pt-5">-->
+      <table class="table-borderless">
+        <thead>
+          <th width="10%"></th>
+          <th width="90%"></th>
+        </thead>
+        
+        <tbody>
+          <tr>
+            <td>
+              <%= image_tag @review.user.get_profile_image(70,70), class:"user-icon" %><br>
+              <h4 class="pl-2"><%= @review.user.name %></h4>
+            </td>
+            <td class="d-flex flex-column ml-5">
+              <h3 class="font-weight-bold mb-4"><%= @review.title %></h3>
+              
+              <% unless @review.nil? %> <!-- 投稿と被らないように別のIDをつける-->
+                <div class="mb-3" id="star_review_<%= @review.id %>"></div> 
+                <script>
+                  $('#star_review_<%= @review.id %>').empty();
+                  $('#star_review_<%= @review.id %>').raty({
+                    size: 70,
+                    starOn : '<%= asset_path('star-on.png') %>',
+                    starOff: "<%= asset_path('star-off.png') %>",
+                    starHalf: "<%= asset_path('star-half.png') %>",
+                    scoreName: "review[star]",
+                    half: true, 
+                    readOnly: true,
+                    score: <%= @review.star %>
+                  });
+                </script>
+              <% end %>
+
+              <h5 class="title"><%= @review.body %></h5>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <% if current_user == @review.user %>
+      <div class="text-center mt-5">
+        <%= link_to"EDIT", edit_public_review_path(@review.id), class:'button btn mr-4 py-2 px-3' %>
+        <%= link_to"DELETE", public_review_path(@review.id), method: :delete, class:'button btn py-2 px-3' %>
+      </div>
+      <% end %>
+    </div>
+    <div class="col-3"></div>
+  </div>
+</div>

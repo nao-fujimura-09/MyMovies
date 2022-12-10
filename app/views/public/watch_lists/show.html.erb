@@ -1,0 +1,90 @@
+<div class="container">
+  
+  <div class="row">
+    <div class="col-2 mt-5">
+      <%= render 'public/users/user_list', user: @user %> <!--ユーザー詳細呼び出し-->%>
+    </div>
+    
+    <div class="col-10">
+      <h2 class="mt-5 mb-3"><%= @user.name %>さんのWatchList</h2>
+      
+    <div class"form-inline justify-content-between">
+      <% if params[:id] == "0" %>
+        <h5 class="font-weight-bold">全て</h5>
+      <% elsif params[:id] == "1" %>
+        <h5 class="font-weight-bold">閲覧済</h5>
+      <% elsif params[:id] == "2" %>
+        <h5 class="font-weight-bold">未閲覧</h5>
+      <% else %>
+        <h5 class="font-weight-bold">並び替えなし</h5>
+      <% end %>
+      
+      <div class="form-inline justify-content-end">
+        <%= form_with url: public_before_watch_select_path, method: :get, local: true do |f| %>
+          <%= f.select :watch_select, {'全て': 0, '閲覧済': 1, '未閲覧': 2}, { include_blank: '閲覧状況で選択'}, { class: 'form-control mr-3', width: '20%'} %>
+          <%= f.submit "選択", class: "button btn" %>
+        <% end %>
+      </div>
+    </div>
+  
+    <ul class=" movies d-flex flex-wrap row-gap">
+      <% @watch_lists.each do |watch_list| %>
+       <% movie = Tmdb::Movie.detail(watch_list.movie_id) %>
+       <% review = Review.find_by(movie_id: watch_list.movie_id) %>
+       
+        <li class="d-flex flex-column justify-content-between">
+          <div class="mb-3 mx-5"><%= image_tag "https://image.tmdb.org/t/p/w154/#{movie.poster_path}" %></div>
+            <h3 class=" movies text-center"><%= movie.title.truncate(14) %></h3>
+            
+            <% unless review.nil? %> 
+              <div id="star_<%= review.movie_id.to_s %>"></div>
+                <script>
+                  $('#star_<%= review.movie_id %>').empty();
+                  $('#star_<%= review.movie_id %>').raty({
+                    size: 70,
+                    starOn : '<%= asset_path('star-on.png') %>',
+                    starOff: "<%= asset_path('star-off.png') %>",
+                    starHalf: "<%= asset_path('star-half.png') %>",
+                    scoreName: "review[star]",
+                    half: true, 
+                    readOnly: true,
+                    score: <%= review.star %>
+                  });
+                </script>
+              <% end %>
+            
+              <div class="form-inline justify-content-center mt-3 mb-5">
+                <% if current_user.watch_lists.exists?(movie_id: movie.id) %>
+                  <!--ウォッチリストからの削除-->
+                  <div class="list">LIST
+                    <%= link_to public_watch_list_path(current_user.watch_lists.find_by(movie_id: movie.id)), method: :delete, class: 'btn btn-tag' do %>
+                      <i class="fa fa-solid fa-minus fa-xs btn-tg", style="color:#f5f5f5;"></i>
+                    <% end %>
+                  </div>
+                <% end %>
+            
+                <% if current_user.views.exists?(movie_id: movie.id) %>
+                  <div class="watch">VIEW
+                    <%= link_to public_view_path(current_user.views.find_by(movie_id: movie.id)), method: :delete, class: 'btn btn-tag' do %>
+                      <i class="fa fa-solid fa-eye fa-xs btn-tg", style="color:#black;"></i>
+                    <% end %>
+                  </div>
+                <% else %>
+                  <%= form_with model: @view, url: public_views_path, method: :post do |f| %>
+                  <%= f.hidden_field :movie_id, :value => movie.id %>
+                    <div class="form-inline justify-content-center mt-3 mb-5">
+                      <div class="watch">VIEW
+                        <%= button_tag type: 'submit', class: "btn btn-tag" do %>
+                          <i class="fa fa-solid fa-eye fa-xs", style="color:#f5f5f5;"></i>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+        </li>
+      <% end %>
+    </ul>
+    </div>
+    </div>
+</div>

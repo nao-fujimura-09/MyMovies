@@ -1,0 +1,107 @@
+<div class="container">
+  <h1 class="my-5 title">ユーザー 一覧</h1>
+  
+  <div class="form-inline justify-content-between">
+    <!--並び替え名-->
+    <% if params[:id] == "0" %>
+      <h5 class="font-weight-bold title">有効：<%= @users.where(status: false).count %>人</h5>
+    <% elsif params[:id] == "1" %>
+      <h5 class="font-weight-bold title">退会済：<%= @users.where(status: true).count %>人</h5>
+    <% elsif %>
+      <h5 class="font-weight-bold title">全て：<%= @users.count %>人</h5>
+    <% else %>
+      <h5 class="font-weight-bold title">会員数：<%= @users.count %>人</h5>
+    <% end %>
+  
+    <!--並び替えフォーム-->
+    <div class="form-inline justify-content-end mb-2">
+      <%= form_with url: admin_before_user_select_path, method: :get, local: true, class: "search_form_group d-flex"  do |f| %>
+        <%= f.select :user_select, {'有効': 0, '退会': 1, '全て': 2}, { include_blank: 'ステータスを選択'}, { class: 'form-control mr-3', width: '20%', style: "max-width:250px;display:inline-block;"} %>
+        <%= f.submit "選択", class: "button btn", style: "border-style:none;display:inline-block;" %>
+      <% end %>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th width="5%">userID</th>
+              <th width="8%">name</th>
+              <th width="20%">email</th>
+              <th width="8%">status</th>
+              <th width="20%">favorite movie</th>
+              <th width="20%">favorite genres</th>
+              <th width="10%">view</th>
+              <th width="10%">review</th>
+              <th width="10%">score</th>
+              <th width="10%">followed</th>
+              <th width="10%">followers</th>
+              <th width="10%">watch_lists</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @users.each do |user| %>
+              <% @views = View.where(user_id: user.id) %>
+              <% @watch_lists = WatchList.where(user_id: user.id) %>
+              <% @reviews = Review.where("title!='' OR body!=''").where(user_id: user.id) %>
+              <tr>
+                <td><%= user.id %></td>
+                <td>
+                <%= link_to admin_user_path(user.id), class:"link-body" do %>
+                  <%= user.name %>
+                <% end %>
+                  </td>
+                <td><%= user.email %></td>
+                <td>
+                  <% if user.status? %> 
+                    <p class="font-weight-bold", style="color:#d3dd3d3">退会</p>
+                  <% else %>
+                    <p class="font-weight-bold", style="color:#32cd32">有効</p>
+                  <% end %>
+                </td>
+                <td>
+                  <% if user.favorite_movie.present? %>
+                    <%= user.favorite_movie %>
+                  <% else %>
+                    <p>未設定</p>
+                  <% end %>
+                </td>
+                <td>
+                  <% if user.favorite_genres.present? %>
+                    <% user.favorite_genres.each do |favorite_genre| %>
+                      <p><%= favorite_genre.genre.name %></p>
+                    <% end %>
+                  <% else %>
+                    <p>未設定</p>
+                  <% end %>
+                </td>
+                <td><%= @views.count %></td>
+                <td><%= @reviews.count %></td>
+                <td><%= Review.where(user_id: user.id).average(:star).to_f.round(1) %>
+                <td><%= user.followers.count %></td>
+                <td><%= user.followings.count %></td>
+                <script>
+                    $('#star_<%= user.id %>').empty();
+                    $('#star_<%= user.id %>').raty({
+                      size: 70,
+                      starOn : '<%= asset_path('star-on.png') %>',
+                      starOff: "<%= asset_path('star-off.png') %>",
+                      starHalf: "<%= asset_path('star-half.png') %>",
+                      scoreName: "review[star]", //reviewモデルのstarカラムに保存
+                      half: true, 
+                      readOnly: true,
+                      });
+                  </script>
+                </td>
+                <td><%= @watch_lists.count %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>  
+    </div>
+  </div>
+</div>
