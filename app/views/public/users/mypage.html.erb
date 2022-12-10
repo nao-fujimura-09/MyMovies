@@ -34,7 +34,7 @@
     <div class="form-inline title">
       <p class="mr-5 ">好きなジャンル</p>
         <% if current_user.favorite_genres.present? %>
-          <% current_user.favorite_genres.each do |favorite_genre|%>
+          <% current_user.favorite_genres.each do |favorite_genre| %>
             <p class="user-mypage"><%= favorite_genre.genre_name %></p>
           <% end %>
         <% else %>

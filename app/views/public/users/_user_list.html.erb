@@ -4,7 +4,7 @@
   <h3 class ="pl-2 mt-2 mb-3 font-weight-bold"><%= current_user.name %></h3>
 <% end %>
 
-<p class="mt-3 border-bottom">
+<p class="mt-3 border-bottom title">
   フォロワー
     <%= link_to public_followers_path(user_id: current_user), class:"link-body" do %>
       <%= @user.followers.where(status: false).count %>
@@ -22,7 +22,7 @@
   <tr>
     <td>
       <% if current_user.favorite_movie.present? %>
-        <p class="user-mypage"><%= current_user.favorite_movie %></p>
+        <p class="user-mypage title"><%= current_user.favorite_movie %></p>
       <% else %>
         <p>まだ設定されていません</p>
       <% end %>
@@ -38,7 +38,7 @@
     <td>
       <% if current_user.favorite_genres.present? %>
         <% current_user.favorite_genres.each do |favorite_genre|%>
-          <p class="user-mypage"><%= favorite_genre.genre.name %></p>
+          <p class="user-mypage title"><%= favorite_genre.genre_name %></p>
         <% end %>
       <% else %>
         <p>まだ設定されていません</p>
