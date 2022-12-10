@@ -11,6 +11,10 @@
 
 <br><br>
 
+ ユーザーサインイン：　http://3.129.155.102/users/sign_up<br>
+ ユーザーログイン  ：http://3.129.155.102/users/sign_in<br>
+　　管理者ログイン　　　　　　：http://3.129.155.102/admin/sign_in<br>
+
 ## 背景
   
 映画鑑賞が趣味な方はまとめて何本か見ることが多いと思います。  
@@ -79,8 +83,7 @@ ruby 2.6
 - JSライブラリ：jQuery
 - IDE：Cloud9
 
-- gem:
-devise,
+- 使用gem:
 [Tmdb](https://github.com/18Months/themoviedb-api#genres)
 
 <br><br>
