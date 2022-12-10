@@ -34,12 +34,13 @@
       <table>
         <tr>
           <td class="font-weight-bold title"><p>好きなジャンル</p></td>
+          
         </tr>
         <tr>
           <td>
             <% if current_user.favorite_genres.present? %>
               <% current_user.favorite_genres.each do |favorite_genre|%>
-                <p class="user-mypage title"><%= favorite_genre.genre.name %></p>
+                <p class="user-mypage title"><%= favorite_genre.genre_name %></p>
               <% end %>
             <% else %>
               <p class="title">まだ設定されていません</p>

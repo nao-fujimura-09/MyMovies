@@ -17,12 +17,12 @@ class Public::UsersController < ApplicationController
     
     def update 
         @user = current_user
-            FavoriteGenre.where(user_id: @user.id).destroy_all
-            params[:user][:favorite_genres].compact_blank.each do |genre_id| #comapct_blankで空白の配列を排除
-                FavoriteGenre.create(user_id: @user.id, genre_id: genre_id.to_i)
-            end
+        FavoriteGenre.where(user_id: @user.id).destroy_all
+        params[:user][:favorite_genres].compact_blank.each do |genre_id| #comapct_blankで空白の配列を排除
+            FavoriteGenre.create(user_id: @user.id, genre_id: genre_id.to_i)
+        end
         @user.update!(user_params.except(:favorite_genres)) #exceptでfavorite_genres以外をupdate(上で保存しているため)
-        # redirect_to public_user_mypage_path(current_user), notice: 'プロフィールを変更しました'
+        redirect_to public_user_mypage_path(current_user), notice: 'プロフィールを変更しました'
     end
    
     def mypage

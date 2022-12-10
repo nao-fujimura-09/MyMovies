@@ -17,7 +17,6 @@ class Public::WatchListsController < ApplicationController
     @view = View.new
     @review = Review.new
     @user =current_user
-    @genres = Genre.all
     exist_view_movies = current_user.views.pluck(:movie_id)
     
     if params[:id] == "1"
