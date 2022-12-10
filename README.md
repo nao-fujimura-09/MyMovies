@@ -11,9 +11,14 @@
 
 <br><br>
 
- ユーザーサインイン：　http://3.129.155.102/users/sign_up<br>
+ ユーザー新規登録：　http://3.129.155.102/users/sign_up<br>
  ユーザーログイン  ：http://3.129.155.102/users/sign_in<br>
-　　管理者ログイン　　　　　　：http://3.129.155.102/admin/sign_in<br>
+　　管理者ログイン　　　　　：http://3.129.155.102/admin/sign_in<br>
+  ![qrcode_chrome](https://user-images.githubusercontent.com/77389364/206856829-cb3b1c32-1ed1-40cd-ab26-1a372002ecad.png)
+![qrcode_chrome (1)](https://user-images.githubusercontent.com/77389364/206856834-c4a57965-ed04-425a-9978-372550a696c7.png)
+![qrcode_chrome (2)](https://user-images.githubusercontent.com/77389364/206856837-9369dd40-c086-4b15-a83d-b4b54924274c.png)
+
+  
 
 ## 背景
   
