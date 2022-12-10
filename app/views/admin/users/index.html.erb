@@ -72,12 +72,13 @@
                 <td>
                   <% if user.favorite_genres.present? %>
                     <% user.favorite_genres.each do |favorite_genre| %>
-                      <p><%= favorite_genre.genre.name %></p>
+                    <p><%= favorite_genre.genre_name %></p>
                     <% end %>
                   <% else %>
                     <p>未設定</p>
                   <% end %>
                 </td>
+                
                 <td><%= @views.count %></td>
                 <td><%= @reviews.count %></td>
                 <td><%= Review.where(user_id: user.id).average(:star).to_f.round(1) %>

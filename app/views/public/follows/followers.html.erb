@@ -67,7 +67,7 @@
         <tr>
           <td>
             <% current_user.favorite_genres.each do |favorite_genre|%>
-              <p class="user-mypage"><%= favorite_genre.genre.name %></p>
+              <p class="user-mypage title"><%= favorite_genre.genre_name %></p>
             <% end %>
           </td>
         </tr>

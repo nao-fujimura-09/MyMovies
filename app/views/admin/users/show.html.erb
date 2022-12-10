@@ -53,8 +53,8 @@
               <% if @user.favorite_genres.present? %>
                 <div class="form-inline">
                   <% @user.favorite_genres.each do |favorite_genre|%>
-                    <p class="mr-3"><%= favorite_genre.genre.name %></p>
-                <% end %>
+                    <p class="user-mypage"><%= favorite_genre.genre_name %></p>
+                  <% end %>
                 </div>
               <% else %>
                 <p>未設定</p>
