@@ -3,7 +3,7 @@
   <% if user_signed_in? %>
     <div class="search_form mt-3">
         <%= form_with url: public_search_path, local: true, method: :get, class: "search_form_group" do |f| %>
-          <%= f.text_field :word, class:"form-control mr-2", placeholder:"タイトルで検索", style: "max-width:210px;display:inline-block;" %>
+          <%= f.text_field :word, class:"form-control mr-2", placeholder:"タイトルで検索", style: "max-width:220px;display:inline-block;" %>
           <%= f.button :type => "submit", class:"button py-2 px-3", style: "border-style:none;display:inline-block;" do %>
             <i class="fas fa-search fa-lg"></i>
           <% end %>
@@ -11,7 +11,7 @@
         
         <div class="d-block d-md-none mt-4">
           <%= form_with url: public_search_path, local: :true, method: :get, class: "search_form_group" do |f| %>
-            <%= f.collection_select :genre_id, @genres, :id, :name, {include_blank: "ジャンルで検索", selected: params[:genre_id]}, {class: "form-control mr-2", style: "max-width:210px;display:inline-block;"} %>
+            <%= f.collection_select :genre_id, @genres, :id, :name, {include_blank: "ジャンルで検索", selected: params[:genre_id]}, {class: "form-control mr-2", style: "max-width:220px;display:inline-block;"} %>
             <%= f.button :type => "submit", class:"button py-2 px-3", style: "border-style:none;display:inline-block;" do %>
               <i class="fas fa-search fa-lg"></i>
             <% end %>
@@ -45,7 +45,7 @@
     </div>
     
     <div class="col-md-9">
-      <h2 class="my-5 text-center title">よく見られている作品</h2>
+      <h3 class="my-5 text-center title">よく見られている作品</h3>
       <div class="table-responsive">
         <table class="table-boderless mb-5">
           <tbody>
@@ -81,7 +81,7 @@
         </table>
       </div>
       
-      <h2 class="my-5 text-center title">レビュー評価順</h2>
+      <h3 class="my-5 text-center title">レビュー評価順</h3>
       <div class="table-responsive">
         <table class="table-boderless mb-5">
           <tbody>
@@ -115,7 +115,7 @@
       </table>
       </div>
       
-      <h2 class="my-5 text-center title">人気のユーザー</h2>
+      <h3 class="my-5 text-center title">人気のユーザー</h3>
       <% @all_users.each.with_index(1) do |user, i| %>
         <% if user.status == false %> <!-- 退会してないユーザーのみ表示ー -->
           <div class="card mb-4">

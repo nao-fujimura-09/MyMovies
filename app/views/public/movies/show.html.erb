@@ -1,20 +1,19 @@
 <div class="container">
-  
   <div class="row">
     <%if user_signed_in? %>
-    <div class="col-md-3"></div>
+      <div class="d-none d-sm-block col-md-3"></div>
       <div class="col-md-9 col-sm-12 mb-3">
     <% else %>
       <div class="col-12 mb-3">
     <% end %>  
-      <h2 class="font-weight-bold mt-5 title"><%= @movie.title %></h2>
+        <h3 class="font-weight-bold mt-5 title"><%= @movie.title %></h3>
         
-      <div class="form-inline">
-        <p class="font-weight-bold mr-3">ジャンル：</p>
-        <% @movie.genres.each do |genre| %>
-          <p><%= genre.name %> / </p>
-        <% end %>
-      </div>
+        <div class="form-inline">
+          <p class="font-weight-bold mr-3">ジャンル：</p>
+          <% @movie.genres.each do |genre| %>
+            <p><%= genre.name %> / </p>
+          <% end %>
+        </div>
     </div>
 
   </div>
@@ -57,86 +56,79 @@
     <% end %>
     
     <!--映画詳細  -->
-      <div class="col-md-3 col-sm-12">
-      <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"my-5" %>
-      
-      <% if user_signed_in? %>
-        <div class="form-inline mr-5 mt-4">
-         <% if current_user.watch_lists.exists?(movie_id: @movie.id) %>
-            <!--ウォッチリストからの削除-->
-            <%= link_to public_watch_list_path(current_user.watch_lists.find_by(movie_id: @movie.id)), class:"button-delete p-4 mr-5", method: :delete do %>
-              <i class="fa fa-regular fa-heart fa-lg"></i>
-            <% end %>
-            
-          <% else %>
-            <!--ウォッチリストへ追加-->
-            <%= link_to public_watch_lists_path(movie_id: @movie.id, user_id: current_user), class:"button p-4 mr-5", width:"50px", method: :post do %>
-              <i class="fa fa-regular fa-heart fa-lg"></i>
-            <% end %>
-          <% end %>
-
-          <% if current_user.views.exists?(movie_id: @movie.id) %>
-            <!--未閲覧-->
-            <%= link_to public_view_path(current_user.views.find_by(movie_id: @movie.id)), method: :delete, class: 'button-delete p-4 ml-3' do %>
-              <i class="fa fa-solid fa-eye fa-lg"></i>
-            <% end %>
-            
-          <% else %>
-            <!--閲覧済み-->
-            <%= link_to public_views_path(movie_id: @movie.id, user_id: current_user), class:"button p-4 ml-3", width:"50px", method: :post do %>
-              <i class="fa fa-solid fa-eye fa-lg"></i>
-            <% end %>
-          <% end %>
-        </div>
-        
-        <div class="form-inline mt-3">
-          <p class="mr-5 ml-3">LIST</p>
-          <p class="ml-2"></p>
-          <p class="ml-5">VIEW</p>
-        </div>
-      <% end %>
-    </div>
-  
-    <div class="col-lg-6 col-md-4 col-sm-12">
-      <table class="table-borderless mt-md-5">
-        <tbody>
-          <tr>
-            <td>
-              <h5 class="font-weight-bold title mt-3">あらすじ</h5>
-              <p class="title">
-                <% if @movie.overview.present? %>
-                  <%= @movie.overview %>
-                <% else %>
-                  あらすじがありません
+    <div class="col-sm-9">
+      <div class="row">
+        <div class="col-sm-3">
+          <%= image_tag "https://image.tmdb.org/t/p/w154/#{@movie.poster_path}", class:"my-5", style: "width:100%;" %>
+          
+          <% if user_signed_in? %>
+            <div class="mt-4 mb-5 d-flex justify-content-around">
+              <div>
+              <% if current_user.watch_lists.exists?(movie_id: @movie.id) %>
+                <!--ウォッチリストからの削除-->
+                <%= link_to public_watch_list_path(current_user.watch_lists.find_by(movie_id: @movie.id)), class:"button-delete p-4 d-block", method: :delete do %>
+                  <i class="fa fa-regular fa-heart fa-lg"></i>
                 <% end %>
-              </p>
-
-              <h5 class="font-weight-bold mt-5 title">監督</h5>
-              <p class="title">
-              <% @directors.each do |director| %>
-                <%= director.name %>
+                <div class="text-center">LIST</div>
+              <% else %>
+                <!--ウォッチリストへ追加-->
+                <%= link_to public_watch_lists_path(movie_id: @movie.id, user_id: current_user), class:"button p-4 d-block", width:"50px", method: :post do %>
+                  <i class="fa fa-regular fa-heart fa-lg"></i>
+                <% end %>
+                <div class="text-center">LIST</div>
               <% end %>
-              </p>
-
-              <h5 class="font-weight-bold mt-3 title">出演者</h5>
-              <p class="title">
-                <% @persons.first(5).each do |person|%>
-                  <%= person %> /
+              </div>
+              <div style:"display:block;">
+              <% if current_user.views.exists?(movie_id: @movie.id) %>
+                <!--未閲覧-->
+                <%= link_to public_view_path(current_user.views.find_by(movie_id: @movie.id)), method: :delete, class: 'button-delete p-4 d-block' do %>
+                  <i class="fa fa-solid fa-eye fa-lg"></i>
                 <% end %>
-              </p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-        
-      <div class=" d-flex align-items-end justify-content-between my-5">
-        <h5 class="font-weight-bold title">閲覧数：</h5>
-        <h5 class="title"><%= @views.count %>人<h5>
-        <h5 class="font-weight-bold title">平均評価：</h5>
-        <div><h5 class="title"><%= Review.where(movie_id: @movie.id).average(:star).to_f.round(1) %>点</h5></div>
+                <div class="text-center">VIEW</div>
+              <% else %>
+                <!--閲覧済み-->
+                <%= link_to public_views_path(movie_id: @movie.id, user_id: current_user), class:"button p-4 d-block", width:"50px", method: :post do %>
+                  <i class="fa fa-solid fa-eye fa-lg"></i>
+                <% end %>
+                <div class="text-center">VIEW</div>
+              <% end %>
+              </div>
+            </div>
+            
+          <% end %>
+      </div>
+        <div class="col-sm-9">
+          <div>
+            <h5 class="font-weight-bold title mt-5">あらすじ</h5>
+            <p class="title">
+              <% if @movie.overview.present? %>
+                <%= @movie.overview %>
+              <% else %>
+                あらすじがありません
+              <% end %>
+            </p>
+    
+            <h5 class="font-weight-bold mt-5 title">監督</h5>
+            <p class="title">
+            <% @directors.each do |director| %>
+              <%= director.name %>
+            <% end %>
+            </p>
+    
+            <h5 class="font-weight-bold mt-5 title">出演者</h5>
+            <p class="title">
+              <% @persons.first(5).each do |person|%>
+                <%= person %> /
+              <% end %>
+            </p>
+          </div>
           
-          <div id="star_<%= @review.movie_id.to_s %>"></div>
-          
+          <div class="d-flex align-items-end justify-content-between my-5">
+            <h5 class="font-weight-bold title">閲覧数：</h5>
+            <h5 class="title"><%= @views.count %>人<h5>
+            <h5 class="font-weight-bold title">平均評価：</h5>
+            <div><h5 class="title"><%= Review.where(movie_id: @movie.id).average(:star).to_f.round(1) %>点</h5></div>
+            <div id="star_<%= @review.movie_id.to_s %>"></div>
             <script>
               $('#star_<%= @review.movie_id %>').empty();
               $('#star_<%= @review.movie_id %>').raty({
@@ -150,6 +142,8 @@
                 score: <%= @review.star %>
                 });
             </script>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -157,7 +151,7 @@
   <div class="row">
     <!--レビュー-->
     <% if user_signed_in? %>
-      <div class="col-md-3 col-sm-9 mt-5">
+      <div class="col-md-3 col-sm-12 mt-5">
         <%= form_with model: @review, url: public_reviews_path do |f| %>
           <%= f.hidden_field :movie_id, :value => @movie.id %>
           
@@ -200,12 +194,12 @@
         <% end %>
       </div>
     
-      <div class="col-1"></div>
+      <div class="col-md-1"></div>
     <% end %>
     
     <!--レビュー表示ページの呼び出し-->
     <% if user_signed_in? %>
-      <div class="col-md-9 col-sm-12 mb-5 mt-5">
+      <div class="col-md-8 col-sm-12 mb-5 mt-5">
     <% else %>
       <div class="col-12 mt-5">
     <% end %>
