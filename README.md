@@ -6,19 +6,14 @@
     
 **ー 気になる映画や見た映画のデータを手軽に管理したい　ー**  
  そんな方向けの映画レビューサイトです。
+ <br>
+ 
+→ [MyMovies](http://3.129.155.102/users/sign_up)
+
 <br><br><br><br>
 <img width="1440" alt="スクリーンショット 2022-12-05 18 35 06" src="https://user-images.githubusercontent.com/77389364/205604162-655effae-c6d2-4668-8850-e1e254111b02.png">
 
 <br><br>
-
- ユーザー新規登録：　http://3.129.155.102/users/sign_up<br>
- ユーザーログイン  ：http://3.129.155.102/users/sign_in<br>
-　　管理者ログイン　　　　　：http://3.129.155.102/admin/sign_in<br>
-  ![qrcode_chrome](https://user-images.githubusercontent.com/77389364/206856829-cb3b1c32-1ed1-40cd-ab26-1a372002ecad.png)
-![qrcode_chrome (1)](https://user-images.githubusercontent.com/77389364/206856834-c4a57965-ed04-425a-9978-372550a696c7.png)
-![qrcode_chrome (2)](https://user-images.githubusercontent.com/77389364/206856837-9369dd40-c086-4b15-a83d-b4b54924274c.png)
-
-  
 
 ## 背景
   
@@ -81,15 +76,10 @@ https://user-images.githubusercontent.com/77389364/205602938-89d13f33-c9c2-4de8-
 <br><br>
 
 ## 開発環境
-- OS：Linux(CentOS),macOS(BigSur 11.6.7)
-- 言語：HTML,CSS,JavaScript,Ruby,SQL 1.4
-- フレームワーク：Ruby on Rails 6
-ruby 2.6
-- JSライブラリ：jQuery
-- IDE：Cloud9
-
-- 使用gem:
-[Tmdb](https://github.com/18Months/themoviedb-api#genres)
+- OS ： Amazon Linux 2
+- 言語 ： Ruby3.1.2, MySQL 1５.１
+- フレームワーク ： Ruby on Rails 6.1.7
+- IDE ： Cloud9
 
 <br><br>
 
