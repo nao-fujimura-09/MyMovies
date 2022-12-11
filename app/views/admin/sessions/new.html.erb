@@ -9,7 +9,7 @@
 <%= form_with model:@admin, url: admin_session_path, method: :POST do |f| %>
 
   <tr>
-    <td>メールアドレス</td>
+    <td nowrap>メールアドレス</td>
     <td><%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder:"sample@example.com"  %></td>
   </tr>
 

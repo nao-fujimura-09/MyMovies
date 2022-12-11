@@ -172,8 +172,14 @@ footer {
   text-align: center;
 }
 
-// @media screen and (max-width: 600px) {
-//   header {
-//     height: 110px;
-//   }
-// }
+td {
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 767px) {
+  td {
+    display: block !important;
+    width: 100% !important;
+  }
+  
+}

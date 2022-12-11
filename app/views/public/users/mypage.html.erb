@@ -19,9 +19,9 @@
     </p>
   </div>
     
-  <div class="d-block d-sm-none mt-5 d-flex justify-content-center">
+  <div class="d-block d-sm-none mt-5">
     <div class="form-inline title">
-      <p class="mr-5 ">お気に入り映画</p>
+      <p class="mx-5 ">お気に入り映画</p>
       <% if current_user.favorite_movie.present? %>
         <p class="user-mypage"><%= current_user.favorite_movie %></p>
       <% else %>
@@ -30,9 +30,9 @@
     </div>
   </div>
     
-  <div class="d-block d-sm-none mt-3 d-flex justify-content-center border-bottom">
+  <div class="d-block d-sm-none mt-2 order-bottom">
     <div class="form-inline title">
-      <p class="mr-5 ">好きなジャンル</p>
+      <p class="mx-5 ">好きなジャンル</p>
         <% if current_user.favorite_genres.present? %>
           <% current_user.favorite_genres.each do |favorite_genre| %>
             <p class="user-mypage"><%= favorite_genre.genre_name %></p>
