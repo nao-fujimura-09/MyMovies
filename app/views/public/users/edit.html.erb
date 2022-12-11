@@ -19,12 +19,11 @@
     <div class="col-3"></div>
     <div class="col-md-6 col-sm-12">
       <table class="table table-borderless">
-
         
         <div class="row">
           <%= form_with model: @user, url: public_user_path do |f| %>
           <tr>
-            <td>プロフィール画像</td>
+            <td nowrap>プロフィール画像</td>
             <td><%= f.file_field :profile_image, accept: "image/*" %></td>
           </tr>  
 
